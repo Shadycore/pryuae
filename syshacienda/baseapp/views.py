@@ -1,4 +1,9 @@
 from django.shortcuts import render, HttpResponse
+from django.views import generic
+
+class Home(generic.TemplateView)
+    template_name = 'baseapp/index.html'
+    
 
 def login(request):
     #return render(request,"baseapp/login.html")
