@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "J:\\ruta del entorno virual\\python.exe",
+    "python.pythonPath": "C:\\Users\\Shadycore\\.virtualenvs\\pryuae-itECDiVi\\Scripts\\python.exe",
     "python.linting.enabled": true,  
     "python.linting.pylintPath": "pylint",
     "python.linting.pylintEnabled": false,

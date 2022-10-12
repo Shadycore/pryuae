@@ -1,11 +1,10 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.views import generic
 
-class Home(generic.TemplateView)
-    template_name = 'baseapp/index.html'
+class Home(generic.TemplateView):
+    template_name = 'baseapp/home.html'
     
-
-def login(request):
+"""def login(request):
     #return render(request,"baseapp/login.html")
    return HttpResponse("<h1> login </h1>")
 
@@ -36,3 +35,4 @@ def cocechar(request):
 def dashboard(request):
     #return render(request,"baseapp/dashboard.html")
     return HttpResponse("<h1> dashboard </h1>")
+"""

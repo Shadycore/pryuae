@@ -13,18 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
-from baseapp import views
+from baseapp import urls
 
 urlpatterns = [
-    path('', include (('baseapp/urls', baseapp), namespace='baseapp')),
+    path('', include(('baseapp/urls','baseapp'), namespace='baseapp')),
+    path('admin',admin.site.urls),
     #path('', views.login, name='login'),
-    path('index/', views.index, name='index'),
-    path('crearHaciendas/', views.crearHaciendas, name='crearHaciendas'),
-    path('matHaciendas/', views.mantHaciendas , name='matHaciendas'),
-    path('compraInsumos/', views.compraInsumos, name='compraInsumos'),
-    path('repoartInsumos/', views.repartoInsumos, name='repoartInsumos'),
-    path('cocechar/',views.cocechar, name='cocechar'),
-    path('dashboards/', views.dashboard, name='dashboards')
+    #path('index/', views.index, name='index'),
+    #path('crearHaciendas/', views.crearHaciendas, name='crearHaciendas'),
+    #path('matHaciendas/', views.mantHaciendas , name='matHaciendas'),
+    #path('compraInsumos/', views.compraInsumos, name='compraInsumos'),
+    #path('repoartInsumos/', views.repartoInsumos, name='repoartInsumos'),
+    #path('cocechar/',views.cocechar, name='cocechar'),
+    #path('dashboards/', views.dashboard, name='dashboards')
 ]
