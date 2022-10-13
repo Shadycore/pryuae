@@ -26,22 +26,46 @@
 	    <div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
 		    <div class="d-flex flex-column align-content-end">
 			    <div class="app-auth-body mx-auto">	
-				    <div class="app-auth-branding mb-4"><a class="app-logo" href="index.html">
+				    <div class="app-auth-branding mb-4"><a class="app-logo" href="home.html">
 						<img class="logo-icon me-2" src="assets/images/uae-logo.png" alt="logo"></a></div>
 					<h2 class="auth-heading text-center mb-5">Inicie Sesión</h2>
+					<small class="text-danger">
+						{% if form.errors %}
+							{% for field in form %}
+								{% if field.errors %}
+									{% for error in field.errors %}
+										{{error | escape}}
+									{% endfor %}
+								{% endif%}
+							{% endfor %}
+
+							{% if form.non_field_errors %}
+								{% for error in form.non_field_errors %}
+									{{error | escape}}
+								{% endfor %}
+							{% endif %}
+						{% endif %}
+					</small>
 			        <div class="auth-form-container text-start">
 						<form class="auth-form login-form">         
+							{% csrf_token %}
 							<div class="email mb-3">
 								<label class="sr-only" for="signin-email">Email</label>
-								<input id="signin-email" name="signin-email" type="email" class="form-control signin-email" placeholder="Email address" required="required">
+								<input id="id_username" name="username" 
+										type="text" class="form-control signin-email" 
+										placeholder="Email address" required="required"
+										>
 							</div><!--//form-group-->
 							<div class="password mb-3">
 								<label class="sr-only" for="signin-password">Password</label>
-								<input id="signin-password" name="signin-password" type="password" class="form-control signin-password" placeholder="Password" required="required">
+								<input id="id_password" name="password" 
+										type="password" class="form-control signin-password" 
+										placeholder="Password" required="required"
+										>
 
 							</div><!--//form-group-->
 							<div class="text-center">
-								<button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto"  >Iniciar Sesion</button>
+								<button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto"  >Iniciar Sesión</button>
 							</div>
 						</form>
 						
