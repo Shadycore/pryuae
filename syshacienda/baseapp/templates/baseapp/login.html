@@ -14,10 +14,10 @@
     <meta name="author" content="">    
     
     <!-- FontAwesome JS-->
-    <script defer src="assets/plugins/fontawesome/js/all.min.js"></script>
+    <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
     
     <!-- App CSS -->  
-    <link id="theme-style" rel="stylesheet" href="assets/css/portal.css">
+    <link id="theme-style" rel="stylesheet" href="{% static 'assets/css/portal.css' %}">
 
 </head> 
 
@@ -27,7 +27,7 @@
 		    <div class="d-flex flex-column align-content-end">
 			    <div class="app-auth-body mx-auto">	
 				    <div class="app-auth-branding mb-4"><a class="app-logo" href="home.html">
-						<img class="logo-icon me-2" src="assets/images/uae-logo.png" alt="logo"></a></div>
+						<img class="logo-icon me-2" src="{% static 'assets/images/uae-logo.png' %}" alt="logo"></a></div>
 					<h2 class="auth-heading text-center mb-5">Inicie Sesión</h2>
 					<small class="text-danger">
 						{% if form.errors %}
