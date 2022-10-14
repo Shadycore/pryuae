@@ -1,4 +1,5 @@
 
+from io import open_code
 from django.db import models
 from baseapp.models import BaseFields
 from baseapp.models import ContactFields
@@ -99,6 +100,7 @@ class Cliente(PersonFields, ContactFields, BaseFields):
 
     def save (self):
         pass
+
     class Meta:
         verbose_name_plural = "Clientes"
         db_table = 'cliente'
@@ -108,12 +110,12 @@ class Cliente(PersonFields, ContactFields, BaseFields):
 # - Actividad - #
 class Actividad(BaseFields):
     idActividad = models.AutoField(primary_key=True)
-    idCultivo = models.IntegerField()
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length=50)
     fecha = models.DateField()
 
     def __str__(self):
-        return self.nombre
+        return'{}:{}'.format(self.idCultivo.nombre, self.nombre, self.fecha)
 
     def save (self):
         pass
@@ -125,9 +127,9 @@ class Actividad(BaseFields):
 # - Asignacion - #
 class Asignacion(BaseFields):
     idAsignacion = models.AutoField(primary_key=True)
-    idActividad = models.IntegerField()
-    idEmpleado = models.IntegerField()
-    idCultivo = models.IntegerField()
+    idActividad = models.ForeignKey(Actividad, on_delete=models.DO_NOTHING)
+    idEmpleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
     descripcion = models.CharField(max_length=50)
     fecha = models.DateField()
 
@@ -143,8 +145,8 @@ class Asignacion(BaseFields):
 # - AsignacionMaterial - #
 class AsignacionMaterial(BaseFields):
     idMaterial = models.AutoField(primary_key=True)
-    idInsumo = models.IntegerField()
-    idCultivo = models.IntegerField()
+    idInsumo =  models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
+    idCultivo =  models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
     encargado = models.CharField(max_length=50)
     fecha = models.DateField()
     
@@ -160,8 +162,8 @@ class AsignacionMaterial(BaseFields):
 # - Cosecha - #
 class Cosecha(BaseFields):
     idCosecha = models.AutoField(primary_key=True)
-    idHacienda = models.IntegerField()
-    idCultivo = models.IntegerField()
+    idHacienda =  models.ForeignKey(Hacienda, on_delete=models.DO_NOTHING)
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
     fecha = models.DateField()
     cantidad = models.FloatField(blank=True, null=True)
 
@@ -177,8 +179,8 @@ class Cosecha(BaseFields):
 # - Registro Empleado - #
 class RegistroEmpleado(BaseFields):
     idRegistro = models.AutoField(primary_key=True)
-    idHacienda = models.IntegerField()
-    idEmpleado = models.IntegerField()
+    idHacienda = models.ForeignKey(Hacienda, on_delete=models.DO_NOTHING)
+    idEmpleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
     contrato = models.CharField(max_length=100)
     cargo = models.CharField(max_length=30, blank=True, null=True)
 
@@ -192,29 +194,11 @@ class RegistroEmpleado(BaseFields):
         verbose_name_plural = "RegistroEmpleados"
         db_table = 'registro_empleado'
 
-# - DescripcionLote - #
-class DescripcionLote(BaseFields):
-    idDescripcionLote = models.AutoField(primary_key=True)
-    idCultivo = models.IntegerField()
-    area = models.FloatField(blank=True, null=True)
-    idProduccion = models.IntegerField()
-    etapa = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return self.etapa
-
-    def save (self):
-        pass
-
-    class Meta:
-        verbose_name_plural = "DescripcionLotes"
-        db_table = 'descripcion_lote'
-
 # - Produccion - #
 class Produccion(BaseFields):
     idProduccion = models.AutoField(primary_key=True)
-    idCultivo = models.IntegerField()
-    idInsumo = models.IntegerField()
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
+    idInsumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
     fecha = models.DateField()
     cantidadCosecha = models.IntegerField(blank=True, null=True)
 
@@ -228,11 +212,31 @@ class Produccion(BaseFields):
         verbose_name_plural = "Producciones"
         db_table = 'produccion'
 
+# - DescripcionLote - #
+class DescripcionLote(BaseFields):
+    idDescripcionLote = models.AutoField(primary_key=True)
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
+    area = models.FloatField(blank=True, null=True)
+    idProduccion = models.ForeignKey(Produccion, on_delete=models.DO_NOTHING)
+    etapa = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.etapa
+
+    def save (self):
+        pass
+
+    class Meta:
+        verbose_name_plural = "DescripcionLotes"
+        db_table = 'descripcion_lote'
+
+
+
 # - RegistroInsumo - #
 class RegistroInusmo(BaseFields):
     idRegistroInsumo = models.AutoField(primary_key=True)
-    idInsumo = models.IntegerField()
-    idCultivo = models.IntegerField()
+    idInsumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
     fechaCompra = models.DateField()
     precio = models.TextField() 
     fechaIngreso = models.DateField()
@@ -253,8 +257,8 @@ class RegistroInusmo(BaseFields):
 # - Venta - #
 class Venta(BaseFields):
     idVenta = models.AutoField(primary_key=True)
-    idCultivo = models.IntegerField()
-    idProduccion = models.IntegerField()
+    idCultivo = models.ForeignKey(Cultivo, on_delete=models.DO_NOTHING)
+    idProduccion = models.ForeignKey(Produccion, on_delete=models.DO_NOTHING)
     cantidad = models.FloatField()
     precio = models.TextField()  
     fecha = models.DateField()
@@ -273,8 +277,8 @@ class Venta(BaseFields):
 # - DetalleVenta - #
 class DetalleVenta(BaseFields):
     idDetalleVenta = models.AutoField(primary_key=True)
-    idVenta = models.IntegerField()
-    idCliente = models.IntegerField()
+    idVenta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING)
+    idCliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
     fechaVenta = models.DateField(blank=True, null=True)
     cantidadVenta = models.FloatField(blank=True, null=True)
 
