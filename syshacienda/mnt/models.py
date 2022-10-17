@@ -16,7 +16,7 @@ class Cultivo(BaseFields):
     fechaFin = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return '{}'.format(self.nombre)
+        return '{} {} {} {} {} {}'.format(self.idCultivo,self.nombre, self.lote, self.fechaInicio, self.fechaFin, self.estado)
 
     def save(self):
         self.nombre = self.nombre.capitalize()
