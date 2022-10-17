@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from baseapp import urls
 from mnt import urls
+
 urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
     path('', include(('mnt.urls','mnt'), namespace="mnt")),

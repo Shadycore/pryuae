@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'syshacienda.urls'
@@ -134,8 +135,9 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIR = (os.path.join(BASE_DIR,'static'),)
-#STATIC_ROOT = (os.path.join(BASE_DIR,'static'),)
+STATIC_ROOT = (os.path.join(BASE_DIR,'static'),)
 
+#STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
@@ -145,3 +147,4 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 #MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

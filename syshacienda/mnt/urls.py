@@ -1,6 +1,6 @@
 from django.urls import path, include
-from mnt.views import Home
+from mnt.views import CultivoList
 
 urlpatterns = [
-    path('', Home.as_view(), name='home'),
+    path('', CultivoList.as_view(), name='Cultivos'),
 ]
