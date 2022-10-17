@@ -21,7 +21,7 @@ from mnt import urls
 
 urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
-    path('', include(('mnt.urls','mnt'), namespace="mnt")),
+    path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
     path('admin',admin.site.urls),
     #path('', views.login, name='login'),
     #path('index/', views.index, name='index'),
