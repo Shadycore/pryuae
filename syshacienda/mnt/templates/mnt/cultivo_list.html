@@ -1,0 +1,102 @@
+{% extends 'base/home.html' %}
+
+{% block page_content %}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"></h6>
+        <h1 class="h3 mb-2 text-primary">Listado de Cultivos</h1>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+        {% if not obj %}
+          <div class="card-header py-3">
+              <h1 class="alert alert-info">No existe información</h1>
+          </div>
+        {% else %}
+           {% for item in obj %}
+                <tr>
+                    <td>{{ item.idCultivo }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.lote }}</td>
+                    <td>{{ item.fechaInicio | date:"d/m/Y H:i:s" }}</td>
+                    <td>{{ item.fechaFin | date:"d/m/Y H:i:s" }}</td>
+                    <td>{{ item.Estado  }}  </td>
+                    <td>
+                        <!-- Dropdown Card Example -->
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                              <h6 class="m-0 font-weight-bold text-primary">Dropdown Card Example</h6>
+                              <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                  <div class="dropdown-header">Dropdown Header:</div>
+                                  <a class="dropdown-item" href="#">Actualizar</a>
+                                  <a class="dropdown-item" href="#">Another action</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#">Eliminar</a>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                              Dropdown menus can be placed in the card header in order to extend the functionality of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis icon in the card header can be clicked on in order to toggle a dropdown menu.
+                            </div>
+                          </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Nombre</th>
+                <th>Lote</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha fin</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+
+            <!-- FOOT 
+            <tfoot>
+              <tr>
+                <th>id</th>
+                <th>Nombre</th>
+                <th>Lote</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha fin</th>
+                <th>Estado</th>
+              </tr>
+            </tfoot>-->
+            <tbody>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /.container-fluid -->
+    <!-- mensaje de error -->
+
+
+</div>
+<!-- End of Main Content -->
+
+{% endblock %}
+
+{% block js_page %}
+
+{% endblock %}

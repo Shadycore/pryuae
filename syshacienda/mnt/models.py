@@ -1,5 +1,6 @@
 
 from io import open_code
+from unicodedata import name
 from django.db import models
 from baseapp.models import BaseFields
 from baseapp.models import ContactFields
@@ -9,14 +10,14 @@ from baseapp.models import PersonFields
 ## tablas codigos principales ******************************************** ##
 # - Cultivo - #
 class Cultivo(BaseFields):
-    idCultivo = models.AutoField(primary_key=True)
+    #idCultivo = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     lote = models.CharField(max_length=50)
     fechaInicio = models.DateField(blank=True, null=True)
     fechaFin = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return '{} {} {} {} {} {}'.format(self.idCultivo,self.nombre, self.lote, self.fechaInicio, self.fechaFin, self.estado)
+        return '{}:{}'.format(self.nombre, self.lote)
 
     def save(self):
         self.nombre = self.nombre.capitalize()
@@ -31,7 +32,7 @@ class Cultivo(BaseFields):
 
 # - Insumo - #
 class Insumo(BaseFields):
-    idInsumo = models.AutoField(primary_key=True)
+    #idInsumo = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)
     uso = models.CharField(max_length=50)
@@ -49,7 +50,7 @@ class Insumo(BaseFields):
 
 # - Hacienda - #
 class Hacienda(BaseFields, PersonFields, ContactFields ):
-    idhacienda = models.AutoField(primary_key=True)
+    #idhacienda = models.AutoField(primary_key=True)
 
     def __str__(self):
         return self.nombre
@@ -64,7 +65,7 @@ class Hacienda(BaseFields, PersonFields, ContactFields ):
 ## tablas entes ******************************************** ##
 # - Empleado - #
 class Empleado(BaseFields, PersonFields, ContactFields):
-    idEmpleado = models.AutoField(primary_key=True)
+    #idEmpleado = models.AutoField(primary_key=True)
     fchNacimiento = models.DateField()
 
     def __str__(self):
@@ -78,7 +79,7 @@ class Empleado(BaseFields, PersonFields, ContactFields):
         db_table = 'empleado'
 # - Proveedor - #
 class Proveedor(BaseFields, PersonFields, ContactFields):
-    idProveedor = models.AutoField(primary_key=True)
+    #idProveedor = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
@@ -93,7 +94,7 @@ class Proveedor(BaseFields, PersonFields, ContactFields):
 
 # - Cliente - #
 class Cliente(PersonFields, ContactFields, BaseFields):
-    idCliente = models.AutoField(primary_key=True)
+    #idCliente = models.AutoField(primary_key=True)
     
     def __str__(self):
         return self.nombres
@@ -109,8 +110,8 @@ class Cliente(PersonFields, ContactFields, BaseFields):
 ## tablas codigos relacionados ******************************************** ##
 # - Actividad - #
 class Actividad(BaseFields):
-    idActividad = models.AutoField(primary_key=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True )
+    #idActividad = models.AutoField(primary_key=True)
+    Cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True )
     nombre = models.CharField(max_length=50)
     fecha = models.DateField()
 
@@ -126,10 +127,10 @@ class Actividad(BaseFields):
 
 # - Asignacion - #
 class Asignacion(BaseFields):
-    idAsignacion = models.AutoField(primary_key=True)
-    idActividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, null=True)
-    idEmpleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    #idAsignacion = models.AutoField(primary_key=True)
+    Actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, null=True)
+    Empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
+    Cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     descripcion = models.CharField(max_length=50)
     fecha = models.DateField()
 
@@ -144,9 +145,9 @@ class Asignacion(BaseFields):
 
 # - AsignacionMaterial - #
 class AsignacionMaterial(BaseFields):
-    idMaterial = models.AutoField(primary_key=True)
-    idInsumo =  models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
-    idCultivo =  models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    #idMaterial = models.AutoField(primary_key=True)
+    insumo =  models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
+    cultivo =  models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     encargado = models.CharField(max_length=50)
     fecha = models.DateField()
     
@@ -161,9 +162,9 @@ class AsignacionMaterial(BaseFields):
 
 # - Cosecha - #
 class Cosecha(BaseFields):
-    idCosecha = models.AutoField(primary_key=True)
-    idHacienda =  models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    #idCosecha = models.AutoField(primary_key=True)
+    hacienda =  models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     fecha = models.DateField()
     cantidad = models.FloatField(blank=True, null=True)
 
@@ -178,9 +179,9 @@ class Cosecha(BaseFields):
 
 # - Registro Empleado - #
 class RegistroEmpleado(BaseFields):
-    idRegistro = models.AutoField(primary_key=True)
-    idHacienda = models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
-    idEmpleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
+    #idRegistro = models.AutoField(primary_key=True)
+    hacienda = models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
     contrato = models.CharField(max_length=100)
     cargo = models.CharField(max_length=30, blank=True, null=True)
 
@@ -196,9 +197,9 @@ class RegistroEmpleado(BaseFields):
 
 # - Produccion - #
 class Produccion(BaseFields):
-    idProduccion = models.AutoField(primary_key=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
-    idInsumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
+    #idProduccion = models.AutoField(primary_key=True)
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
     fecha = models.DateField()
     cantidadCosecha = models.IntegerField(blank=True, null=True)
 
@@ -214,10 +215,10 @@ class Produccion(BaseFields):
 
 # - DescripcionLote - #
 class DescripcionLote(BaseFields):
-    idDescripcionLote = models.AutoField(primary_key=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    #idDescripcionLote = models.AutoField(primary_key=True)
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     area = models.FloatField(blank=True, null=True)
-    idProduccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
+    produccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
     etapa = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -234,9 +235,9 @@ class DescripcionLote(BaseFields):
 
 # - RegistroInsumo - #
 class RegistroInusmo(BaseFields):
-    idRegistroInsumo = models.AutoField(primary_key=True)
-    idInsumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    #idRegistroInsumo = models.AutoField(primary_key=True)
+    insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     fechaCompra = models.DateField()
     precio = models.TextField() 
     fechaIngreso = models.DateField()
@@ -256,9 +257,9 @@ class RegistroInusmo(BaseFields):
 ## Venta ******************************************** ##
 # - Venta - #
 class Venta(BaseFields):
-    idVenta = models.AutoField(primary_key=True)
-    idCultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
-    idProduccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
+    #idVenta = models.AutoField(primary_key=True)
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    Produccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
     cantidad = models.FloatField()
     precio = models.TextField()  
     fecha = models.DateField()
@@ -276,9 +277,9 @@ class Venta(BaseFields):
 
 # - DetalleVenta - #
 class DetalleVenta(BaseFields):
-    idDetalleVenta = models.AutoField(primary_key=True)
-    idVenta = models.ForeignKey(Venta, on_delete=models.CASCADE, null=True)
-    idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+    #idDetalleVenta = models.AutoField(primary_key=True)
+    venta = models.ForeignKey(Venta, on_delete=models.CASCADE, null=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
     fechaVenta = models.DateField(blank=True, null=True)
     cantidadVenta = models.FloatField(blank=True, null=True)
 

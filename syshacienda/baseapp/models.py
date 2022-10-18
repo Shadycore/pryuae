@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class BaseFields(models.Model):
     estado = models.BooleanField(default=True, verbose_name="Estado del registro")
     fechaCreacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creacion")
-    fechaModificacion = models.DateTimeField(auto_now = True, verbose_name="Fecha de actualizacion")
+    fechaModificacion = models.DateTimeField(auto_now = True, verbose_name="Fecha de actualizacion", blank=True, null=True)
     usuarioCreacion = models.ForeignKey(User, on_delete = models.DO_NOTHING, verbose_name="Usuario registra")
     usuarioModificacion = models.IntegerField(blank=True, null=True, verbose_name = "Usuario modifica")
 
