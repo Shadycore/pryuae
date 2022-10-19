@@ -7,9 +7,8 @@ from django.forms import DateInput
 from .models import Cultivo
 
 
-#class CultivoForm(forms.models):
-#    pass
-"""
+class CultivoForm(forms.ModelForm):
+
     class Meta:
         model = Cultivo
         fields = ['nombre',
@@ -35,4 +34,3 @@ from .models import Cultivo
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
-            """
