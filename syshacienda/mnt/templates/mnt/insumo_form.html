@@ -6,21 +6,21 @@
     {% csrf_token %}
     <div class="col-xl-6 col-md-6 mb-6">
         {% if obj %}
-        <div class="card border-left-decoration shadow h-100 py-2">
+        <div class="card border-right-decoration shadow h-100 py-2">
         {% else %}
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-right-success shadow h-100 py-2">
         {% endif %}
             <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                  {% if obj %} 
                     <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
-                        Editar Cultivo 
+                        Editar Insumo 
                     </h4>
                  
                  {% else %}  
                     <h4 class="app-card-title text-primary text-uppercase mb-1"> 
-                        Nuevo Cultivo 
+                        Nuevo Insumo 
                     </h4>                 
                  {% endif %}
                     <div class="dropdown-divider"></div>
@@ -30,7 +30,7 @@
                             <div class="input-group">
                                 <input type="text" name="nombre" maxlength="100" 
                                         class="form-control" 
-                                        required id="id_nombre" placeholder="Nombre Cultivo"
+                                        required id="id_nombre" placeholder="Nombre Insumo"
                                 value="{% if obj %} {{ obj.nombre }} {% endif %}">
                             </div>
                         </div>
@@ -38,43 +38,33 @@
                     <div class="row">
                         <div class="col-10">
                             <div class="input-group">
-                                <input type="text" name="lote" maxlength="100" 
+                                <input type="text" name="tipo" maxlength="100" 
                                 class="form-control" 
-                                required id="id_lote" placeholder="Nombre Lote"
-                                value="{% if obj %} {{ obj.lote }} {% endif %}">
+                                required id="id_tipo" placeholder="Tipo"
+                                value="{% if obj %} {{ obj.tipo }} {% endif %}">
                             </div>
                         </div>
                     </div>   <br/>
                     <div class="row">
                         <div class="col-10">
                             <div class="input-group">
-                                <input type="date" name="fechaInicio" maxlength="100" 
+                                <input type="text" name="uso" maxlength="100" 
                                 class="form-control" 
-                                required id="id_fechaInicio" placeholder="Fecha Inicio"
-                                value="{% if obj %} {{ obj.fechaInicio  | date:"d/m/Y" }} {% endif %}">
+                                required id="id_uso" placeholder="Uso"
+                                value="{% if obj %} {{ obj.uso }} {% endif %}">
                             </div>
                         </div>
                     </div>   <br/>
                     <div class="row">
                         <div class="col-10">
                             <div class="input-group">
-                                <input type="date" name="fechaFin" maxlength="100" 
+                                <input type="Numeric" name="precio" maxlength="100" 
                                 class="form-control" 
-                                required id="id_fechaFin" placeholder="Fecha Fin"
-                                value="{% if obj %} {{ obj.fechaFin | date:"d/m/Y" }} {% endif %}">
+                                required id="id_precio" placeholder="Precio"
+                                value="{% if obj %} {{ obj.precio }} {% endif %}">
                             </div>
                         </div>
                     </div>   <br/>
-                    <!-- <div class="row">
-                        <div class="col-2">
-                            <div class="form-group">
-                                <input type="checkbox" name="estado" 
-                                    class="form-check-input" id="id_estado"
-                                 {% if obj.estado %} checked {% endif %} >
-                                 <label for="id_estado">Estado</label>
-                            </div>
-                        </div> 
-                    </div>-->
                     <div class="row">
                         <div class="col-2">
                             <label class="form-check-label" for="id_estado">Estado</label>
@@ -84,7 +74,7 @@
                                 <input class="form-check-input" 
                                         type="checkbox" id="id_estado" 
                                         {% if obj.estado %} 
-                                            {{ obj.estado}}
+                                            {%if obj.estado %} checked {% else %} unchecked {% endif %}
                                         {% else %} 
                                             checked 
                                         {% endif %}>
@@ -115,6 +105,5 @@
     </div>
 </form>
 {% endblock %}
-
 {% block js_page %}
 {% endblock %}

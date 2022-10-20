@@ -41,8 +41,12 @@ class Insumo(BaseFields):
     def __str__(self):
         return self.nombre
 
-    def save (self):
-        pass
+    def save(self):
+        self.nombre = self.nombre.capitalize()
+        self.tipo = self.tipo
+        self.uso = self.uso
+        self.precio = self.precio
+        super(Insumo,self).save()
 
     class Meta:
         verbose_name_plural = "Insumos"

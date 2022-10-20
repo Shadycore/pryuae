@@ -10,11 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SYSHACIENDAS - SISTEMA DE ADMINISTRACION PARA HACIENDAS">
     <meta name="author" content="">    
-    <!-- FontAwesome JS-->
-    <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
-    
-    <!-- App CSS -->  
-    <link id="theme-style" rel="stylesheet" href="{% static 'assets/css/portal.css' %}">
+	<!-- FontAwesome JS-->
+	<script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
+	<!-- App CSS -->  
+	<link id="theme-style" rel="stylesheet" href="{% static 'assets/css/portal.css' %}">
+
+    {% block csstables %}
+    {% endblock csstables %}
 
 </head> 
 
@@ -108,7 +110,7 @@
 							<div id="submenu-2" class="collapse submenu submenu-2" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Cultivo</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href="#">Insumo</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_list' %} ">Insumo</a></li>
 							        <!--<li class="submenu-item"><a class="submenu-link" href="#">Hacienda</a></li>-->
 							        <li class="submenu-item"><a class="submenu-link" href="#">Empleado</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href="#">Proveedor</a></li>
@@ -207,7 +209,7 @@
 	    
     </div><!--//app-wrapper-->    					
 
- 
+
     <!-- Javascript -->          
     <script src="{% static 'assets/plugins/popper.min.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>  
@@ -218,6 +220,9 @@
     
     <!-- Page Specific JS -->
     <script src="{% static 'assets/js/app.js' %}"></script> 
+	{% block js_tablas %}
+	{% endblock js_tablas %}
+
 	{% block js_page %}
 
 	{% endblock %}

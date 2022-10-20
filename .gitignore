@@ -10,3 +10,4 @@ media
 syshacienda/.vscode/settings.json
 Pipfile.lock
 syshacienda/mnt/migrations/0001_initial.py
+syshacienda/static/assets/vendor/
