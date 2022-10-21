@@ -3,61 +3,74 @@
 {% block page_content %}
 
 <div class="container-fluid">
-    <!-- Page Heading -->    
-    <div class="app-card-body p-1 p-lg-1">
-        <div class="row gx-5 gy-3">
-          <div class="col-12 col-lg-9">
-              <h2 class="h3 mb-2 text-primary">Listado de Insumo                                       </h2>
-          </div>
-          <div class="col-12 col-lg-3">
-                    <a class="btn app-btn-secondary" href="{% url 'mnt:insumo_new' %}">Crear nuevo</a>
-          </div><!--//col-->
-        </div><!--//row-->
-    </div>
+        <div class="app-card-body p-1 p-lg-1">
+        </div>
     <!-- DataTales Example -->
-    {% if not obj %}
-      <div class="card-header py-2">
-          <h2 class="alert alert-info">No existe información</h2>
-      </div>
-    {% else %}
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" 
-                      width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>id</th>
-                  <th>Nombre</th>
-                  <th>Tipo</th>
-                  <th>Uso</th>
-                  <th>Precio</th>
-                  <th>Estado</th>
-                  <th class="all">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in obj %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.nombre }}</td>
-                    <td>{{ item.tipo }}</td>
-                    <td>{{ item.uso | date:"d/m/Y" }}</td>
-                    <td>{{ item.precio | date:"d/m/Y" }}</td>
-                    <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-                    <td>
-                      <a href="{% url 'mnt:insumo_edit' item.id %}" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a> 
-                    </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div><!-- table-responsive -->
-        </div> <!-- card shadow -->
-      </div><!-- card shadow mb-4 -->
-     {% endif %}
-   
-</div> <!-- /.container-fluid -->
+          <div class="card shadow mb-4"><br/>
+                <div class="app-card-body p-1 p-lg-1">
+                    <div class="row gx-5 gy-3">
+                      <div class="col-12 col-lg-9">
+                          <h2 class="h3 mb-2 text-primary">Listado de Insumo                                      </h2>
+                      </div>
+                      <div class="col-12 col-lg-3">
+                                <a class="btn app-btn-secondary" href="{% url 'mnt:insumo_new' %}">Crear nuevo</a>
+                      </div><!--//col-->
+                    </div><!--//row-->
+                </div>
+                {% if not obj %}
+                    <div class="card-header py-2">
+                      <h2 class="alert alert-info">No existe información</h2>
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>id</th>
+                              <th>Nombre</th>
+                              <th>Tipo</th>
+                              <th>Uso</th>
+                              <th>Precio</th>
+                              <th>Estado</th>
+                              <th class="all">Acciones</th>
+                            </tr>
+                            </tr>
+                          </thead>
+                          <!--<tfoot>
+                            <tr>
+                              <th>id</th>
+                              <th>Nombre</th>
+                              <th>Tipo</th>
+                              <th>Uso</th>
+                              <th>Precio</th>
+                              <th>Estado</th>
+                              <th class="all">Acciones</th>
+                            </tr>
+                          </tfoot> -->
+                          <tbody>
+                            {% for item in obj %}
+                            <tr>
+                              <td>{{ item.id }}</td>
+                              <td>{{ item.nombre }}</td>
+                              <td>{{ item.tipo }}</td>
+                              <td>{{ item.uso | date:"d/m/Y" }}</td>
+                              <td>{{ item.precio | date:"d/m/Y" }}</td>
+                              <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+                              <td>
+                                <a href="{% url 'mnt:insumo_edit' item.id %}" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a> 
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+        </div>
+        <!-- /.container-fluid -->
+
 
 {% endblock %}
 
