@@ -485,17 +485,24 @@ class RegistroInsumoForm(forms.ModelForm):
         model = RegistroInsumo
         fields = ['cultivo',
                     'insumo',
-                    'fecha',
-                    'cantidadCosecha',
+                    'fechaCompra',
+                    'precio',
+                    'fechaIngreso',
+                    'fechaExpira',
                     'estado']
         labels = {
-                'cantidadCosecha': 'Cantidad cosecha',
-                'fecha': 'Fecha',
+                'fechaCompra': 'Fecha de Compra',
+                'precio':'Precio',
+                'fechaIngreso':'Fecha de ingreso',
+                'fechaExpira':'Fecha de expiración',
                 'estado': 'Estado'
                 }
 
-        Widget = {'cantidadCosecha': forms.IntegerField,
-                'fecha': forms.DateInput} 
+        Widget = {'precio': forms.TextInput,
+                'fechaCompra': forms.DateInput,
+                'fechaIngreso': forms.DateInput,
+                'fechaExpira': forms.DateInput,
+                } 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
