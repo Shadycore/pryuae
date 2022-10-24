@@ -358,3 +358,96 @@ class RegistroEmpleadoEdit(LoginRequiredMixin, generic.UpdateView):
     def form_valid(self, form):
         form.instance.usuarioModificacion = self.request.user.id
         return super().form_valid(form)
+
+## Produccion  ------------------------------------------------------------
+class ProduccionView(LoginRequiredMixin, generic.ListView):
+    model = Produccion
+    template_name="mnt/produccion_list.html"
+    context_object_name = "obj"
+    login_url = "baseapp:login"
+
+class ProduccionNew(LoginRequiredMixin, generic.CreateView):
+    model = Produccion
+    template_name = "mnt/produccion_form.html"
+    context_object_name =  "obj"
+    form_class = ProduccionForm 
+    success_url = reverse_lazy("mnt:produccion_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioCreacion = self.request.user
+        return super().form_valid(form)
+
+class ProduccionEdit(LoginRequiredMixin, generic.UpdateView):
+    model = Produccion
+    template_name = "mnt/produccion_form.html"
+    context_object_name =  "obj"
+    form_class = ProduccionForm 
+    success_url = reverse_lazy("mnt:produccion_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
+## DescripcionLote  ------------------------------------------------------------
+class DescripcionLoteView(LoginRequiredMixin, generic.ListView):
+    model = DescripcionLote
+    template_name="mnt/descripcionlote_list.html"
+    context_object_name = "obj"
+    login_url = "baseapp:login"
+
+class DescripcionLoteNew(LoginRequiredMixin, generic.CreateView):
+    model = DescripcionLote
+    template_name = "mnt/descripcionlote_form.html"
+    context_object_name =  "obj"
+    form_class = DescripcionLoteForm 
+    success_url = reverse_lazy("mnt:descripcionlote_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioCreacion = self.request.user
+        return super().form_valid(form)
+
+class DescripcionLoteEdit(LoginRequiredMixin, generic.UpdateView):
+    model = DescripcionLote
+    template_name = "mnt/descripcionlote_form.html"
+    context_object_name =  "obj"
+    form_class = DescripcionLoteForm 
+    success_url = reverse_lazy("mnt:descripcionlote_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
+## RegistroInsumo  ------------------------------------------------------------
+class RegistroInsumoView(LoginRequiredMixin, generic.ListView):
+    model = RegistroInsumo
+    template_name="mnt/registroinsumo_list.html"
+    context_object_name = "obj"
+    login_url = "baseapp:login"
+
+class RegistroInsumoNew(LoginRequiredMixin, generic.CreateView):
+    model = RegistroInsumo
+    template_name = "mnt/registroinsumo_form.html"
+    context_object_name =  "obj"
+    form_class = RegistroInsumoForm 
+    success_url = reverse_lazy("mnt:registroinsumo_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioCreacion = self.request.user
+        return super().form_valid(form)
+
+class RegistroInsumoEdit(LoginRequiredMixin, generic.UpdateView):
+    model = RegistroInsumo
+    template_name = "mnt/registroinsumo_form.html"
+    context_object_name =  "obj"
+    form_class = RegistroInsumoForm 
+    success_url = reverse_lazy("mnt:registroinsumo_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)

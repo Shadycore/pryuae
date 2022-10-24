@@ -46,9 +46,9 @@
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            <input type="date" name="fechaFin" maxlength="100" 
+            <input type="date" name="fechaFin"
             class="form-control" 
-            required id="id_fechaFin" placeholder="Fecha Fin"
+            required id="id_fechaFin"
             value="{% if obj %} {{ obj.fechaFin | date:"d/m/Y" }} {% endif %}">
         </div>
     </div>

@@ -47,9 +47,9 @@
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            <input type="date" name="fecha" maxlength="10" 
+            <input type="date" name="fecha" 
                     class="form-control" 
-                    required id="id_fecha" placeholder="Nombre de Actividad"
+                    required id="id_fecha"
             value="{% if obj %} {{ obj.fecha | date:"d/m/Y" }} {% endif %}">
         </div>
     </div>

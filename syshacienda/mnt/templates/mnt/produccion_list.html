@@ -1,0 +1,75 @@
+{% extends 'mnt/base_list.html' %}
+
+{% block mensaje %}
+<h2 class="h3 mb-2 text-success">Producción</h2>
+{% endblock %}
+
+{% block btnnuevo %}
+  <a href="{% url 'mnt:produccion_new' %}" class="btn btn-primary btn-icon-split">
+    <span class="text">Regitrar Nueva</span>
+  </a>
+{% endblock  %}
+
+{% block header_list %}
+<tr>
+  <th>id</th>
+  <th>Cultivo</th>
+  <th>Insumo</th>
+  <th>Fecha</th>
+  <th>Cantidad Cosecha</th>
+  <!--<th>Estado</th> -->
+  <th class="all">Acciones</th>
+</tr>
+{% endblock %}
+
+{% block footer_list %}
+  <!--<tr>
+  <th>id</th>
+  <th>Cultivo</th>
+  <th>Insumo</th>
+  <th>Fecha</th>
+  <th>Cantidad Cosecha</th>
+  <th class="all">Acciones</th>
+  </tr>-->
+{% endblock footer_list %}
+
+{% block body_list %}
+  {% for item in obj %}
+  <tr>
+      <td>{{ item.id }} </td>
+      <td>{{ item.cultivo }}</td>
+      <td>{{ item.insumo }}</td>
+      <td>{{ item.fecha | date:"d/m/Y" }}</td>
+      <td>{{ item.cantidadCosecha }}</td>
+      <!--<td> {% if item.estado %}
+              Activo
+            {% else %} 
+              Inactivo
+            {% endif %}
+            </td> -->
+      <td> 
+        <a href="{% url 'mnt:produccion_edit' item.id %}" 
+            class="btn btn-warning btn-circle" data-tooltip="Editar"
+            role="button">
+            <i class="far fa-edit"></i>
+        </a>
+        <!-- 
+        <a href="#" 
+            class="btn btn-danger btn-circle" 
+            role="button">
+            <i class="far fa-trash-alt"></i>
+        </a> "{% url 'mnt:actividad_del' item.id %}" -->
+      </td>
+  </tr>
+  {% endfor %}
+{% endblock %}
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+{% endblock %}

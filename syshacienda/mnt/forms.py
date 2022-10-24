@@ -400,3 +400,108 @@ class RegistroEmpleadoForm(forms.ModelForm):
             })
         self.fields['hacienda'].empty_label =  "Seleccione la hacienda"
         self.fields['empleado'].empty_label =  "Seleccione el empleado"
+
+class ProduccionForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    insumo = forms.ModelChoiceField(
+        queryset=Insumo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+
+    class Meta:
+        model = Produccion
+        fields = ['cultivo',
+                    'insumo',
+                    'fecha',
+                    'cantidadCosecha',
+                    'estado']
+        labels = {
+                'cantidadCosecha': 'Cantidad cosecha',
+                'fecha': 'Fecha',
+                'estado': 'Estado'
+                }
+
+        Widget = {'cantidadCosecha': forms.IntegerField,
+                'fecha': forms.DateInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['insumo'].empty_label =  "Seleccione el insumo"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+
+class DescripcionLoteForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    produccion = forms.ModelChoiceField(
+        queryset=Produccion.objects.filter(estado=True)
+        .order_by('cultivo')
+    )
+
+    class Meta:
+        model = DescripcionLote
+        fields = ['cultivo',
+                    'produccion',
+                    'area',
+                    'etapa',
+                    'estado']
+        labels = {
+                'area': 'Ingrese area',
+                'etapa': 'Ingrese etapa',
+                'estado': 'Estado'
+                }
+
+        Widget = {'area': forms.TextInput,
+                'etapa': forms.TextInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+        self.fields['produccion'].empty_label =  "Seleccione la producción"
+
+class RegistroInsumoForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    insumo = forms.ModelChoiceField(
+        queryset=Insumo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+
+    class Meta:
+        model = RegistroInsumo
+        fields = ['cultivo',
+                    'insumo',
+                    'fecha',
+                    'cantidadCosecha',
+                    'estado']
+        labels = {
+                'cantidadCosecha': 'Cantidad cosecha',
+                'fecha': 'Fecha',
+                'estado': 'Estado'
+                }
+
+        Widget = {'cantidadCosecha': forms.IntegerField,
+                'fecha': forms.DateInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['insumo'].empty_label =  "Seleccione el insumo"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"

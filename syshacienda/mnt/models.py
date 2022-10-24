@@ -237,11 +237,11 @@ class Cosecha(BaseFields):
         self.cantidad = self.cantidad
         #self.estado = self.nombre
         super(Cosecha,self).save()
-        unique_together=('hacienda', 'cultivo', 'fecha')
 
     class Meta:
         verbose_name_plural = "Cosechas"
         db_table = 'cosecha'
+        unique_together=('hacienda', 'cultivo', 'fecha')
 
 # - Registro Empleado - #
 class RegistroEmpleado(BaseFields):
@@ -259,12 +259,12 @@ class RegistroEmpleado(BaseFields):
         self.cargo = self.cargo
         #self.estado = self.nombre
         super(RegistroEmpleado,self).save()
-        unique_together=('hacienda', 'empleado', 'cargo')
 
 
     class Meta:
         verbose_name_plural = "RegistroEmpleados"
         db_table = 'registro_empleado'
+        unique_together=('hacienda', 'empleado', 'cargo')
 
 # - Produccion - #
 class Produccion(BaseFields):
@@ -275,14 +275,18 @@ class Produccion(BaseFields):
     cantidadCosecha = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.fecha
+        return "{}: {} {} {}".format(self.id, self.cultivo, self.insumo, self.fecha)
 
     def save (self):
-        pass
+        self.fecha = self.fecha
+        self.cantidadCosecha = self.cantidadCosecha
+        #self.estado = self.nombre
+        super(Produccion,self).save()
 
     class Meta:
         verbose_name_plural = "Producciones"
         db_table = 'produccion'
+        unique_together=('cultivo', 'insumo', 'fecha', 'cantidadCosecha')
 
 # - DescripcionLote - #
 class DescripcionLote(BaseFields):
@@ -293,10 +297,13 @@ class DescripcionLote(BaseFields):
     etapa = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.etapa
+        return "{}: {} {} {}".format(self.id, self.cultivo, self.produccion, self.etapa)
 
     def save (self):
-        pass
+        self.area = self.area
+        self.etapa = self.etapa
+        #self.estado = self.nombre
+        super(DescripcionLote,self).save()
 
     class Meta:
         verbose_name_plural = "DescripcionLotes"
@@ -305,7 +312,7 @@ class DescripcionLote(BaseFields):
 
 
 # - RegistroInsumo - #
-class RegistroInusmo(BaseFields):
+class RegistroInsumo(BaseFields):
     #idRegistroInsumo = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
@@ -316,10 +323,18 @@ class RegistroInusmo(BaseFields):
     requerimiento = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return self.fechaingreso
+        return "{}: {} {} {}".format(self.id, self.insumo, self.cultivo, self.requerimiento)
 
     def save (self):
-        pass
+        self.insumo = self.insumo
+        self.cultivo = self.cultivo
+        self.fechaCompra = self.fechaCompra
+        self.precio = self.precio
+        self.fechaIngreso = self.fechaIngreso
+        self.fechaExpira = self.fechaExpira
+        self.requerimiento = self.requerimiento
+        #self.estado = self.nombre
+        super(RegistroInsumo,self).save()
        
     class Meta:
         verbose_name_plural = "RegistroInsumos"

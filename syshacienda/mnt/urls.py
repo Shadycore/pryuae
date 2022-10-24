@@ -57,4 +57,19 @@ urlpatterns = [
     path('RegistroEmpleado/new', RegistroEmpleadoNew.as_view(template_name='mnt/registroempleado_form.html'), name='registroempleado_new'),
     path('RegistroEmpleado/edit/<int:pk>', RegistroEmpleadoEdit.as_view(template_name='mnt/registroempleado_form.html'), name='registroempleado_edit'),
 
+    #Produccion
+    path('Produccion/', ProduccionView.as_view(template_name='mnt/produccion_list.html'), name='produccion_list'),
+    path('Produccion/new', ProduccionNew.as_view(template_name='mnt/produccion_form.html'), name='produccion_new'),
+    path('Produccion/edit/<int:pk>', ProduccionEdit.as_view(template_name='mnt/produccion_form.html'), name='produccion_edit'),
+
+    #DescripcionLote
+    path('DescripcionLotes/', DescripcionLoteView.as_view(template_name='mnt/descripcionlote_list.html'), name='descripcionlote_list'),
+    path('DescripcionLote/new', DescripcionLoteNew.as_view(template_name='mnt/descripcionlote_form.html'), name='descripcionlote_new'),
+    path('DescripcionLote/edit/<int:pk>', DescripcionLoteEdit.as_view(template_name='mnt/descripcionlote_form.html'), name='descripcionlote_edit'),
+
+    #RegistroInsumo
+    path('RegistroInsumos/', RegistroInsumoView.as_view(template_name='mnt/registroinsumo_list.html'), name='registroinsumo_list'),
+    path('RegistroInsumo/new', RegistroInsumoNew.as_view(template_name='mnt/registroinsumo_form.html'), name='registroinsumo_new'),
+    path('RegistroInsumo/edit/<int:pk>', RegistroInsumoEdit.as_view(template_name='mnt/registroinsumo_form.html'), name='registroinsumo_edit'),
+
 ]

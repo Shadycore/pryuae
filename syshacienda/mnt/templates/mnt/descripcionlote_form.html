@@ -2,13 +2,13 @@
 
 {% block mensaje_editar %}
     <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
-        Actualizar  información de Cosecha
+        Actualizar registro de descripción
     </h4>
 {% endblock mensaje_editar %}                 
 
 {% block mensaje_nuevo %}                     
     <h4 class="app-card-title text-primary text-uppercase mb-1"> 
-        Registro de nueva cosecha
+        Nuevo registro
     </h4>
 {% endblock mensaje_nuevo %}      
 
@@ -16,14 +16,14 @@
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            {{ form.hacienda }}
+            {{ form.cultivo }}
         </div>
     </div>
 </div>   <br/>
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            {{ form.cultivo }}
+            {{ form.produccion }}
         </div>
     </div>
 </div>   <br/>
@@ -31,24 +31,25 @@
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            <input type="date" name="fecha" 
-                    class="form-control" 
-                    required id="id_fecha"
-            value="{% if obj %} {{ obj.fecha | date:"d/m/Y" }} {% endif %}">
+           {{ form.area }}
         </div>
     </div>
 </div>   <br/>
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-			{{ form.cantidad }}
+            <input type="text" name="etapa" maxlength="30" 
+                    class="form-control"
+                    required id="id_etapa" placeholder="Ingrese la etapa"
+            value="{% if obj %} {{ obj.etapa }} {% endif %}">
+
         </div>
     </div>
 </div> 
 {% endblock insert_update %}
 
 {% block url_list %}
-<a href="{% url 'mnt:cosecha_list' %}" 
+<a href="{% url 'mnt:descripcionlote_list' %}" 
     class="btn btn-danger">
     <span class="fa fa-undo"></span>Cancelar</a>
 {% endblock url_list %}

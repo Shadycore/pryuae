@@ -2,13 +2,13 @@
 
 {% block mensaje_editar %}
     <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
-        Actualizar  información de Cosecha
+        Actualizar  información de Producción
     </h4>
 {% endblock mensaje_editar %}                 
 
 {% block mensaje_nuevo %}                     
     <h4 class="app-card-title text-primary text-uppercase mb-1"> 
-        Registro de nueva cosecha
+        Registro de nuevo
     </h4>
 {% endblock mensaje_nuevo %}      
 
@@ -16,14 +16,14 @@
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            {{ form.hacienda }}
+            {{ form.cultivo }}
         </div>
     </div>
 </div>   <br/>
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-            {{ form.cultivo }}
+            {{ form.insumo }}
         </div>
     </div>
 </div>   <br/>
@@ -41,14 +41,14 @@
 <div class="row">
     <div class="col-10">
         <div class="input-group">
-			{{ form.cantidad }}
+			{{ form.cantidadCosecha }}
         </div>
     </div>
 </div> 
 {% endblock insert_update %}
 
 {% block url_list %}
-<a href="{% url 'mnt:cosecha_list' %}" 
+<a href="{% url 'mnt:produccion_list' %}" 
     class="btn btn-danger">
     <span class="fa fa-undo"></span>Cancelar</a>
 {% endblock url_list %}
