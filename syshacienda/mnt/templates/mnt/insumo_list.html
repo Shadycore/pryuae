@@ -1,79 +1,63 @@
-{% extends 'base/home.html' %}
+{% extends 'mnt/base_list.html' %}
 
-{% block page_content %}
-
-<div class="container-fluid">
-        <div class="app-card-body p-1 p-lg-1">
-        </div>
-    <!-- DataTales Example -->
-          <div class="card shadow mb-4"><br/>
-                <div class="app-card-body p-1 p-lg-1">
-                    <div class="row gx-5 gy-3">
-                      <div class="col-12 col-lg-9">
-                          <h2 class="h3 mb-2 text-primary">Listado de Insumo                                      </h2>
-                      </div>
-                      <div class="col-12 col-lg-3">
-                                <a class="btn app-btn-secondary" href="{% url 'mnt:insumo_new' %}">Crear nuevo</a>
-                      </div><!--//col-->
-                    </div><!--//row-->
-                </div>
-                {% if not obj %}
-                    <div class="card-header py-2">
-                      <h2 class="alert alert-info">No existe información</h2>
-                    </div>
-                {% else %}
-                    <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th>id</th>
-                              <th>Nombre</th>
-                              <th>Tipo</th>
-                              <th>Uso</th>
-                              <th>Precio</th>
-                              <th>Estado</th>
-                              <th class="all">Acciones</th>
-                            </tr>
-                            </tr>
-                          </thead>
-                          <!--<tfoot>
-                            <tr>
-                              <th>id</th>
-                              <th>Nombre</th>
-                              <th>Tipo</th>
-                              <th>Uso</th>
-                              <th>Precio</th>
-                              <th>Estado</th>
-                              <th class="all">Acciones</th>
-                            </tr>
-                          </tfoot> -->
-                          <tbody>
-                            {% for item in obj %}
-                            <tr>
-                              <td>{{ item.id }}</td>
-                              <td>{{ item.nombre }}</td>
-                              <td>{{ item.tipo }}</td>
-                              <td>{{ item.uso | date:"d/m/Y" }}</td>
-                              <td>{{ item.precio | date:"d/m/Y" }}</td>
-                              <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-                              <td>
-                                <a href="{% url 'mnt:insumo_edit' item.id %}" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a> 
-                              </td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                {% endif %}
-        </div>
-        <!-- /.container-fluid -->
-
-
+{% block mensaje %}
+<h2 class="h3 mb-2 text-success">Listado de Insumos</h2>
 {% endblock %}
 
-{% block js_page %}
+{% block btnnuevo %}
+  <a href="{% url 'mnt:insumo_new' %}" 
+    class="btn btn-primary btn-icon-split">
+    <span class="text">Crear Nuevo</span>
+  </a>
+{% endblock  %}
 
+{% block header_list %}
+  <tr>
+    <th>id</th>
+    <th>Nombre</th>
+    <th>Tipo</th>
+    <th>Uso</th>
+    <th>Precio</th>
+    <th>Estado</th>
+    <th class="all">Acciones</th>
+  </tr>
+{% endblock %}
+{% block footer_list %}
+  <!--<tfoot>
+    <tr>
+      <th>id</th>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Uso</th>
+      <th>Precio</th>
+      <th>Estado</th>
+      <th class="all">Acciones</th>
+    </tr>
+ -->
+ {% endblock footer_list %}
+
+ {% block body_list %}     
+    {% for item in obj %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.nombre }}</td>
+      <td>{{ item.tipo }}</td>
+      <td>{{ item.uso | date:"d/m/Y" }}</td>
+      <td>{{ item.precio | date:"d/m/Y" }}</td>
+      <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+      <td>
+        <a href="{% url 'mnt:insumo_edit' item.id %}" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a> 
+      </td>
+    </tr>
+    {% endfor %}
+{% endblock %} 
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
 {% endblock %}

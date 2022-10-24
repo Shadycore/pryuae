@@ -1,0 +1,61 @@
+{% extends 'mnt/base_form.html' %}
+
+{% block mensaje_editar %}
+    <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
+        Actualizar registro de empleados
+    </h4>
+{% endblock mensaje_editar %}                 
+
+{% block mensaje_nuevo %}                     
+    <h4 class="app-card-title text-primary text-uppercase mb-1"> 
+        Nuevo registro de empleado
+    </h4>
+{% endblock mensaje_nuevo %}      
+
+{% block insert_update %}
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            {{ form.hacienda }}
+        </div>
+    </div>
+</div>   <br/>
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            {{ form.empleado }}
+        </div>
+    </div>
+</div>   <br/>
+
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            <input type="text" name="contrato"  maxlength="100"
+                    class="form-control" placeholder="Ingrese el contrato"
+                    required id="id_contrato"
+            value="{% if obj %} {{ obj.contrato  }} {% endif %}">
+        </div>
+    </div>
+</div>   <br/>
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            <input type="text" name="cargo" maxlength="30" 
+                    class="form-control"
+                    required id="id_cargo" placeholder="Ingrese el cargo"
+            value="{% if obj %} {{ obj.cargo }} {% endif %}">
+
+        </div>
+    </div>
+</div> 
+{% endblock insert_update %}
+
+{% block url_list %}
+<a href="{% url 'mnt:cosecha_list' %}" 
+    class="btn btn-danger">
+    <span class="fa fa-undo"></span>Cancelar</a>
+{% endblock url_list %}
+
+{% block js_page %}
+{% endblock %}

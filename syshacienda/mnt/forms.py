@@ -4,8 +4,7 @@ from socket import fromshare
 from tkinter import Widget
 from django import forms
 from django.forms import DateInput
-from mnt.models import Cultivo, Insumo
-
+from mnt.models import *
 
 class CultivoForm(forms.ModelForm):
 
@@ -62,3 +61,342 @@ class InsumoForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
+
+class HaciendaForm(forms.ModelForm):
+
+    class Meta:
+        model = Hacienda
+        fields = ['nombre',
+                    'apellido',
+                    'identificacion',
+                    'telefono',
+                    'celular',
+                    'email',
+                    'direccion',
+                    'ciudad',
+                    'estado']
+        labels = {'nombre':'Nombre de la Hacienda',
+                'apellido': 'Razón Social',
+                'identificacion': 'Identificacion',
+                'telefono': 'Teléfono',
+                'celular' : 'Celular',
+                'email' : 'Email',
+                'direccion' : 'Direccion',
+                'ciudad' : 'Ciudad',
+                'estado': 'Estado'}
+
+        Widget = {'nombre': forms.TextInput,
+                'apellido': forms.TextInput,
+                'identificacion': forms.TextInput,
+                'telefono': forms.TextInput,
+                'celular': forms.TextInput,
+                'email': forms.TextInput,
+                'direccion': forms.TextInput,
+                'ciudad': forms.TextInput,
+                'estado': forms.CheckboxInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+
+class EmpleadoForm(forms.ModelForm):
+
+    class Meta:
+        model = Empleado
+        fields = ['nombre',
+                    'apellido',
+                    'identificacion',
+                    'telefono',
+                    'celular',
+                    'email',
+                    'direccion',
+                    'ciudad',
+                    'fchNacimiento',
+                    'estado']
+        labels = {'nombre':'Nombre',
+                'apellido': 'Apellido',
+                'identificacion': 'Identificación',
+                'telefono': 'Teléfono',
+                'celular' : 'Celular',
+                'email' : 'Email',
+                'direccion' : 'Direccion',
+                'ciudad' : 'Ciudad',
+                'fchNacimiento': 'Fecha de Nacimiento',
+                'estado': 'Estado'}
+
+        Widget = {'nombre': forms.TextInput,
+                'apellido': forms.TextInput,
+                'identificacion': forms.TextInput,
+                'telefono': forms.TextInput,
+                'celular': forms.TextInput,
+                'email': forms.TextInput,
+                'direccion': forms.TextInput,
+                'ciudad': forms.TextInput,
+                'fchNacimiento': forms.DateInput,
+                'estado': forms.CheckboxInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+
+class ProveedorForm(forms.ModelForm):
+
+    class Meta:
+        model = Proveedor
+        fields = ['nombre',
+                    'apellido',
+                    'identificacion',
+                    'telefono',
+                    'celular',
+                    'email',
+                    'direccion',
+                    'ciudad',
+                    'descripcion',
+                    'estado']
+        labels = {'nombre':'Nombre de la Hacienda',
+                'apellido': 'Razón Social',
+                'identificacion': 'Identificacion',
+                'telefono': 'Teléfono',
+                'celular' : 'Celular',
+                'email' : 'Email',
+                'direccion' : 'Direccion',
+                'ciudad' : 'Ciudad',
+                'descripcion': 'Descripción',
+                'estado': 'Estado'}
+
+        Widget = {'nombre': forms.TextInput,
+                'apellido': forms.TextInput,
+                'identificacion': forms.TextInput,
+                'telefono': forms.TextInput,
+                'celular': forms.TextInput,
+                'email': forms.TextInput,
+                'direccion': forms.TextInput,
+                'ciudad': forms.TextInput,
+                'descripcion': forms.TextInput,
+                'estado': forms.CheckboxInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+
+class ClienteForm(forms.ModelForm):
+
+    class Meta:
+        model = Cliente
+        fields = ['nombre',
+                    'apellido',
+                    'identificacion',
+                    'telefono',
+                    'celular',
+                    'email',
+                    'direccion',
+                    'ciudad',
+                    'estado']
+        labels = {'nombre':'Nombre de la Hacienda',
+                'apellido': 'Razón Social',
+                'identificacion': 'Identificacion',
+                'telefono': 'Teléfono',
+                'celular' : 'Celular',
+                'email' : 'Email',
+                'direccion' : 'Direccion',
+                'ciudad' : 'Ciudad',
+                'estado': 'Estado'}
+
+        Widget = {'nombre': forms.TextInput,
+                'apellido': forms.TextInput,
+                'identificacion': forms.TextInput,
+                'telefono': forms.TextInput,
+                'celular': forms.TextInput,
+                'email': forms.TextInput,
+                'direccion': forms.TextInput,
+                'ciudad': forms.TextInput,
+                'estado': forms.CheckboxInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+
+class ActividadForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    class Meta:
+        model = Actividad
+        fields = ['cultivo',
+                    'nombre',
+                    'fecha',
+                    'estado']
+        labels = {
+                'nombre': 'Nombre de actividad',
+                'fecha': 'Fecha registro',
+                'estado': 'Estado'
+                }
+
+        Widget = {'nombre': forms.TextInput,
+                'fecha': forms.DateInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+
+class AsignacionForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    actividad = forms.ModelChoiceField(
+        queryset=Actividad.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    empleado = forms.ModelChoiceField(
+        queryset=Empleado.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    class Meta:
+        model = Asignacion
+        fields = ['cultivo',
+                    'actividad',
+                    'empleado',
+                    'descripcion',
+                    'fecha',
+                    'estado']
+        labels = {
+                'descripcion': 'Actividad a realizar',
+                'fecha': 'Fecha',
+                'estado': 'Estado'
+                }
+
+        Widget = {'descripcion': forms.TextInput,
+                'fecha': forms.DateInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['actividad'].empty_label =  "Seleccione la actividad"
+        self.fields['empleado'].empty_label =  "Seleccione el empleado"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+
+class AsignacionMaterialForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    insumo = forms.ModelChoiceField(
+        queryset=Insumo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+
+    class Meta:
+        model = AsignacionMaterial
+        fields = ['cultivo',
+                    'insumo',
+                    'encargado',
+                    'fecha',
+                    'estado']
+        labels = {
+                'encargado': 'Persona encargada',
+                'fecha': 'Fecha',
+                'estado': 'Estado'
+                }
+
+        Widget = {'encargado': forms.TextInput,
+                'fecha': forms.DateInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['insumo'].empty_label =  "Seleccione el insumo"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+
+class CosechaForm(forms.ModelForm):
+    cultivo = forms.ModelChoiceField(
+        queryset=Cultivo.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    hacienda = forms.ModelChoiceField(
+        queryset=Hacienda.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+
+    class Meta:
+        model = Cosecha
+        fields = ['cultivo',
+                    'hacienda',
+                    'fecha',
+                    'cantidad',
+                    'estado']
+        labels = {
+                'cantidad': 'Cantidad cosecha',
+                'fecha': 'Fecha',
+                'estado': 'Estado'
+                }
+
+        Widget = {'cantidad': forms.IntegerField,
+                'fecha': forms.DateInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['hacienda'].empty_label =  "Seleccione la hacienda"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+
+class RegistroEmpleadoForm(forms.ModelForm):
+    empleado = forms.ModelChoiceField(
+        queryset=Empleado.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+    hacienda = forms.ModelChoiceField(
+        queryset=Hacienda.objects.filter(estado=True)
+        .order_by('nombre')
+    )
+
+    class Meta:
+        model = RegistroEmpleado
+        fields = ['empleado',
+                    'hacienda',
+                    'contrato',
+                    'cargo',
+                    'estado']
+        labels = {
+                'contrato': 'Contrato empleado',
+                'cargo': 'Cargo empleado',
+                'estado': 'Estado'
+                }
+
+        Widget = {'contrato': forms.TextInput,
+                'cargo': forms.TextInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
+        self.fields['hacienda'].empty_label =  "Seleccione la hacienda"
+        self.fields['empleado'].empty_label =  "Seleccione el empleado"

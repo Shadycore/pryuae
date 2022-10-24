@@ -24,6 +24,7 @@ class Cultivo(BaseFields):
         self.lote = self.lote
         self.fechaInicio = self.fechaInicio
         self.fechaFin = self.fechaFin
+        ##self.estado = self.estado
         super(Cultivo,self).save()
 
     class Meta:
@@ -39,13 +40,14 @@ class Insumo(BaseFields):
     precio = models.TextField(blank=True, null=True) 
 
     def __str__(self):
-        return self.nombre
+        return '{}:{}'.format(self.nombre, self.tipo)
 
     def save(self):
         self.nombre = self.nombre.capitalize()
         self.tipo = self.tipo
         self.uso = self.uso
         self.precio = self.precio
+        #self.estado = self.estado
         super(Insumo,self).save()
 
     class Meta:
@@ -57,10 +59,19 @@ class Hacienda(BaseFields, PersonFields, ContactFields ):
     #idhacienda = models.AutoField(primary_key=True)
 
     def __str__(self):
-        return self.nombre
+         return '{}:{}'.format(self.identificacion, self.nombre)
 
     def save (self):
-        pass
+        self.nombre = self.nombre.capitalize()
+        self.apellido = self.apellido.capitalize()
+        self.telefono = self.telefono
+        self.celular = self.celular
+        self.email = self.email
+        self.direccion = self.direccion
+        self.ciudad = self.ciudad
+        self.identificacion = self.identificacion
+        #self.estado = self.estado
+        super(Hacienda,self).save()
 
     class Meta:
         verbose_name_plural = "Haciendas"
@@ -73,25 +84,48 @@ class Empleado(BaseFields, PersonFields, ContactFields):
     fchNacimiento = models.DateField()
 
     def __str__(self):
-        return self.nombres
+        return "{} : {} {}".format(self.identificacion, self.nombre, self.apellido)
 
     def save (self):
-        pass
+        self.nombre = self.nombre.capitalize()
+        self.apellido = self.apellido.capitalize()
+        self.telefono = self.telefono
+        self.celular = self.celular
+        self.email = self.email
+        self.direccion = self.direccion
+        self.ciudad = self.ciudad
+        self.fchNacimiento = self.fchNacimiento
+        self.identificacion = self.identificacion
+        #self.estado = self.estado
+        super(Empleado,self).save()
        
     class Meta:
         verbose_name_plural = "Empleados"
         db_table = 'empleado'
+        
+
+
 # - Proveedor - #
 class Proveedor(BaseFields, PersonFields, ContactFields):
     #idProveedor = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return self.nombre
+        return "{} : {} ".format(self.identificacion ,self.nombre)
 
     def save (self):
-        pass
-       
+        self.nombre = self.nombre.capitalize()
+        self.apellido = self.apellido.capitalize()
+        self.telefono = self.telefono
+        self.celular = self.celular
+        self.email = self.email
+        self.direccion = self.direccion
+        self.ciudad = self.ciudad
+        self.descripcion = self.descripcion
+        self.identificacion = self.identificacion
+        #self.estado = self.estado
+        super(Proveedor,self).save()
+    
     class Meta:
         verbose_name_plural = "Proveedores"
         db_table = 'proveedor'
@@ -101,10 +135,19 @@ class Cliente(PersonFields, ContactFields, BaseFields):
     #idCliente = models.AutoField(primary_key=True)
     
     def __str__(self):
-        return self.nombres
+        return "{} : {} {} ".format(self.identificacion ,self.nombre, self.apellido)
 
     def save (self):
-        pass
+        self.nombre = self.nombre.capitalize()
+        self.apellido = self.apellido.capitalize()
+        self.telefono = self.telefono
+        self.celular = self.celular
+        self.email = self.email
+        self.direccion = self.direccion
+        self.ciudad = self.ciudad
+        self.identificacion = self.identificacion
+        ##self.estado = self.estado
+        super(Cliente,self).save()
 
     class Meta:
         verbose_name_plural = "Clientes"
@@ -115,37 +158,46 @@ class Cliente(PersonFields, ContactFields, BaseFields):
 # - Actividad - #
 class Actividad(BaseFields):
     #idActividad = models.AutoField(primary_key=True)
-    Cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True )
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True )
     nombre = models.CharField(max_length=50)
     fecha = models.DateField()
 
     def __str__(self):
-        return'{}:{}'.format(self.idCultivo.nombre, self.nombre, self.fecha)
+        return'{}:{} {}'.format(self.id,self.cultivo.nombre, self.nombre)
 
     def save (self):
-        pass
-
+        self.nombre = self.nombre.capitalize()
+        self.fecha = self.fecha
+        #self.estado = self.nombre
+        super(Actividad,self).save()
+    
     class Meta:
         verbose_name_plural = "Actividades"
         db_table = 'actividad'
+        unique_together=('cultivo', 'nombre', 'fecha')
 
 # - Asignacion - #
 class Asignacion(BaseFields):
     #idAsignacion = models.AutoField(primary_key=True)
-    Actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, null=True)
-    Empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
-    Cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
+    actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, null=True)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
+    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     descripcion = models.CharField(max_length=50)
     fecha = models.DateField()
 
     def __str__(self):
-        return self.nombre
+        return "{}: {}".format(self.id, self.descripcion)
 
     def save (self):
-        pass
+        self.descripcion = self.descripcion.capitalize()
+        self.fecha = self.fecha
+        #self.estado = self.nombre
+        super(Asignacion,self).save()
+
     class Meta:
         verbose_name_plural = "Asignaciones"
         db_table = 'asignacion'
+        unique_together=('actividad', 'empleado', 'cultivo','descripcion')
 
 # - AsignacionMaterial - #
 class AsignacionMaterial(BaseFields):
@@ -156,13 +208,18 @@ class AsignacionMaterial(BaseFields):
     fecha = models.DateField()
     
     def __str__(self):
-        return self.fecha
+        return "{}: {} {} {}".format(self.id, self.encargado, self.cultivo, self.insumo)
 
     def save (self):
-        pass
+        self.encargado = self.encargado.capitalize()
+        self.fecha = self.fecha
+        #self.estado = self.nombre
+        super(AsignacionMaterial,self).save()
+
     class Meta:
         verbose_name_plural = "AsignacionMateriales"
         db_table = 'asignacion_material'
+        unique_together=('insumo', 'cultivo', 'encargado')
 
 # - Cosecha - #
 class Cosecha(BaseFields):
@@ -173,10 +230,15 @@ class Cosecha(BaseFields):
     cantidad = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.fecha
+        return "{}: {} {}".format(self.id, self.hacienda, self.cultivo)
 
     def save (self):
-        pass
+        self.fecha = self.fecha
+        self.cantidad = self.cantidad
+        #self.estado = self.nombre
+        super(Cosecha,self).save()
+        unique_together=('hacienda', 'cultivo', 'fecha')
+
     class Meta:
         verbose_name_plural = "Cosechas"
         db_table = 'cosecha'
@@ -190,10 +252,15 @@ class RegistroEmpleado(BaseFields):
     cargo = models.CharField(max_length=30, blank=True, null=True)
 
     def __str__(self):
-        return self.cargo
+        return "{}: {} {} {}".format(self.id, self.hacienda, self.empleado, self.cargo)
 
     def save (self):
-        pass
+        self.contrato = self.contrato
+        self.cargo = self.cargo
+        #self.estado = self.nombre
+        super(RegistroEmpleado,self).save()
+        unique_together=('hacienda', 'empleado', 'cargo')
+
 
     class Meta:
         verbose_name_plural = "RegistroEmpleados"

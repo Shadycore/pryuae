@@ -1,115 +1,57 @@
-{% extends 'base/home.html' %}
-{% load static %}
+{% extends 'mnt/base_list.html' %}
 
-{% block csstables %}
-   <!-- Custom styles for this page -->
-   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
-     <!-- jQuery Confirm -->
-  <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
-
-  <!-- XDSoft DateTimePicker -->  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" 
-            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />  
-
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
-
-{% endblock csstables %}
-
-{% block page_content %}  
-
-<div class="container-fluid">
-      
-    <div class="app-card-body p-1 p-lg-1">
-    </div>
-    <!-- DataTales Example -->
-
-<!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- DataTales Example -->         
-          <div class="card shadow mb-4" ><br/>
-                <div class="app-card-body p-1 p-lg-1">
-                    <div class="row gx-5 gy-3">
-                      <div class="col-12 col-lg-9">
-                          <h2 class="h3 mb-2 text-primary">Listado de Cultivos                                      </h2>
-                      </div>
-                      <div class="col-12 col-lg-3">
-                                <a class="btn app-btn-secondary" href="{% url 'mnt:cultivo_new' %}">Crear nuevo</a>
-                      </div><!--//col-->
-                    </div><!--//row-->
-                </div>
-                {% if not obj %}
-                    <div class="card-header py-2">
-                      <h2 class="alert alert-info">No existe información</h2>
-                    </div>
-                {% else %}
-                    <div class="card-body">
-                      <!--<div class="table-responsive"> -->
-                        <table class="table dataTable 
-                                  border-top border-bottom border-end border-start table-bordered" 
-                               id="dataTable" width="100%" cellspacing="0" role="grid"   >
-                          <thead>
-                            <tr>
-                              <th>id</th>
-                              <th>Nombre</th>
-                              <th>Lote</th>
-                              <th>Fecha Inicio</th>
-                              <th>Fecha fin</th>
-                              <th>Estado</th>
-                              <th class="all">Acciones</th>
-                            </tr>
-                            </tr>
-                          </thead>
-                          <tfoot>
-                            <tr>
-                              <th>id</th>
-                              <th>Nombre</th>
-                              <th>Lote</th>
-                              <th>Fecha Inicio</th>
-                              <th>Fecha fin</th>
-                              <th>Estado</th>
-                              <th class="all">Acciones</th>
-                            </tr>
-                          </tfoot>
-                          <tbody>
-                            {% for item in obj %}
-                            <tr>
-                                <td>{{ item.id }}</td>
-                                <td>{{ item.nombre }}</td>
-                                <td>{{ item.lote }}</td>
-                                <td>{{ item.fechaInicio | date:"d/m/Y" }}</td>
-                                <td>{{ item.fechaFin | date:"d/m/Y" }}</td>
-                                <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-                                <td>
-                                  <a href="{% url 'mnt:cultivo_edit' item.id %}" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a> 
-                                </td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      <!--</div> -->
-                    </div>
-                  </div>
-                {% endif %}
-        </div>
-        <!-- /.container-fluid -->
-
+{% block mensaje %}
+<h2 class="h3 mb-2 text-success">Listado de Cultivos</h2>
 {% endblock %}
-{% block js_tablas %}
-	<!-- Page level plugins -->
-	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js'%}"></script>
-	<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
-	<!-- Bootstrap core JavaScript-->
-	<script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
-	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+{% block btnnuevo %}
+  <a href="{% url 'mnt:cultivo_new' %}" class="btn btn-primary btn-icon-split">
+    <span class="text">Crear Nuevo</span>
+  </a>
+{% endblock  %}
 
-	<!-- Core plugin JavaScript-->
-	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+{% block header_list %}
+<tr>
+  <th>id</th>
+  <th>Nombre</th>
+  <th>Lote</th>
+  <th>Fecha Inicio</th>
+  <th>Fecha fin</th>
+  <th>Estado</th>
+  <th class="all">Acciones</th>
+</tr>
+{% endblock %}
 
-	<!-- Page level custom scripts -->
-	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
-{% endblock js_tablas %}
+{% block footer_list %}
+  <!--<tr>
+    <th>id</th>
+    <th>Nombre</th>
+    <th>Lote</th>
+    <th>Fecha Inicio</th>
+    <th>Fecha fin</th>
+    <th>Estado</th>
+    <th class="all">Acciones</th>
+  </tr>-->
+{% endblock footer_list %}
+
+{% block body_list %}
+  {% for item in obj %}
+  <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.nombre }}</td>
+      <td>{{ item.lote }}</td>
+      <td>{{ item.fechaInicio | date:"d/m/Y" }}</td>
+      <td>{{ item.fechaFin | date:"d/m/Y" }}</td>
+      <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+      <td>
+        <a href="{% url 'mnt:cultivo_edit' item.id %}" 
+            class="btn btn-warning btn-circle" data-tooltip="Editar"
+            role="button">
+            <i class="far fa-edit"></i></a> 
+      </td>
+  </tr>
+  {% endfor %}
+{% endblock %}
 
 {% block js_page %}
 <script>

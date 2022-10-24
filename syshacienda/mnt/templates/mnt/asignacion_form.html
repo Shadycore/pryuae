@@ -1,0 +1,66 @@
+{% extends 'mnt/base_form.html' %}
+
+{% block mensaje_editar %}
+    <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
+        Editar Asignacion 
+    </h4>
+{% endblock mensaje_editar %}                 
+
+{% block mensaje_nuevo %}                     
+    <h4 class="app-card-title text-primary text-uppercase mb-1"> 
+        Nueva Asignacion
+    </h4>
+{% endblock mensaje_nuevo %}      
+
+{% block insert_update %}
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            {{ form.cultivo }}
+        </div>
+    </div>
+</div>   <br/>
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            {{ form.actividad }}
+        </div>
+    </div>
+</div>   <br/>
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            {{ form.empleado }}
+        </div>
+    </div>
+</div>   <br/>
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            <input type="text" name="descripcion" maxlength="100" 
+                    class="form-control" 
+                    required id="id_descripcion" placeholder="Nombre de Actividad"
+            value="{% if obj %} {{ obj.descripcion }} {% endif %}">
+        </div>
+    </div>
+</div>   <br/>
+<div class="row">
+    <div class="col-10">
+        <div class="input-group">
+            <input type="date" name="fecha" maxlength="10" 
+                    class="form-control" 
+                    required id="id_fecha" placeholder="Nombre de Actividad"
+            value="{% if obj %} {{ obj.fecha | date:"d/m/Y" }} {% endif %}">
+        </div>
+    </div>
+</div> 
+{% endblock insert_update %}
+
+{% block url_list %}
+<a href="{% url 'mnt:asignacion_list' %}" 
+    class="btn btn-danger">
+    <span class="fa fa-undo"></span>Cancelar</a>
+{% endblock url_list %}
+
+{% block js_page %}
+{% endblock %}

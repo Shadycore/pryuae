@@ -14,7 +14,7 @@ class BaseFields(models.Model):
 class ContactFields(models.Model):
     telefono = models.CharField(max_length=20, blank=True, null=True, verbose_name = "Telefono de contacto")
     celular = models.CharField(max_length=10, blank=True, null=True, verbose_name = "Número celular")
-    correo = models.CharField(max_length=50, blank=True, null=True, verbose_name = "Correo electrónico")
+    email = models.CharField(max_length=50, blank=True, null=True, verbose_name = "Correo electrónico")
     direccion = models.CharField(max_length=100, verbose_name="Direccion")
     ciudad = models.CharField(max_length=20, blank=True, null=True, verbose_name= "Ciudad")
 
@@ -22,8 +22,8 @@ class ContactFields(models.Model):
         abstract = True
 
 class PersonFields(models.Model):
-    nombres = models.CharField(max_length=25, verbose_name="Nombre")
-    apellidos = models.CharField(max_length=25, verbose_name="Apellido")
+    nombre = models.CharField(max_length=25, verbose_name="Nombre")
+    apellido = models.CharField(max_length=25, verbose_name="Apellido",blank=True, null=True,)
     identificacion = models.CharField(max_length=15, unique=True, verbose_name = "Número de identificación")
     
     class Meta:

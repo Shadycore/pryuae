@@ -1,0 +1,114 @@
+{% extends 'mnt/base_form.html' %}
+
+
+{% block mensaje_editar %}
+    <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
+        Editar Proveedor                 
+{% endblock mensaje_editar %}
+
+{% block mensaje_nuevo %}                     
+    <h4 class="app-card-title text-primary text-uppercase mb-1"> 
+        Nuevo Proveedor
+    </h4>
+{% endblock mensaje_nuevo %}      
+{% block insert_update %}
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="nombre" maxlength="100" 
+                        class="form-control" 
+                        required id="id_nombre" placeholder="Nombre de Hacienda"
+                value="{% if obj %} {{ obj.nombre }} {% endif %}">
+            </div>
+        </div>
+    </div>   <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="apellido" maxlength="100" 
+                class="form-control" 
+                required id="id_apellido" placeholder="Razon Social"
+                value="{% if obj %} {{ obj.apellido }} {% endif %}">
+            </div>
+        </div>
+    </div>   <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="identificacion" maxlength="100" 
+                class="form-control" 
+                required id="id_identificacion" placeholder="RUC de proveedor"
+                value="{% if obj %} {{ obj.identificacion }} {% endif %}">
+            </div>
+        </div>
+    </div>   <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="telefono" maxlength="100" 
+                class="form-control" 
+                required id="id_telefono" placeholder="Teléfono"
+                value="{% if obj %} {{ obj.telefono }} {% endif %}">
+            </div>
+        </div>
+    </div> <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="celular" maxlength="100" 
+                class="form-control" 
+                required id="id_celular" placeholder="Celular"
+                value="{% if obj %} {{ obj.celular }} {% endif %}">
+            </div>
+        </div>
+    </div> <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="email" maxlength="100" 
+                class="form-control"  
+                required id="id_email" placeholder="Email / Correo electrónico"
+                value="{% if obj %} {{ obj.email }} {% endif %}">
+            </div>
+        </div>
+    </div> <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="descripcion" maxlength="100" 
+                class="form-control" 
+                required id="id_descripcion" placeholder="Descripción"
+                value="{% if obj %} {{ obj.descripcion }} {% endif %}">
+            </div>
+        </div>
+    </div> <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="direccion" maxlength="100" 
+                class="form-control" 
+                required id="id_direccion" placeholder="Dirección"
+                value="{% if obj %} {{ obj.direccion }} {% endif %}">
+            </div>
+        </div>
+    </div> <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="ciudad" maxlength="100" 
+                class="form-control" 
+                required id="id_ciudad" placeholder="Ciudad"
+                value="{% if obj %} {{ obj.ciudad }} {% endif %}">
+            </div>
+        </div>
+    </div> 
+ {% endblock insert_update %}  
+
+{% block url_list %}
+<a href="{% url 'mnt:hacienda_list' %}" 
+    class="btn btn-danger">
+    <span class="fa fa-undo"></span>Cancelar</a>
+{% endblock url_list %}
+
+{% block js_page %}
+{% endblock %}

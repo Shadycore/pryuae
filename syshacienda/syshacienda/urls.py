@@ -23,12 +23,5 @@ urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
     path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
     path('admin',admin.site.urls),
-    #path('', views.login, name='login'),
-    #path('index/', views.index, name='index'),
-    #path('crearHaciendas/', views.crearHaciendas, name='crearHaciendas'),
-    #path('matHaciendas/', views.mantHaciendas , name='matHaciendas'),
-    #path('compraInsumos/', views.compraInsumos, name='compraInsumos'),
-    #path('repoartInsumos/', views.repartoInsumos, name='repoartInsumos'),
-    #path('cocechar/',views.cocechar, name='cocechar'),
-    #path('dashboards/', views.dashboard, name='dashboards')
+
 ]

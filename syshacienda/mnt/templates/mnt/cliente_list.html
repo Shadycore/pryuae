@@ -1,0 +1,67 @@
+{% extends 'mnt/base_list.html' %}
+
+{% block mensaje %}
+<h2 class="h3 mb-2 text-success">Listado de Clientes</h2>
+{% endblock %}
+
+{% block btnnuevo %}
+  <a href="{% url 'mnt:cliente_new' %}" 
+    class="btn btn-primary btn-icon-split">
+    <span class="text">Crear Nuevo</span>
+  </a>
+{% endblock  %}
+{% block header_list %}
+    <tr>
+      <th>id</th>
+      <th>Nombre y Apellido</th>
+      <th>Identificacion</th>
+      <th>Celular</th>
+      <th>Ciudad</th>
+      <th>Estado</th>
+      <th class="all">Acciones</th>
+    </tr>
+    {% endblock %}
+    {% block footer_list %}
+        <!--<tfoot>
+          <tr>
+            <th>id</th>
+            <th>Nombre y apellido</th>
+            <th>Identificacion</th>
+            <th>Celular</th>
+            <th>Ciudad, Dirección</th>
+            <th>Estado</th>
+            <th class="all">Acciones</th>
+          </tr> -->
+      {% endblock %}
+ {% block body_list %}  
+      {% for item in obj %}
+            <tr>
+              <td>{{ item.id }}</td>
+              <td>{{ item.nombre }} {{ item.apellido }}</td>
+              <!-- <td>{{ item.apellido }}</td> -->
+              <td>{{ item.identificacion }}</td>
+              <!--<td>{{ item.telefono }}</td>-->
+              <td>{{ item.celular }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.ciudad }} </td>
+              <!--<td>{{ item.ciudad }}</td>-->
+              <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+              <td>
+                <a href="{% url 'mnt:cliente_edit' item.id %}" 
+                class="btn btn-warning btn-circle" 
+                role="button">
+                <i class="far fa-edit"></i></a> 
+              </td>
+            </tr>
+    {% endfor %}
+{% endblock %} 
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+{% endblock %}

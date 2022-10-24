@@ -1,109 +1,64 @@
-{% extends 'base/home.html' %}
+{% extends 'mnt/base_form.html' %}
 
 
-{% block page_content %}
-<form method="POST" class="form-inline">
-    {% csrf_token %}
-    <div class="col-xl-6 col-md-6 mb-6">
-        {% if obj %}
-        <div class="card border-right-decoration shadow h-100 py-2">
-        {% else %}
-        <div class="card border-right-success shadow h-100 py-2">
-        {% endif %}
-            <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                 {% if obj %} 
-                    <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
-                        Editar Insumo 
-                    </h4>
-                 
-                 {% else %}  
-                    <h4 class="app-card-title text-primary text-uppercase mb-1"> 
-                        Nuevo Insumo 
-                    </h4>                 
-                 {% endif %}
-                    <div class="dropdown-divider"></div>
-                      <br/>
-                    <div class="row">
-                        <div class="col-10">
-                            <div class="input-group">
-                                <input type="text" name="nombre" maxlength="100" 
-                                        class="form-control" 
-                                        required id="id_nombre" placeholder="Nombre Insumo"
-                                value="{% if obj %} {{ obj.nombre }} {% endif %}">
-                            </div>
-                        </div>
-                    </div>   <br/>
-                    <div class="row">
-                        <div class="col-10">
-                            <div class="input-group">
-                                <input type="text" name="tipo" maxlength="100" 
-                                class="form-control" 
-                                required id="id_tipo" placeholder="Tipo"
-                                value="{% if obj %} {{ obj.tipo }} {% endif %}">
-                            </div>
-                        </div>
-                    </div>   <br/>
-                    <div class="row">
-                        <div class="col-10">
-                            <div class="input-group">
-                                <input type="text" name="uso" maxlength="100" 
-                                class="form-control" 
-                                required id="id_uso" placeholder="Uso"
-                                value="{% if obj %} {{ obj.uso }} {% endif %}">
-                            </div>
-                        </div>
-                    </div>   <br/>
-                    <div class="row">
-                        <div class="col-10">
-                            <div class="input-group">
-                                <input type="Numeric" name="precio" maxlength="100" 
-                                class="form-control" 
-                                required id="id_precio" placeholder="Precio"
-                                value="{% if obj %} {{ obj.precio }} {% endif %}">
-                            </div>
-                        </div>
-                    </div>   <br/>
-                    <div class="row">
-                        <div class="col-2">
-                            <label class="form-check-label" for="id_estado">Estado</label>
-                        </div>
-                        <div class="col-2">
-                        <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" 
-                                        type="checkbox" id="id_estado" 
-                                        {% if obj.estado %} 
-                                            {%if obj.estado %} checked {% else %} unchecked {% endif %}
-                                        {% else %} 
-                                            checked 
-                                        {% endif %}>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                            <label class="badge bg-info" >Si desactiva el [ Estado ], el registro se guardará como inactivo/eliminado.</label>
-                    </div>
-                    <!-- {{ form.as_p }} -->
-                    <div class="dropdown-divider"></div>
-                    <br/>
-                    <div class="row"><div class="col"></div></div>
+{% block mensaje_editar %}
+    <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
+        Editar Cultivo 
+    </h4>
+{% endblock mensaje_editar %}                 
 
-                    <div class="row">
-                        <div class="col">
-                            <a href="{% url 'mnt:cultivo_list' %}" class="btn btn-danger"><span class="fa fa-undo"></span>Cancelar</a>
-                         </div>
-                         <div class="col"> 
-                            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Guardar</button>
-                        </div>
-  
-                    </div>
-                </div>
-            </div>
+{% block mensaje_nuevo %}                     
+    <h4 class="app-card-title text-primary text-uppercase mb-1"> 
+        Nuevo Cultivo 
+    </h4>
+{% endblock mensaje_nuevo %}      
+{% block insert_update %}
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="nombre" maxlength="100" 
+                        class="form-control" 
+                        required id="id_nombre" placeholder="Nombre Insumo"
+                value="{% if obj %} {{ obj.nombre }} {% endif %}">
             </div>
         </div>
-    </div>
-</form>
-{% endblock %}
+    </div>   <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="tipo" maxlength="100" 
+                class="form-control" 
+                required id="id_tipo" placeholder="Tipo"
+                value="{% if obj %} {{ obj.tipo }} {% endif %}">
+            </div>
+        </div>
+    </div>   <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="text" name="uso" maxlength="100" 
+                class="form-control" 
+                required id="id_uso" placeholder="Uso"
+                value="{% if obj %} {{ obj.uso }} {% endif %}">
+            </div>
+        </div>
+    </div>   <br/>
+    <div class="row">
+        <div class="col-10">
+            <div class="input-group">
+                <input type="Numeric" name="precio" maxlength="100" 
+                class="form-control" 
+                required id="id_precio" placeholder="Precio"
+                value="{% if obj %} {{ obj.precio }} {% endif %}">
+            </div>
+        </div>
+    </div>   
+{% endblock insert_update %}
+{% block url_list %}
+<a href="{% url 'mnt:insumo_list' %}" 
+    class="btn btn-danger">
+    <span class="fa fa-undo"></span>Cancelar</a>
+{% endblock url_list %}
+
 {% block js_page %}
 {% endblock %}
