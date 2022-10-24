@@ -25,3 +25,7 @@ urlpatterns = [
     path('admin',admin.site.urls),
 
 ]
+
+admin.site.site_header = 'ADMINISTRACIÓN DEL SISTEMA'
+admin.site.index_title = 'Panel de control de Administración de Hacienda'
+admin.site.site_title = 'SysAdmin'
