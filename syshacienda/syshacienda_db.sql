@@ -114,15 +114,15 @@ Etapa varchar(50) null,
 estado varchar(8) not null
 );
 
-create table registro_inusmo
-(idRegistro_insumo serial primary key,
+create table registro_insumo
+(--id serial primary key,
 fechaCompra date not null,
 precio money not null,
 fechaIngreso date not null,
-fechaexpira date not null,
+fechaExpira date not null,
 requerimiento varchar(100) null,
-idInsumo int not null,
-idCultivo int not null,
+insumo int not null,
+cultivo int not null,
 estado varchar(8) not null
 );
 

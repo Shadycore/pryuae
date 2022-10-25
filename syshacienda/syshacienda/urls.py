@@ -26,6 +26,6 @@ urlpatterns = [
 
 ]
 
-admin.site.site_header = 'ADMINISTRACIÓN DEL SISTEMA'
-admin.site.index_title = 'Panel de control de Administración de Hacienda'
-admin.site.site_title = 'SysAdmin'
+admin.site.site_header = 'Panel de control de Administración de Hacienda'
+admin.site.index_title = 'ADMINISTRACIÓN DEL SISTEMA'
+#admin.site.site_title = 'SysAdmin'

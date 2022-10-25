@@ -42,8 +42,8 @@
       <td>{{ item.id }}</td>
       <td>{{ item.nombre }}</td>
       <td>{{ item.tipo }}</td>
-      <td>{{ item.uso | date:"d/m/Y" }}</td>
-      <td>{{ item.precio | date:"d/m/Y" }}</td>
+      <td>{{ item.uso  }}</td>
+      <td>{{ item.precio  }}</td>
       <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
       <td>
         <a href="{% url 'mnt:insumo_edit' item.id %}" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a> 

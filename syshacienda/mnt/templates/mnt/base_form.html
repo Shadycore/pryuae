@@ -51,31 +51,7 @@
                     {% block insert_update %}
 
                     {% endblock insert_update %}
-                    <br/>
-                    <div class="row">
-                        <div class="col-2">
-                            <label for="id_estado">Estado</label>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                    <input class="form-check" 
-                                            type="checkbox" id="id_estado" 
-                                            {% if obj.estado %} 
-                                                {% if obj.estado == True %}
-                                                    checked 
-                                                {% else %}
-                                                    unchecked
-                                                {% endif %}
-                                            {% else %} 
-                                                checked 
-                                            {% endif %}
-                                        >
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                            <label class="badge bg-warning h1">Si desactiva el [ Estado ], el registro se guardará como inactivo/eliminado.</label>
-                    </div>
+                    
                     <!-- {{ form.as_p }} -->
                     <div class="dropdown-divider"></div>
                     <br/>

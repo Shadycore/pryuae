@@ -24,7 +24,7 @@ class Cultivo(BaseFields):
         self.lote = self.lote
         self.fechaInicio = self.fechaInicio
         self.fechaFin = self.fechaFin
-        ##self.estado = self.estado
+        self.estado = self.estado
         super(Cultivo,self).save()
 
     class Meta:
@@ -37,7 +37,7 @@ class Insumo(BaseFields):
     nombre = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)
     uso = models.CharField(max_length=50)
-    precio = models.TextField(blank=True, null=True) 
+    precio = models.FloatField(blank=True, null=True) 
 
     def __str__(self):
         return '{}:{}'.format(self.nombre, self.tipo)
@@ -47,7 +47,7 @@ class Insumo(BaseFields):
         self.tipo = self.tipo
         self.uso = self.uso
         self.precio = self.precio
-        #self.estado = self.estado
+        self.estado = self.estado
         super(Insumo,self).save()
 
     class Meta:
@@ -70,7 +70,7 @@ class Hacienda(BaseFields, PersonFields, ContactFields ):
         self.direccion = self.direccion
         self.ciudad = self.ciudad
         self.identificacion = self.identificacion
-        #self.estado = self.estado
+        self.estado = self.estado
         super(Hacienda,self).save()
 
     class Meta:
@@ -96,7 +96,7 @@ class Empleado(BaseFields, PersonFields, ContactFields):
         self.ciudad = self.ciudad
         self.fchNacimiento = self.fchNacimiento
         self.identificacion = self.identificacion
-        #self.estado = self.estado
+        self.estado = self.estado
         super(Empleado,self).save()
        
     class Meta:
@@ -123,7 +123,7 @@ class Proveedor(BaseFields, PersonFields, ContactFields):
         self.ciudad = self.ciudad
         self.descripcion = self.descripcion
         self.identificacion = self.identificacion
-        #self.estado = self.estado
+        self.estado = self.estado
         super(Proveedor,self).save()
     
     class Meta:
@@ -146,7 +146,7 @@ class Cliente(PersonFields, ContactFields, BaseFields):
         self.direccion = self.direccion
         self.ciudad = self.ciudad
         self.identificacion = self.identificacion
-        ##self.estado = self.estado
+        #self.estado = self.estado
         super(Cliente,self).save()
 
     class Meta:
@@ -168,7 +168,7 @@ class Actividad(BaseFields):
     def save (self):
         self.nombre = self.nombre.capitalize()
         self.fecha = self.fecha
-        #self.estado = self.nombre
+        self.estado = self.nombre
         super(Actividad,self).save()
     
     class Meta:
@@ -191,7 +191,7 @@ class Asignacion(BaseFields):
     def save (self):
         self.descripcion = self.descripcion.capitalize()
         self.fecha = self.fecha
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(Asignacion,self).save()
 
     class Meta:
@@ -213,7 +213,7 @@ class AsignacionMaterial(BaseFields):
     def save (self):
         self.encargado = self.encargado.capitalize()
         self.fecha = self.fecha
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(AsignacionMaterial,self).save()
 
     class Meta:
@@ -235,7 +235,7 @@ class Cosecha(BaseFields):
     def save (self):
         self.fecha = self.fecha
         self.cantidad = self.cantidad
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(Cosecha,self).save()
 
     class Meta:
@@ -257,7 +257,7 @@ class RegistroEmpleado(BaseFields):
     def save (self):
         self.contrato = self.contrato
         self.cargo = self.cargo
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(RegistroEmpleado,self).save()
 
 
@@ -280,7 +280,7 @@ class Produccion(BaseFields):
     def save (self):
         self.fecha = self.fecha
         self.cantidadCosecha = self.cantidadCosecha
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(Produccion,self).save()
 
     class Meta:
@@ -302,7 +302,7 @@ class DescripcionLote(BaseFields):
     def save (self):
         self.area = self.area
         self.etapa = self.etapa
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(DescripcionLote,self).save()
 
     class Meta:
@@ -317,7 +317,7 @@ class RegistroInsumo(BaseFields):
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     fechaCompra = models.DateField()
-    precio = models.TextField() 
+    precio = models.FloatField() 
     fechaIngreso = models.DateField()
     fechaExpira = models.DateField()
     requerimiento = models.CharField(max_length=100, blank=True, null=True)
@@ -333,12 +333,12 @@ class RegistroInsumo(BaseFields):
         self.fechaIngreso = self.fechaIngreso
         self.fechaExpira = self.fechaExpira
         self.requerimiento = self.requerimiento
-        #self.estado = self.nombre
+        self.estado = self.estado
         super(RegistroInsumo,self).save()
        
     class Meta:
         verbose_name_plural = "RegistroInsumos"
-        db_table = 'registro_inusmo'
+        db_table = 'registro_insumo'
 
 ## Venta ******************************************** ##
 # - Venta - #
@@ -347,7 +347,7 @@ class Venta(BaseFields):
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     Produccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
     cantidad = models.FloatField()
-    precio = models.TextField()  
+    precio = models.FloatField()  
     fecha = models.DateField()
 
     def __str__(self):

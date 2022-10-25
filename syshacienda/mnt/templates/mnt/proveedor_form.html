@@ -17,7 +17,7 @@
             <div class="input-group">
                 <input type="text" name="nombre" maxlength="100" 
                         class="form-control" 
-                        required id="id_nombre" placeholder="Nombre de Hacienda"
+                        required id="id_nombre" placeholder="Nombre de Proveedor"
                 value="{% if obj %} {{ obj.nombre }} {% endif %}">
             </div>
         </div>
@@ -101,11 +101,27 @@
                 value="{% if obj %} {{ obj.ciudad }} {% endif %}">
             </div>
         </div>
-    </div> 
+    </div>  <br/>
+    <div class="row">
+        <div class="col-2">
+            <label for="id_estado">Estado</label>
+        </div>
+        <div class="form-group col-10">
+            <input type="checkbox" name="estado" class="form-check-input " id="id_estado"
+            {% if obj %} 
+                {{ obj.estado}}
+            {% else %} 
+                checked 
+            {% endif %} >
+        </div>
+    </div>
+    <div class="row">
+            <label class="badge bg-warning h1">Si desactiva el [ Estado ], el registro se guardará como inactivo/eliminado.</label>
+    </div>
  {% endblock insert_update %}  
 
 {% block url_list %}
-<a href="{% url 'mnt:hacienda_list' %}" 
+<a href="{% url 'mnt:proveedor_list' %}" 
     class="btn btn-danger">
     <span class="fa fa-undo"></span>Cancelar</a>
 {% endblock url_list %}

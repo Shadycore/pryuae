@@ -1,5 +1,6 @@
 from cProfile import label
 from dataclasses import fields
+from datetime import date
 from socket import fromshare
 from tkinter import Widget
 from django import forms
@@ -489,19 +490,22 @@ class RegistroInsumoForm(forms.ModelForm):
                     'precio',
                     'fechaIngreso',
                     'fechaExpira',
+                    'requerimiento',
                     'estado']
         labels = {
                 'fechaCompra': 'Fecha de Compra',
                 'precio':'Precio',
                 'fechaIngreso':'Fecha de ingreso',
                 'fechaExpira':'Fecha de expiración',
+                'requerimiento': 'Ingrese el requerimiento',
                 'estado': 'Estado'
                 }
 
-        Widget = {'precio': forms.TextInput,
+        Widget = {'precio': forms.IntegerField,
                 'fechaCompra': forms.DateInput,
                 'fechaIngreso': forms.DateInput,
                 'fechaExpira': forms.DateInput,
+                'requerimiento': forms.TextInput
                 } 
 
     def __init__(self, *args, **kwargs):

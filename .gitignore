@@ -11,3 +11,9 @@ syshacienda/.vscode/settings.json
 Pipfile.lock
 syshacienda/mnt/migrations/0001_initial.py
 
+syshacienda/mnt/migrations/0001_initial.py
+syshacienda/mnt/migrations/0002_auto_20221021_2326.py
+syshacienda/mnt/migrations/0003_auto_20221023_1123.py
+syshacienda/syshacienda_db.sql
+syshacienda/model_syshacienda.py
+syshacienda/syshacienda_db.sql
