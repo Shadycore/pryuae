@@ -34,28 +34,28 @@
     </div>
 </div>   <br/>
 <div class="row">
-    <div class="col-10">
+    <div class="col-4">
         <label for="id_fecha">Ingrese fecha inicio: </label>
     </div>
-    <div class="col-10">
+    <div class="col-6">
         <div class="input-group">
-            <input type="date" name="fechaInicio" maxlength="100" 
+            <input type="date" name="fechaInicio" 
             class="form-control" 
             required id="id_fechaInicio" placeholder="Fecha Inicio"
-            value="{% if obj %} {{ obj.fechaInicio  | date:"d/m/Y" }} {% endif %}">
+            value="{% if obj %} {{ obj.fechaInicio  | date:"Y/m/d" }} {% endif %}">
         </div>
     </div>
 </div>   <br/>
 <div class="row">
-    <div class="col-10">
+    <div class="col-4">
         <label for="id_fecha">Ingrese fecha fin: </label>
     </div>
-    <div class="col-10">
+    <div class="col-6">
         <div class="input-group">
             <input type="date" name="fechaFin"
-            class="form-control" 
+            class="form-control"   
             required id="id_fechaFin"
-            value="{% if obj %} {{ obj.fechaFin | date:"d/m/Y" }} {% endif %}">
+            value="{% if obj %} {{ obj.fechaFin | date:"Y/m/d" }} {% endif %}">
         </div>
     </div>
 </div>  <br/>
@@ -64,7 +64,7 @@
             <label for="id_estado">Estado</label>
         </div>
         <div class="form-group col-10">
-            <input type="checkbox" name="estado" class="form-check-input " id="id_estado"
+            <input type="checkbox" name="estado" class="form-check-input" id="id_estado"
             {% if obj %} 
                 {{ obj.estado}}
             {% else %} 
