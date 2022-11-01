@@ -34,10 +34,12 @@
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="date" name="fecha" 
+            <input type="datetime" name="fecha" 
                     class="form-control" 
                     required id="id_fecha"
-            value="{% if obj %} {{ obj.fecha | date:"d/m/Y" }} {% endif %}">
+					maxlength="10"
+					placeholder = "Dia/Mes/Año"
+            value={% if obj %} {{ obj.fecha | date:"d/m/Y" }} {% endif %}>
         </div>
     </div>
 </div>   <br/>
@@ -53,16 +55,15 @@
             <label for="id_estado">Estado</label>
         </div>
         <div class="form-group col-10">
-            <input type="checkbox" name="estado" class="form-check-input " id="id_estado"
-            {% if obj %} 
-                {{ obj.estado}}
-            {% else %} 
-                checked 
-            {% endif %} >
+            <input type="checkbox" name="estado" 
+                class="form-check-input" 
+                id="id_estado" width="60px"
+                    {% if obj %} 
+                        {% if obj.estado %} checked {% else %} null {% endif %} 
+                    {% else %} 
+                        checked 
+                    {% endif %} >
         </div>
-    </div>
-    <div class="row">
-            <label class="badge bg-warning h1">Si desactiva el [ Estado ], el registro se guardará como inactivo/eliminado.</label>
     </div>
 {% endblock insert_update %}
 

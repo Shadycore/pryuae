@@ -33,10 +33,12 @@
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="date" name="fechaCompra" 
+            <input type="datetime" name="fechaCompra" 
                     class="form-control" 
                     required id="id_fechaCompra"
-            value="{% if obj %} {{ obj.fechaCompra | date:"d/m/Y" }} {% endif %}">
+					maxlength="10"
+					placeholder = "Dia/Mes/Año"
+            value={% if obj %} {{ obj.fechaCompra | date:"d/m/Y" }} {% endif %}>
         </div>
     </div>
 </div>   <br/>
@@ -53,10 +55,12 @@
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="date" name="fechaIngreso" 
+            <input type="datetime" name="fechaIngreso" 
                     class="form-control" 
                     required id="id_fechaIngreso"
-            value="{% if obj %} {{ obj.fechaIngreso | date:"d/m/Y" }} {% endif %}">
+					maxlength="10"
+					placeholder = "Dia/Mes/Año"
+            value={% if obj %} {{ obj.fechaIngreso | date:"d/m/Y" }} {% endif %}>
         </div>
     </div>
 </div>   <br/>
@@ -66,10 +70,12 @@
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="date" name="fechaExpira" 
+            <input type="datetime" name="fechaExpira" 
                     class="form-control" 
                     required id="id_fechaExpira"
-            value="{% if obj %} {{ obj.fechaExpira | date:"d/m/Y" }} {% endif %}">
+					maxlength="10"
+					placeholder = "Dia/Mes/Año"
+            value={% if obj %} {{ obj.fechaExpira | date:"d/m/Y" }} {% endif %}>
         </div>
     </div>
 </div>  <br/>
@@ -89,17 +95,16 @@
             <label for="id_estado">Estado</label>
         </div>
         <div class="form-group col-10">
-            <input type="checkbox" name="estado" class="form-check-input " id="id_estado"
-            {% if obj %} 
-                {{ obj.estado}}
-            {% else %} 
-                checked 
-            {% endif %} >
+            <input type="checkbox" name="estado" 
+                class="form-check-input" 
+                id="id_estado" width="60px"
+                    {% if obj %} 
+                        {% if obj.estado %} checked {% else %} null {% endif %} 
+                    {% else %} 
+                        checked 
+                    {% endif %} >
         </div>
     </div> <br />
-    <div class="row">
-            <label class="badge bg-warning h1">Si desactiva el [ Estado ], el registro se guardará como inactivo/eliminado.</label>
-    </div>
 {% endblock insert_update %}
 
 {% block url_list %}

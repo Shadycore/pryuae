@@ -7,8 +7,10 @@ from django import forms
 from django.forms import DateInput
 from mnt.models import *
 
-class CultivoForm(forms.ModelForm):
+class DateTimeInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
 
+class CultivoForm(forms.ModelForm):
     class Meta:
         model = Cultivo
         fields = ['nombre',
@@ -26,7 +28,8 @@ class CultivoForm(forms.ModelForm):
                 'lote': forms.TextInput,
                 'fechaInicio': forms.DateInput,
                 'fechaFin': forms.DateInput,
-                'estado': forms.CheckboxInput} 
+                #'estado': forms.CheckboxInput
+                } 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -34,7 +37,10 @@ class CultivoForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
+        #self.fields['fechaFin'].widget.format = '%d/%m/%Y'
+        #self.fields['estado'].widget.attrs  ="class: form-control"
 
+    
 class InsumoForm(forms.ModelForm):
 
     class Meta:
@@ -247,7 +253,8 @@ class ActividadForm(forms.ModelForm):
                 }
 
         Widget = {'nombre': forms.TextInput,
-                'fecha': forms.DateInput} 
+                'fecha': forms.DateInput,
+                'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -321,7 +328,8 @@ class AsignacionMaterialForm(forms.ModelForm):
                 }
 
         Widget = {'encargado': forms.TextInput,
-                'fecha': forms.DateInput} 
+                'fecha': forms.DateInput,
+                'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -356,7 +364,8 @@ class CosechaForm(forms.ModelForm):
                 }
 
         Widget = {'cantidad': forms.IntegerField,
-                'fecha': forms.DateInput} 
+                'fecha': forms.DateInput,
+                'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -391,7 +400,8 @@ class RegistroEmpleadoForm(forms.ModelForm):
                 }
 
         Widget = {'contrato': forms.TextInput,
-                'cargo': forms.TextInput} 
+                'cargo': forms.TextInput,
+                'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -415,10 +425,11 @@ class ProduccionForm(forms.ModelForm):
     class Meta:
         model = Produccion
         fields = ['cultivo',
+        'estado',
                     'insumo',
                     'fecha',
-                    'cantidadCosecha',
-                    'estado']
+                    'cantidadCosecha'
+                    ]
         labels = {
                 'cantidadCosecha': 'Cantidad cosecha',
                 'fecha': 'Fecha',
@@ -426,7 +437,8 @@ class ProduccionForm(forms.ModelForm):
                 }
 
         Widget = {'cantidadCosecha': forms.IntegerField,
-                'fecha': forms.DateInput} 
+                'fecha': forms.DateInput,
+                'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -461,7 +473,8 @@ class DescripcionLoteForm(forms.ModelForm):
                 }
 
         Widget = {'area': forms.TextInput,
-                'etapa': forms.TextInput} 
+                'etapa': forms.TextInput,
+                'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
@@ -505,7 +518,8 @@ class RegistroInsumoForm(forms.ModelForm):
                 'fechaCompra': forms.DateInput,
                 'fechaIngreso': forms.DateInput,
                 'fechaExpira': forms.DateInput,
-                'requerimiento': forms.TextInput
+                'requerimiento': forms.TextInput,
+                'estado': forms.CheckboxInput
                 } 
 
     def __init__(self, *args, **kwargs):

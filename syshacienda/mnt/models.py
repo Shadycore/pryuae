@@ -7,6 +7,7 @@ from baseapp.models import ContactFields
 from baseapp.models import PersonFields
 
 
+
 ## tablas codigos principales ******************************************** ##
 # - Cultivo - #
 class Cultivo(BaseFields):
@@ -24,7 +25,7 @@ class Cultivo(BaseFields):
         self.lote = self.lote
         self.fechaInicio = self.fechaInicio
         self.fechaFin = self.fechaFin
-        self.estado = self.estado
+        #self.estado = self.estado
         super(Cultivo,self).save()
 
     class Meta:
@@ -168,7 +169,7 @@ class Actividad(BaseFields):
     def save (self):
         self.nombre = self.nombre.capitalize()
         self.fecha = self.fecha
-        self.estado = self.nombre
+        self.estado = self.estado
         super(Actividad,self).save()
     
     class Meta:
@@ -183,7 +184,7 @@ class Asignacion(BaseFields):
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     descripcion = models.CharField(max_length=50)
-    fecha = models.DateField()
+    fecha = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return "{}: {}".format(self.id, self.descripcion)
@@ -205,7 +206,7 @@ class AsignacionMaterial(BaseFields):
     insumo =  models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
     cultivo =  models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     encargado = models.CharField(max_length=50)
-    fecha = models.DateField()
+    fecha = models.DateField(blank=True, null=True)
     
     def __str__(self):
         return "{}: {} {} {}".format(self.id, self.encargado, self.cultivo, self.insumo)
@@ -226,7 +227,7 @@ class Cosecha(BaseFields):
     #idCosecha = models.AutoField(primary_key=True)
     hacienda =  models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
-    fecha = models.DateField()
+    fecha = models.DateField(blank=True, null=True)
     cantidad = models.FloatField(blank=True, null=True)
 
     def __str__(self):
@@ -271,8 +272,10 @@ class Produccion(BaseFields):
     #idProduccion = models.AutoField(primary_key=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
-    fecha = models.DateField()
-    cantidadCosecha = models.IntegerField(blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    cantidadCosecha = models.FloatField(blank=True, null=True)
+    cantidadVentaCosecha = models.FloatField(default=0, blank=True, null=True)
+    cantidadDisponible = models.FloatField(default=0, blank=True, null=True) #cantidadCosecha - cantidadVentaCosecha
 
     def __str__(self):
         return "{}: {} {} {}".format(self.id, self.cultivo, self.insumo, self.fecha)
@@ -316,10 +319,10 @@ class RegistroInsumo(BaseFields):
     #idRegistroInsumo = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE, null=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
-    fechaCompra = models.DateField()
+    fechaCompra = models.DateField(blank=True, null=True)
     precio = models.FloatField() 
-    fechaIngreso = models.DateField()
-    fechaExpira = models.DateField()
+    fechaIngreso = models.DateField(blank=True, null=True)
+    fechaExpira = models.DateField(blank=True, null=True)
     requerimiento = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
@@ -340,6 +343,7 @@ class RegistroInsumo(BaseFields):
         verbose_name_plural = "RegistroInsumos"
         db_table = 'registro_insumo'
 
+"""
 ## Venta ******************************************** ##
 # - Venta - #
 class Venta(BaseFields):
@@ -348,7 +352,7 @@ class Venta(BaseFields):
     Produccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
     cantidad = models.FloatField()
     precio = models.FloatField()  
-    fecha = models.DateField()
+    fecha = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.cantidad
@@ -378,3 +382,4 @@ class DetalleVenta(BaseFields):
     class Meta:
         verbose_name_plural = "DetalleVentas"
         db_table = 'detalle_venta'
+"""

@@ -1,0 +1,104 @@
+{% extends 'base/home.html' %}
+{% load static %}
+
+{% block csstables %}
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'assets/vendor/css/sb-admin-2.min.css'%}" rel="stylesheet">
+
+  
+   <!-- Custom styles for this page -->
+   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+     <!-- jQuery Confirm -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
+
+  <!-- XDSoft DateTimePicker -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" 
+            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />  
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+
+{% endblock csstables %}
+
+{% block page_content %}  
+
+<div class="container-fluid">
+      
+    <div class="app-card-body p-1 p-lg-1">
+    </div>
+
+<!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- DataTales Example -->         
+          <div class="card shadow mb-4" ><br/>
+                <div class="app-card-body p-1 p-lg-1">
+                    <div class="row gx-5 gy-3">
+                      <div class="col-12 col-lg-9">
+                            {% block mensaje %}
+                            {% endblock %}
+                      </div>
+                      <div class="col-12 col-lg-3">
+                            {% block btnnuevo %}
+                            {% endblock  %}
+                      </div><!--//col-->
+                    </div><!--//row-->
+                </div>
+                {% if not obj %}
+                    <div class="card-header py-2">
+                      <h2 class="alert alert-info">No existe información</h2>
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                      <!--<div class="table-responsive"> -->
+                        <table class="table table-bordered table-hover
+                                  border-top border-bottom border-end border-start table-bordered " 
+                               id="dataTable" width="100%" cellspacing="0" role="grid"   >
+                          <thead>
+                                {% block header_list %}
+                                {% endblock %}
+                          </thead>
+                          <tfoot>
+                                {% block footer_list %}
+                                {% endblock %}
+                          </tfoot>
+                          <tbody>
+                                {% block body_list %}
+                                {% endblock %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                {% endif %}
+        </div>
+        <!-- /.container-fluid -->
+{% endblock %}
+{% block js_tablas %}
+	<!-- Page level plugins -->
+	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
+{% endblock js_tablas %}
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+{% endblock %}
