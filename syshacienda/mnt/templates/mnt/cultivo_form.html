@@ -39,12 +39,17 @@
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="datetime" name="fechaInicio" 
-            class="form-control" 
-            required id="id_fechaInicio"            
-			maxlength="10"
-            placeholder = "Dia/Mes/Año"
-            value={% if obj %} {{ obj.fechaInicio  | date:"d/m/Y"  }} {% endif %} />
+            <input type="text" 
+                    name="fechaInicio" 
+                    class="form-control" 
+                    id="id_fechaInicio"     
+                    size="10"
+                    readonly
+                    placeholder = "Dia/Mes/Año"
+                    value={% if obj %} {{ obj.fechaInicio  | date:"d/m/Y"  }} 
+                            {% else %} '' 
+                            {% endif %} 
+                    >   
         </div>
     </div>
 </div>   <br/>
@@ -54,26 +59,23 @@
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="datetime"
-            name="fechaFin"
-            class="form-control"   
-            required id="id_fechaFin"
-            maxlength="10"
-            placeholder = "Dia/Mes/Año"
-            value= {% if obj %} {{ obj.fechaFin | date:"d/m/Y" }} {% endif %}            
+            <input
+                name="fechaFin"
+                id="id_fechaFin"
+                
+                type="text" required
+                class="form-control"   
+                size="10"
+                readonly
+                placeholder = "Dia/Mes/Año"
+                value= {% if obj %} {{ obj.fechaFin | date:"d/m/Y" }} 
+                       {% else %} '' 
+                       {% endif %}            
             >
-            <br/>
-        
-
+            <br/>      
         </div>
     </div>
 </div>  
-<!--<input size="16" type="text" class="form-control" id="datetime"
- value= {% if obj %} {{ obj.fechaFin | date:"d/m/Y" }} {% endif %}>
-  <span class="input-group-addon\">  
-    <span class="glyphicon glyphicon-calendar"></span>
-  </span>-->
-
 <br/>
     <div class="row">
         <div class="col-2">
@@ -99,13 +101,12 @@
 {% endblock url_list %}
 
 {% block js_page %}
-
-
-
-<script type="text/javascript">
-$("#datetime").datetimepicker({
-    format: 'dd/MM/yyyy'
-});
-</script>
-
+  	<script type="text/javascript">
+        $(function(){
+            $("#id_fechaFin, #id_fechaInicio").datetimepicker({
+                format: 'd/m/Y',
+                timepicker:false
+            });
+        });
+	</script>
 {% endblock %}

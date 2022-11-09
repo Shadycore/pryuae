@@ -17,5 +17,3 @@ syshacienda/baseapp/migrations/
 syshacienda/syshacienda_db.sql
 syshacienda/model_syshacienda.py
 syshacienda/syshacienda_db.sql
-syshacienda/vent/templates/vent/venta_cliente_form.html
-syshacienda/vent/templates/vent/venta_cultivo_form.html

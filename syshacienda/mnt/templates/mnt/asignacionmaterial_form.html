@@ -39,17 +39,24 @@
     </div>
 </div>   <br/>
 <div class="row">
-    <div class="col-4">
+    <div class="col-6">
         <label for="id_fecha">Ingrese fecha asignación: </label>
     </div>
     <div class="col-6">
         <div class="input-group">
-            <input type="datetime" name="fecha" 
-                    class="form-control" 
-                    required id="id_fecha"
-					maxlength="10"
-					placeholder = "Dia/Mes/Año"
-            value={% if obj %} {{ obj.fecha | date:"d/m/Y" }} {% endif %}>
+            <input 
+                    name="fecha"
+                    id="id_fecha"
+                    type="text" required
+                    class="form-control"   
+                    size="10"
+                    readonly
+                    placeholder = "Dia/Mes/Año"
+                    value={% if obj %} {{ obj.fecha | date:"d/m/Y" }} 
+                       {% else %} '' 
+                       {% endif %}  
+                >
+                    
         </div>
     </div>
 </div>  <br/>
@@ -77,4 +84,12 @@
 {% endblock url_list %}
 
 {% block js_page %}
+  	<script type="text/javascript">
+        $(function(){
+            $("#id_fecha").datetimepicker({
+                format: 'd/m/Y',
+                timepicker:false
+            });
+        });
+	</script>
 {% endblock %}

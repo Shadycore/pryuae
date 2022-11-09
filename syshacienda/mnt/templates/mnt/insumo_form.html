@@ -3,13 +3,13 @@
 
 {% block mensaje_editar %}
     <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
-        Editar Cultivo 
+        Editar Insumo 
     </h4>
 {% endblock mensaje_editar %}                 
 
 {% block mensaje_nuevo %}                     
     <h4 class="app-card-title text-primary text-uppercase mb-1"> 
-        Nuevo Cultivo 
+        Nuevo Insumo 
     </h4>
 {% endblock mensaje_nuevo %}      
 {% block insert_update %}
@@ -44,12 +44,12 @@
         </div>
     </div>   <br/>
     <div class="row">
-        <div class="col-10">
+        <div class="col-2">
+            <label for="id_precio">Precio: </label>
+        </div>
+        <div class="col-6">
             <div class="input-group">
-                <input type="Numeric" name="precio" maxlength="100" 
-                class="form-control" 
-                required id="id_precio" placeholder="Precio"
-                value="{% if obj %} {{ obj.precio }} {% endif %}">
+                {{ form.precio }}
             </div>
         </div>
     </div> <br/>

@@ -18,8 +18,8 @@
 	
 	{% block csstables %}
     {% endblock  %}
-   <!-- Custom styles for this page -->
-   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+   <!-- Custom styles for this page 
+   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">-->
      <!-- jQuery Confirm -->
   <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
 
@@ -248,17 +248,90 @@
 	<!-- Page level custom scripts -->
 	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
 	<!-- Popperjs -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-  crossorigin="anonymous"></script>
-<!-- Tempus Dominus JavaScript -->
-<script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
-  crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+	crossorigin="anonymous"></script>
+	<!-- Tempus Dominus JavaScript -->
+	<script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
+	crossorigin="anonymous"></script>
 
-<!-- Tempus Dominus Styles -->
-<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
-  rel="stylesheet" crossorigin="anonymous">
+	<!-- Tempus Dominus Styles -->
+	<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
+	rel="stylesheet" crossorigin="anonymous">
+
+	<script src="{% static 'base/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>  
+  
+
+	<script>
+		$(document).ready(function () {
+		  jQuery.datetimepicker.setLocale('es');
+		  format: 'd/m/Y'
+		  timepicker: false
+		});
+	</script>
+
+  	<script type="text/javascript">
+        $(function(){
+            $("#datetime").datetimepicker({
+                format: 'd/m/Y',
+                timepicker:false
+            });
+        });
+	</script>
 
 	<!-- <script src="{% static 'assets/vendor/bootstrap/js/bootstrap-datetimepicker.min.js'%}"></script>-->
+	{% block control_modal%}
+		<script>
+			function abrir_modal(url)
+			{
+		
+				$("#popup").load(url, function(){
+				$(this).modal({
+					backdrop:'static',
+					keyboard: false
+				})
+				$(this).modal('show');
+				});
+				return false;
+			}
+		
+			function cerrar_modal()
+			{
+				$('#popup').modal('hide');
+				return false;
+			}
+		
+			function mensaje(msg,color='green')
+			{
+				if (color=="success")
+				{
+				color="green";
+				}
+				if (color=="error")
+				{
+				color="red";
+				}
+		
+		
+				$.alert({
+				title:'',
+				theme:'material',
+				type:color,
+				content:msg
+				});
+			}
+		
+			{% if messages %}
+				{% for message in messages %}
+				console.log("{{ message.tags }}");
+				mensaje("{{ message }}","{{ message.tags }}");
+				{% endfor %}
+			{% endif %}
+	
+		</script>
+	{% endblock control_modal %}
+
 	{% block js_tablas %}
 
 	{% endblock %}

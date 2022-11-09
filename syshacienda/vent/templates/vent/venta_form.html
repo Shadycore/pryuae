@@ -295,7 +295,7 @@
                 mensaje("Cliente No Seleccionado",'red');
                 return false;
             }
-            abrir_modal("{% url 'fac:factura_producto' %}");
+            abrir_modal("{% url 'vent:venta_cultivo_form' %}");
         });
 
         $("#codigo").keypress(function(e){
@@ -332,7 +332,7 @@
             icon:"fab fa-keycdn",
             type:'red',
             title: "Confirmación Requerida",
-            content: 'url:/fac/facturas/borrar-detalle/' + id,
+            content: '#',//'url:/fac/facturas/borrar-detalle/' + id,
             onContentReady: function () {
                 var self = this;
                 this.$content.find('#usuario').val('{{ user.username }}');
@@ -370,7 +370,7 @@
                             headers: { "X-CSRFToken": token },
                             type:"POST",
                             data:data,
-                            url: '/fac/facturas/borrar-detalle/' + id,
+                            url: '#',//'/fac/facturas/borrar-detalle/' + id,
                             success: function(r){
                                 console.log(r);
                                 if(r==="ok"){
@@ -410,11 +410,11 @@
 
         if(idCliente===null || idCliente===undefined || idCliente==0){
             // url = "/fac/clientes/new" + qs;
-            url = "{% url 'fac:fac_cliente_add' %}" + qs
+            url = "{% url 'mnt:Cliente_new' %}" + qs
             //alert(url);
             // abrir_modal(url);
         }else{
-            url = "/fac/facturas/clientes/" + idCliente + qs;
+            url = "/mnt/Clientes/" + idCliente + qs;
             //alert(url);
             // abrir_modal(url);
         }

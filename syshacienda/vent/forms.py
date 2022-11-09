@@ -53,7 +53,7 @@ class DetalleVentaForm:
         .order_by('id')
     )
     cliente = forms.ModelChoiceField(
-        queryset=Produccion.objects.filter(estado=True)
+        queryset=Cliente.objects.filter(estado=True)
         .order_by('nombre')
     )
 

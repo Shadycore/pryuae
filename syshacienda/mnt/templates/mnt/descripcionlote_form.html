@@ -8,7 +8,7 @@
 
 {% block mensaje_nuevo %}                     
     <h4 class="app-card-title text-primary text-uppercase mb-1"> 
-        Nuevo registro
+        Registrar nueva descripción
     </h4>
 {% endblock mensaje_nuevo %}      
 
@@ -27,11 +27,13 @@
         </div>
     </div>
 </div>   <br/>
-
 <div class="row">
-    <div class="col-10">
+    <div class="col-2">
+        <label for="id_area">Area: </label>
+    </div>
+    <div class="col-6">
         <div class="input-group">
-           {{ form.area }}
+            {{ form.area }}
         </div>
     </div>
 </div>   <br/>

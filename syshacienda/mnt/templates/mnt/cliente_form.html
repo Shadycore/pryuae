@@ -17,7 +17,7 @@
             <div class="input-group">
                 <input type="text" name="nombre" maxlength="100" 
                         class="form-control" 
-                        required id="id_nombre" placeholder="Nombre de Hacienda"
+                        required id="id_nombre" placeholder="Nombre"
                 value="{% if obj %} {{ obj.nombre }} {% endif %}">
             </div>
         </div>
@@ -27,7 +27,7 @@
             <div class="input-group">
                 <input type="text" name="apellido" maxlength="100" 
                 class="form-control" 
-                required id="id_apellido" placeholder="Razon Social"
+                required id="id_apellido" placeholder="Apellido"
                 value="{% if obj %} {{ obj.apellido }} {% endif %}">
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="input-group">
                 <input type="text" name="identificacion" maxlength="100" 
                 class="form-control" 
-                required id="id_identificacion" placeholder="RUC de proveedor"
+                required id="id_identificacion" placeholder="Identificación"
                 value="{% if obj %} {{ obj.identificacion }} {% endif %}">
             </div>
         </div>

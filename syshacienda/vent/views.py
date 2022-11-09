@@ -6,7 +6,6 @@ from vent.models import*
 from vent.forms import*
 from vent.models import*
 
-
 ## Venta  ------------------------------------------------------------
 class VentaView(LoginRequiredMixin, generic.ListView):
     model = Venta
@@ -58,6 +57,18 @@ class DetalleVentaNew(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
 class DetalleVentaEdit(LoginRequiredMixin, generic.UpdateView):
+    model = DetalleVenta
+    template_name = "vent/detalleventa_form.html"
+    context_object_name =  "obj"
+    form_class = DetalleVentaForm 
+    success_url = reverse_lazy("vent:detalleventa_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
+class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
     model = DetalleVenta
     template_name = "vent/detalleventa_form.html"
     context_object_name =  "obj"
