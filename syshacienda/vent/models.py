@@ -21,7 +21,7 @@ class Venta(BaseFields):
         return "{} : {}  {}  {} ".format(self.id, self.cultivo, self.produccion, self.cantidad)
 
     def save (self):
-        pass
+        pass 
        
   
     class Meta:
