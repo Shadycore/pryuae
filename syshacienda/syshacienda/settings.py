@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+
+from django.conf import ENVIRONMENT_VARIABLE
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,6 +26,8 @@ SECRET_KEY = 'django-insecure-v$g592%*cac^5qnbc_d=ca3jfkwe)f(wrtboqb46*xk0=6du=9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+ENVIRONMENT_VARIABLE = 'dev' #'production'
 
 ALLOWED_HOSTS = []
 
@@ -77,20 +81,35 @@ WSGI_APPLICATION = 'syshacienda.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'syshacienda',
-        #'OPTIONS': {
-        #    'options' : " -c search_path=public"
-        #},
-        'USER': 'postgres',
-        'PASSWORD': 'sa',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    },
-}
+if ENVIRONMENT_VARIABLE != 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'syshacienda',
+            #'OPTIONS': {
+            #    'options' : " -c search_path=public"
+            #},
+            'USER': 'postgres',
+            'PASSWORD': 'sa',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        },
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'syshacienda',
+            #'OPTIONS': {
+            #    'options' : " -c search_path=public"
+            #},
+            'USER': 'super',
+            'PASSWORD': 'sa-uae-Syshaciend1',
+            'HOST': 'cesarorrala-2907.postgres.pythonanywhere-services.com',
+            'PORT': '12907',#'5432',
+        },
+    }
+    
 
 
 # Password validation

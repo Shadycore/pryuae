@@ -3,8 +3,35 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-from mnt.models import*
-from mnt.forms import *
+from mnt.models import Cultivo, \
+                    Insumo, \
+                    Hacienda, \
+                    Empleado, \
+                    Proveedor, \
+                    Cliente, \
+                    Actividad, \
+                    Asignacion, \
+                    AsignacionMaterial, \
+                    Cosecha, \
+                    RegistroEmpleado, \
+                    Produccion, \
+                    DescripcionLote, \
+                    RegistroInsumo
+
+from mnt.forms import CultivoForm, \
+                    InsumoForm, \
+                    HaciendaForm, \
+                    EmpleadoForm, \
+                    ProveedorForm, \
+                    ClienteForm, \
+                    ActividadForm, \
+                    AsignacionForm, \
+                    AsignacionMaterialForm, \
+                    CosechaForm, \
+                    RegistroEmpleadoForm, \
+                    ProduccionForm, \
+                    DescripcionLoteForm, \
+                    RegistroInsumoForm
 
 ## Cultivo ------------------------------------------------------------
 class CultivoView(LoginRequiredMixin, generic.ListView):
@@ -222,7 +249,7 @@ class ActividadEdit(LoginRequiredMixin, generic.UpdateView):
     def form_valid(self, form):
         form.instance.usuarioModificacion = self.request.user.id
         return super().form_valid(form)
-
+"""
 class ActividadDel(LoginRequiredMixin, generic.UpdateView):
     model = Actividad
     template_name = "mnt/actividad_del.html"
@@ -234,7 +261,7 @@ class ActividadDel(LoginRequiredMixin, generic.UpdateView):
     def form_valid(self, form):
         form.instance.usuarioModificacion = self.request.user.id
         return super().form_valid(form)
-
+"""
 ## Asignacion  ------------------------------------------------------------
 class AsignacionView(LoginRequiredMixin, generic.ListView):
     model = Asignacion

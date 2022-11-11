@@ -1,5 +1,18 @@
 from django.urls import path, include
-from mnt.views import *
+from mnt.views import CultivoView, CultivoNew,CultivoEdit, \
+                    InsumoView, InsumoNew, InsumoEdit, \
+                    HaciendaView, HaciendaNew, HaciendaEdit, \
+                    EmpleadoView, EmpleadoNew, EmpleadoEdit, \
+                    ProveedorView, ProveedorNew, ProveedorEdit, \
+                    ClienteView, ClienteNew, ClienteEdit, \
+                    ActividadView, ActividadNew, ActividadEdit, \
+                    AsignacionView, AsignacionNew, AsignacionEdit, \
+                    AsignacionMaterialView, AsignacionMaterialNew, AsignacionMaterialEdit, \
+                    CosechaView, CosechaNew, CosechaEdit, \
+                    RegistroEmpleadoView, RegistroEmpleadoNew, RegistroEmpleadoEdit, \
+                    ProduccionView, ProduccionNew, ProduccionEdit, \
+                    DescripcionLoteView, DescripcionLoteNew, DescripcionLoteEdit, \
+                    RegistroInsumoView, RegistroInsumoNew, RegistroInsumoEdit
 
 urlpatterns = [
     #Cultivos
@@ -35,7 +48,7 @@ urlpatterns = [
     path('Actividades/', ActividadView.as_view(template_name='mnt/actividad_list.html'), name='actividad_list'),
     path('Actividad/new', ActividadNew.as_view(template_name='mnt/actividad_form.html'), name='actividad_new'),
     path('Actividad/edit/<int:pk>', ActividadEdit.as_view(template_name='mnt/actividad_form.html'), name='actividad_edit'),
-	path('Actividad/del/<int:pk>', ActividadDel.as_view(template_name='mnt/actividad_form.html'), name='actividad_del'),
+	#path('Actividad/del/<int:pk>', ActividadDel.as_view(template_name='mnt/actividad_form.html'), name='actividad_del'),
 
     #Asignacion
     path('Asignaciones/', AsignacionView.as_view(template_name='mnt/asignacion_list.html'), name='asignacion_list'),

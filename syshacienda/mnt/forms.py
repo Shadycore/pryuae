@@ -1,11 +1,24 @@
 from cProfile import label
 from dataclasses import fields
 from datetime import date
-from socket import fromshare
+#from socket import fromshare
 from tkinter import Widget
 from django import forms
 from django.forms import DateInput
-from mnt.models import *
+from mnt.models import Cultivo, \
+                    Insumo, \
+                    Hacienda, \
+                    Empleado, \
+                    Proveedor, \
+                    Cliente, \
+                    Actividad, \
+                    Asignacion, \
+                    AsignacionMaterial, \
+                    Cosecha, \
+                    RegistroEmpleado, \
+                    Produccion, \
+                    DescripcionLote, \
+                    RegistroInsumo
 
 class DateTimeInput(forms.DateTimeInput):
     input_type = 'datetime-local'
