@@ -29,7 +29,7 @@ DEBUG = True
 
 ENVIRONMENT_VARIABLE = 'dev' #'production'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
