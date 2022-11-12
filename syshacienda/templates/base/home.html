@@ -38,15 +38,12 @@
 	        <div class="container-fluid py-2">
 		        <div class="app-header-content"> 
 		            <div class="row justify-content-between align-items-center">
-			        
 				    <div class="col-auto">
 					    <a id="sidepanel-toggler" class="sidepanel-toggler d-inline-block d-xl-none" href="#">
-						    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
+						    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img">
+							<title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
 					    </a>
-				    </div><!--//col-->
-		            <div class="search-mobile-trigger d-sm-none col">
-			            <i class="search-mobile-trigger-icon fas fa-search"></i>
-			        </div><!--//col-->		            
+				    </div><!--//col-->        
 		            <div class="app-utilities col-auto">
 			            <div class="app-utility-item app-user-dropdown dropdown">
 				            <a class="dropdown-toggle" id="user-dropdown-toggle" 
@@ -74,71 +71,21 @@
 						<img class="logo-icon me-2" src="{% static 'assets/images/uae-logo.png' %}" alt="logo">
 						<span class="logo-text">Admin. Haciendas</span></a>
 		        </div><!--//app-branding-->  
-		        
+		        <hr class="dropdown-divider">
 			    <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
 				    <ul class="app-menu list-unstyled accordion" id="menu-accordion">
 					    <li class="nav-item">
 					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-					        <a class="nav-link active" href=" {% url 'baseapp:home' %} ">
-						        <span class="nav-icon">
-						        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-		  <path fill-rule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z"/>
-		  <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
-		</svg>
-						         </span>
-		                         <span class="nav-link-text">Inicio</span>
-					        </a><!--//nav-link-->
-					    </li><!--//nav-item-->
-					    <li class="nav-item">
-					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
 					        <a class="nav-link" href=" {% url 'mnt:hacienda_list' %} ">
-						        <span class="nav-icon">
-						        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-								<path d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z"/>
-								<path fill-rule="evenodd" d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z"/>
-								</svg>
-						         </span>
 		                         <span class="nav-link-text">Haciendas</span>
 					        </a><!--//nav-link-->
 					    </li><!--//nav-item-->
-
-					    </li><!--//nav-item-->
-					    <li class="nav-item has-submenu">
-					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-					        <a class="nav-link  submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-2" aria-expanded="false" aria-controls="submenu-2">
-						        <span class="nav-icon">
-									<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-		  								<path fill-rule="evenodd" d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
-										</svg>
-									 </span>
-		                         <span class="nav-link-text">Mantenimientos</span>
-								 	<span class="submenu-arrow">
-		                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-	  									<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-										</svg>
-	                                </span><!--//submenu-arrow-->
-	                             </span><!--//submenu-arrow-->
+						
+						<li class="nav-item">
+					        <a class="nav-link" href="#">
+								<span class="nav-link-text">Ventas</span>
 					        </a><!--//nav-link-->
-							<div id="submenu-2" class="collapse submenu submenu-2" data-bs-parent="#menu-accordion">
-						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Cultivo</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_list' %} ">Insumo</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Empleado</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:proveedor_list' %} ">Proveedor</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cliente_list' %} ">Cliente</a></li>
-							        <li><hr class="dropdown-divider"></li>
-									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:actividad_list' %} ">Actividad</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacion_list' %} ">Asignacion</a></li>
-									<li><hr class="dropdown-divider"></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacionmaterial_list' %} ">Asignacion Material</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_list' %} ">Registro Empleado</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:produccion_list' %} ">Produccion</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:descripcionlote_list' %} ">Descripcion Lote</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroinsumo_list' %} ">Registro Insumo</a></li>
-						        </ul>
-					        </div>
-					    </li><!--//nav-item-->
+						</li><!--//nav-item-->
 
 					    <li class="nav-item has-submenu">
 					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
@@ -175,9 +122,13 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-4" class="collapse submenu submenu-4" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
+								
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Empleados</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:proveedor_list' %} ">Proveedores</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Registro de Ventas</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cliente_list' %} ">Cliente</a></li>
+							        <li><hr class="dropdown-divider"></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_list' %} ">Registro Empleado</a></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Registro de Ventas</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Inventario General de Cultivos</a></li>
 						        </ul>
 					        </div>
@@ -187,7 +138,7 @@
 					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
 					        <a class="nav-link  submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-5" 
 									aria-expanded="false" aria-controls="submenu-5">
-		                         <span class="nav-link-text">Módulo de Empleados</span>
+									<span class="nav-link-text">Módulo de Empleados</span>
 								 	<span class="submenu-arrow">
 		                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" 
 									 		fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -198,11 +149,14 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-5" class="collapse submenu submenu-5" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Manejo información personal</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Asignacón de lotes</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Asignación de cultivos</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Asignación de actividades</a></li>
-						        </ul>
+						        	<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:actividad_list' %} ">Actividad</a></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacionmaterial_list' %} ">Asignacion Material</a></li>
+							        <li><hr class="dropdown-divider"></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Manejo información personal</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_new' %} ">Asignacón de lotes</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href="{% url 'mnt:asignacion_new' %}">Asignación de cultivos</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacion_new' %} ">Asignación de actividades</a></li>
+								</ul>
 					        </div>
 					    </li><!--//nav-item-->
 
@@ -221,9 +175,9 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-6" class="collapse submenu submenu-6" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Insumos destinados a lotes</a</li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Herramientas adquiridas</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Distribución</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_list' %} ">Insumos destinados a lotes</a</li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_new' %} ">Herramientas adquiridas</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroinsumo_list' %} ">Distribución</a></li>
 						        </ul>
 					        </div>
 					    </li><!--//nav-item-->
@@ -243,11 +197,11 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-7" class="collapse submenu submenu-7" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Número de lote</a</li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:descripcionlote_list' %} ">Número de lote</a</li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Estado de cultivo</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Tiempo de produccir el  producto</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Necesidades de insumos agrícolas</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Fecha de cosecha</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:produccion_list' %} ">Tiempo de produccir el producto</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_new' %} ">Necesidades de insumos agrícolas</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Fecha de cosecha</a></li>
 						        </ul>
 					        </div>
 					    </li><!--//nav-item-->
@@ -267,57 +221,48 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-8" class="collapse submenu submenu-8" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Trabajadores asignados a la cosecha</a</li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Cultivo cosechado</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Cantidad Cosechada</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacion_list' %} ">Trabajadores asignados a la cosecha</a</li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Cultivo cosechado</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Cantidad Cosechada</a></li>
 						        </ul>
 					        </div>
 					    </li><!--//nav-item-->
 
-						<li class="nav-item">
+					    <li class="nav-item has-submenu">
 					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-					        <a class="nav-link" href=" {% url 'mnt:cosecha_list' %} ">
-						    <span class="nav-icon">
-								<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-									<path fill-rule="evenodd" d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z"/>
-									<path d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z"/>
-									</svg>								
-								<path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-								<path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"/>
-								<circle cx="3.5" cy="5.5" r=".5"/>
-								<circle cx="3.5" cy="8" r=".5"/>
-								<circle cx="3.5" cy="10.5" r=".5"/>
-								</svg>
-								</span>
-								<span class="nav-link-text">Cosecha</span>
+					        <a class="nav-link  submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-9" 
+									aria-expanded="false" aria-controls="submenu-9">
+		                         <span class="nav-link-text">Reportes</span>
+								 	<span class="submenu-arrow">
+		                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" 
+									 		fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+	  									<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+									 </svg>
+	                                </span><!--//submenu-arrow-->
+	                             </span><!--//submenu-arrow-->
 					        </a><!--//nav-link-->
-
-						<li class="nav-item">
-					        <a class="nav-link" href="#">
-						    <span class="nav-icon">
-						        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-								<path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-								<path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"/>
-								<circle cx="3.5" cy="5.5" r=".5"/>
-								<circle cx="3.5" cy="8" r=".5"/>
-								<circle cx="3.5" cy="10.5" r=".5"/>
-								</svg>
-								</span>
-								<span class="nav-link-text">Ventas</span>
-					        </a><!--//nav-link-->
+							<div id="submenu-9" class="collapse submenu submenu-9" data-bs-parent="#menu-accordion">
+						        <ul class="submenu-list list-unstyled">
+								
+							        <li class="submenu-item"><a class="submenu-link" href="#">Ventas por cultivo</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href="#">Producción por ha o lote</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href="#">Ganancias</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href="#">Productos más vendidos</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li class="submenu-item"><a class="submenu-link" href="#">Informe proveedores</a></li>
+									<li class="submenu-item"><a class="submenu-link" href="#">Informe clientes</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href="#">Informe compras</a></li>
+									
+						        </ul>
+					        </div>
+					    </li><!--//nav-item-->
 					    <li class="nav-item">
 					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
 					        <a class="nav-link" href="#">
-						        <span class="nav-icon">
-						        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-	  <path fill-rule="evenodd" d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z"/>
-	</svg>
-						         </span>
-		                         <span class="nav-link-text">Dashboards</span>
+		                         <span class="nav-link-text">Procesos DS</span>
 					        </a><!--//nav-link-->
 					    </li><!--//nav-item-->
-					    
-					    					    
+					    					    					    
 				    </ul><!--//app-menu-->
 			    </nav><!--//app-nav-->
 	        </div><!--//sidepanel-inner-->
@@ -374,7 +319,7 @@
 	<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
 	rel="stylesheet" crossorigin="anonymous">
 
-	<script src="{% static 'base/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>  
   

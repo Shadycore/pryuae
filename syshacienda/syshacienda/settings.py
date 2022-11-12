@@ -31,7 +31,7 @@ ENVIRONMENT_VARIABLE = 'dev' #'production'
 
 ALLOWED_HOSTS = ['*']
 
-
+ 
 # Application definition
 
 INSTALLED_APPS = [
