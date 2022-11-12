@@ -35,29 +35,33 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="identificacion" maxlength="13"
-                 
-                class="form-control" 
-                required id="id_identificacion" placeholder="RUC de proveedor"
-                value="{% if obj %} {{ obj.identificacion }} {% endif %}">
+                <input type="text" 
+                    name="identificacion"
+                    maxlength="13"
+                    class="form-control" 
+                    required id="id_identificacion" placeholder="RUC de proveedor"
+                    value="{% if obj %} {{ obj.identificacion }} {% endif %}"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
             </div>
         </div>
     </div>   <br/>
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="telefono" maxlength="100" 
+                <input type="text" name="telefono" maxlength="10" 
                 class="form-control" 
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                 required id="id_telefono" placeholder="Teléfono"
-                value="{% if obj %} {{ obj.telefono }} {% endif %}">
+                value="{% if obj %} {{ obj.telefono }} {% endif %}" >
             </div>
         </div>
     </div> <br/>
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="celular" maxlength="100" 
+                <input type="text" name="celular" maxlength="10" 
                 class="form-control" 
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                 required id="id_celular" placeholder="Celular"
                 value="{% if obj %} {{ obj.celular }} {% endif %}">
             </div>
