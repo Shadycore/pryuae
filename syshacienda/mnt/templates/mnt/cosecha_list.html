@@ -37,17 +37,17 @@
   {% for item in obj %}
   <tr>
       <td>{{ item.id }} </td>
-      <td>{{ item.hacienda }}</td>
-      <td>{{ item.cultivo }}</td>
-      <td>{{ item.fecha | date:"d/m/Y" }}</td>
-      <td>{{ item.cantidad }}</td>
+      <td width="240px">{{ item.hacienda }}</td>
+      <td width="240px">{{ item.cultivo }}</td>
+      <td width="240px">{{ item.fecha | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.cantidad }}</td>
       <!--<td> {% if item.estado %}
               Activo
             {% else %} 
               Inactivo
             {% endif %}
             </td> -->
-      <td> 
+      <td width="240px"> 
         <a href="{% url 'mnt:cosecha_edit' item.id %}" 
             class="btn btn-warning btn-circle" data-tooltip="Editar"
             role="button">

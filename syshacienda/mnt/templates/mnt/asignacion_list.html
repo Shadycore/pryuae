@@ -38,11 +38,11 @@
   {% for item in obj %}
   <tr>
       <td>{{ item.id }} </td>
-      <td>{{ item.descripcion }}</td>
-      <td>{{ item.actividad }}</td>
-      <td>{{ item.empleado }}</td>
-      <td>{{ item.cultivo }}</td>
-      <td>{{ item.fecha | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.descripcion }}</td>
+      <td width="240px">{{ item.actividad }}</td>
+      <td width="240px">{{ item.empleado }}</td>
+      <td width="240px">{{ item.cultivo }}</td>
+      <td width="240px">{{ item.fecha | date:"d/m/Y" }}</td>
 
       <!--<td> {% if item.estado %}
               Activo
@@ -50,7 +50,7 @@
               Inactivo
             {% endif %}
             </td> -->
-      <td> 
+      <td width="240px"> 
         <a href="{% url 'mnt:asignacion_edit' item.id %}" 
             class="btn btn-warning btn-circle" data-tooltip="Editar"
             role="button">

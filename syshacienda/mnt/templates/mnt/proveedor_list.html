@@ -45,16 +45,16 @@
       {% for item in obj %}
             <tr>
               <td>{{ item.id }}</td>
-              <td>{{ item.nombre }}</td>
+              <td width="240px">{{ item.nombre }}</td>
               <!-- <td>{{ item.apellido }}</td> -->
-              <td>{{ item.identificacion }}</td>
-              <td>{{ item.telefono }}</td>
-              <td>{{ item.celular }}</td>
-              <td>{{ item.email }}</td>
-              <td>{{ item.direccion }}</td>
-              <td>{{ item.ciudad }}</td>
-              <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-              <td>
+              <td width="240px">{{ item.identificacion }}</td>
+              <td width="240px">{{ item.telefono }}</td>
+              <td width="240px">{{ item.celular }}</td>
+              <td width="240px">{{ item.email }}</td>
+              <td width="240px">{{ item.direccion }}</td>
+              <td width="240px">{{ item.ciudad }}</td>
+              <td width="240px">{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+              <td width="240px">
                 <a href="{% url 'mnt:proveedor_edit' item.id %}" 
                 class="btn btn-warning btn-circle" 
                 role="button">

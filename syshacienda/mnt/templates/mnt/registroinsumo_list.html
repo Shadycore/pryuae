@@ -40,19 +40,19 @@
   {% for item in obj %}
   <tr>
       <td>{{ item.id }} </td>
-      <td>{{ item.insumo }}</td>
-      <td>{{ item.cultivo }}</td>
-      <td>{{ item.fechaCompra | date:"d/m/Y" }}</td>
-      <td>{{ item.precio }}</td>
-      <td>{{ item.fechaIngreso | date:"d/m/Y" }}</td>
-      <td>{{ item.requerimiento }}</td>
+      <td width="240px">{{ item.insumo }}</td>
+      <td width="240px">{{ item.cultivo }}</td>
+      <td width="240px">{{ item.fechaCompra | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.precio }}</td>
+      <td width="240px">{{ item.fechaIngreso | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.requerimiento }}</td>
       <!--<td> {% if item.estado %}
               Activo
             {% else %} 
               Inactivo
             {% endif %}
             </td> -->
-      <td> 
+      <td width="240px"> 
         <a href="{% url 'mnt:registroinsumo_edit' item.id %}" 
             class="btn btn-warning btn-circle" data-tooltip="Editar"
             role="button">

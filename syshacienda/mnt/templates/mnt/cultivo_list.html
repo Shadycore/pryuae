@@ -38,12 +38,12 @@
   {% for item in obj %}
   <tr>
       <td>{{ item.id }}</td>
-      <td>{{ item.nombre }}</td>
-      <td>{{ item.lote }}</td>
-      <td>{{ item.fechaInicio | date:"d/m/Y" }}</td>
-      <td>{{ item.fechaFin | date:"d/m/Y" }}</td>
-      <td>{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-      <td>
+      <td width="240px">{{ item.nombre }}</td>
+      <td width="240px">{{ item.lote }}</td>
+      <td width="240px">{{ item.fechaInicio | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.fechaFin | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+      <td width="240px">
         <a href="{% url 'mnt:cultivo_edit' item.id %}" 
             class="btn btn-warning btn-circle" data-tooltip="Editar"
             role="button">

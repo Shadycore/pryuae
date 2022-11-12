@@ -37,17 +37,17 @@
   {% for item in obj %}
   <tr>
       <td>{{ item.id }} </td>
-      <td>{{ item.cultivo }}</td>
-      <td>{{ item.produccion }}</td>
-      <td>{{ item.area }}</td>
-      <td>{{ item.etapa }}</td>
+      <td width="240px">{{ item.cultivo }}</td>
+      <td width="240px">{{ item.produccion }}</td>
+      <td width="240px">{{ item.area }}</td>
+      <td width="240px">{{ item.etapa }}</td>
       <!--<td> {% if item.estado %}
               Activo
             {% else %} 
               Inactivo
             {% endif %}
             </td> -->
-      <td> 
+      <td width="240px"> 
         <a href="{% url 'mnt:descripcionlote_edit' item.id %}" 
             class="btn btn-warning btn-circle" data-tooltip="Editar"
             role="button">
