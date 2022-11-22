@@ -26,6 +26,7 @@
             <input type="text" name="nombre" maxlength="100" 
                     class="form-control" 
                     required id="id_nombre" placeholder="Nombre de Actividad"
+                    pattern="[a-zA-Z ]{2,100}"
             value="{% if obj %} {{ obj.nombre }} {% endif %}">
         </div>
     </div>

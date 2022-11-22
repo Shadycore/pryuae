@@ -19,6 +19,7 @@
                 <input type="text" name="nombre" maxlength="100" 
                         class="form-control" 
                         required id="id_nombre" placeholder="Nombre Insumo"
+                        pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.nombre }} {% endif %}">
             </div>
         </div>
@@ -29,6 +30,7 @@
                 <input type="text" name="tipo" maxlength="100" 
                 class="form-control" 
                 required id="id_tipo" placeholder="Tipo"
+                pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.tipo }} {% endif %}">
             </div>
         </div>
@@ -39,6 +41,7 @@
                 <input type="text" name="uso" maxlength="100" 
                 class="form-control" 
                 required id="id_uso" placeholder="Uso"
+                pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.uso }} {% endif %}">
             </div>
         </div>

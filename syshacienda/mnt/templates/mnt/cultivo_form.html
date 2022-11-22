@@ -19,6 +19,7 @@
             <input type="text" name="nombre" maxlength="100" 
                     class="form-control" 
                     required id="id_nombre" placeholder="Nombre Cultivo"
+                    pattern="[a-zA-Z ]{2,100}"
             value="{% if obj %} {{ obj.nombre }} {% endif %}">
         </div>
     </div>
@@ -29,6 +30,7 @@
             <input type="text" name="lote" maxlength="100" 
             class="form-control" 
             required id="id_lote" placeholder="Nombre Lote"
+            pattern="[a-zA-Z ]{2,100}"
             value="{% if obj %} {{ obj.lote }} {% endif %}">
         </div>
     </div>

@@ -18,6 +18,7 @@
                 <input type="text" name="nombre" maxlength="100" 
                         class="form-control" 
                         required id="id_nombre" placeholder="Nombre"
+                        pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.nombre }} {% endif %}">
             </div>
         </div>
@@ -28,6 +29,7 @@
                 <input type="text" name="apellido" maxlength="100" 
                 class="form-control" 
                 required id="id_apellido" placeholder="Apellido"
+                pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.apellido }} {% endif %}">
             </div>
         </div>
@@ -35,7 +37,7 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="identificacion" maxlength="100" 
+                <input type="text" name="identificacion" maxlength="10" 
                 class="form-control" 
                 required id="id_identificacion" placeholder="Identificación"
                 value="{% if obj %} {{ obj.identificacion }} {% endif %}">
@@ -91,6 +93,7 @@
                 <input type="text" name="email" maxlength="100" 
                 class="form-control" 
                 required id="id_email" placeholder="Email / Correo electrónico"
+                pattern="[a-zA-Z0-9!#$%&'*_+-]([\.]?[a-zA-Z0-9!#$%&'*_+-])+@[a-zA-Z0-9]([^@&%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?"
                 value="{% if obj %} {{ obj.email }} {% endif %}">
             </div>
         </div>
@@ -101,6 +104,7 @@
                 <input type="text" name="direccion" maxlength="100" 
                 class="form-control" 
                 required id="id_direccion" placeholder="Dirección"
+                pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.direccion }} {% endif %}">
             </div>
         </div>
@@ -111,6 +115,7 @@
                 <input type="text" name="ciudad" maxlength="100" 
                 class="form-control" 
                 required id="id_ciudad" placeholder="Ciudad"
+                pattern="[a-zA-Z ]{2,100}"
                 value="{% if obj %} {{ obj.ciudad }} {% endif %}">
             </div>
         </div>
