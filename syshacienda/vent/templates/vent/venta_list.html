@@ -3,64 +3,61 @@
 {% block page_content %}
 <div class="card shadow mb-4">
   <!-- Card Header - Dropdown -->
-  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-    <h6 class="m-0 font-weight-bold text-primary">Ventas</h6>
-    <!-- <div class="dropdown no-arrow">
-      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-      </a>
-      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-        <div class="dropdown-header">Acciones:</div>
-        <a class="dropdown-item" onclick="return abrir_modal('{% url 'fac:cliente_new' %}')" href="#"><i class="far fa-calendar-plus"></i> Nuevo</a>
-      </div>
-    </div> -->
+  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-center">
+      <h2 class="m-0 font-weight-bold text-primary text-center">Ventas</h2>
   </div>
   <!-- Card Body -->
   <div class="card-body">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <input type="text" class="form-class" name="f1" id="f1" readonly>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <input type="text" class="form-class" name="f2" id="f2" readonly>
       </div>
-      <div class="col-md-4">
+
+      <div class="col-md-3">
         <button class="btn btn-warning" type="button" id="btnPrint">Imprimir</button>
       </div>
+      <div class="col-md-2">
+        <a class="btn btn-success" href="{% url 'vent:venta_new' %}"><i cass="far fa-calendar-plus"></i> Nuevo</a>
     </div>
+    </div>
+
     <hr>
 
     
     {% if not obj %}
     <div class="alert alert-info">No Hay Ventas</div>
     {% endif %}
-    <div class="buttons-toolbar">
-        <a class="btn btn-success" href="{% url 'vent:venta_new' %}"><i cass="far fa-calendar-plus"></i> Nuevo</a>
-    </div>
 
-    <table 
-      id="table"
-      data-toggle="table"
-      data-pagination="true"
-      data-search="true"
-      data-show-columns="true"
-      data-show-toggle="true"
-      data-show-fullscreen="true"
-      data-toolbar=".buttons-toolbar"
-      data-locale="es-NI"
-    >
-    <thead>
-      <th data-sortable="true" data-field="id">No.</th>
-      <th data-sortable="true" data-field="produccion">Producción</th>
-      <th data-sortable="true" data-field="cliente">clientes</th>
-      <th data-sortable="true" data-field="cantidadVenta">Cantidad</th>
-      <th data-sortable="true" data-field="fechaVenta">Fecha</th>
-      <th data-field="estado">Estado</th>
-      <th class="all">Acciones</th>
-    </thead>
-    <tbody>
-      {% for item in obj%}
-      <tr>
+{% block header_list %}
+<tr>
+    <th>No.</th>
+    <th>Producción</th>
+    <th>clientes</th>
+    <th>Cantidad</th>
+    <th>Fecha</th>
+    <th>Estado</th>
+    <th class="all">Acciones</th>
+</tr>
+{% endblock header_list %}
+
+{% block footer_list %}
+  <!--<tr>
+    <th>No.</th>
+    <th>Producción</th>
+    <th>clientes</th>
+    <th>Cantidad</th>
+    <th>Fecha</th>
+    <th>Estado</th>
+    <th class="all">Acciones</th>
+  </tr>-->
+{% endblock footer_list %}
+
+{% block body_list %}
+  {% for item in obj %}
+  <tr>
         <td>{{ item.id }}</td>
         <td>{{ item.produccion }}</td>
         <td>{{ item.cliente }}</td>
@@ -72,15 +69,13 @@
               <i class="far fa-edit"></i>
           </a>
         </td>
-      </tr>
-      {% endfor %}
-    </tbody>
+  </tr>
+  {% endfor %}
+{% endblock body_list %}
 
 
-    </table>
-  </div>
-</div>
-{% endblock %}
+{% endblock page_content %}
+
 {% block js_page %}
 <script>
 $(function(){
@@ -103,8 +98,6 @@ $(function(){
     }
     
     var url = "imprimir-todas/" + f1 + "/" + f2;
-
-    //window.open(url,'facturas');
     
   });
 });
