@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="identificacion" maxlength="13" 
+                <input type="text" name="identificacion" maxlength="13" minlength="8" 
                 class="form-control" 
                 required id="id_identificacion" placeholder="Identificación"
                 value="{% if obj %} {{ obj.identificacion }} {% endif %}">
@@ -47,7 +47,7 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="telefono" maxlength="10" 
+                <input type="text" name="telefono" maxlength="10" minlength="7"   
                 class="form-control" 
                 required id="id_telefono" placeholder="Teléfono"
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
@@ -58,7 +58,7 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="celular" maxlength="10" 
+                <input type="text" name="celular" maxlength="10" minlength="10"   
                 class="form-control" 
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                 required id="id_celular" placeholder="Celular"
@@ -72,6 +72,7 @@
                 <input type="text" name="email" maxlength="100" 
                 class="form-control"  
                 required id="id_email" placeholder="Email / Correo electrónico"
+                pattern="[a-zA-Z0-9!#$%&'*_+-]([\.]?[a-zA-Z0-9!#$%&'*_+-])+@[a-zA-Z0-9]([^@&%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?"
                 value="{% if obj %} {{ obj.email }} {% endif %}">
             </div>
         </div>
