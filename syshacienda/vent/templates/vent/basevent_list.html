@@ -38,22 +38,37 @@
           <div class="card shadow mb-4" ><br/>
                 <div class="app-card-body p-1 p-lg-1">
                     <div class="row gx-5 gy-3">
-                      <div class="col-12 col-lg-9">
-                            {% block mensaje %}
-                            {% endblock %}
-                      </div>
                       <div class="col-12 col-lg-3">
-                            {% block btnnuevo %}
-                            {% endblock  %}
-                      </div><!--//col-->
-                    </div><!--//row-->
-                </div>
+                            <h2 class="m-0 font-weight-bold text-primary text-center">Ventas</h2>
+                      </div>
+                      <div class="col-md-3">
+                        <a class="btn btn-primary btn-icon-split" href="#><i cass="far fa-calendar-plus"></i>Nueva Venta</a>
+                      </div>
+                      <div class="col-md-3">
+                        <a class="btn btn-warning" href="{% url 'mnt:cliente_new' %}"><i cass="far fa-calendar-plus"></i>Nuevo Cliente</a>
+                      </div>
+                      <div class="col-md-3">
+                        <a class="btn btn-warning" href="{% url 'mnt:cosecha_new' %}"><i cass="far fa-calendar-plus"></i>Cosecha</a>
+                      </div>
+                </div> <br/>
                 {% if not obj %}
                     <div class="card-header py-2">
                       <h2 class="alert alert-info">No existe información</h2>
                     </div>
                 {% else %}
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                              <input type="text" class="form-class" name="f1" id="f1" readonly>
+                            </div>
+                            <div class="col-md-3">
+                              <input type="text" class="form-class" name="f2" id="f2" readonly>
+                            </div>
+
+                            <div class="col-md-3">
+                              <button class="btn btn-warning" type="button" id="btnPrint">Imprimir</button>
+                            </div>
+                        </div>
                         <table class="table table-responsive table-bordered" 
                                id="dataTable" width="100%" cellspacing="0">
                           <thead>
@@ -91,7 +106,6 @@
 	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
 {% endblock js_tablas %}
 
-{% block js_page %}
 <script>
   var jq = jQuery.noConflict(true);
   // Call the dataTables jQuery plugin
@@ -99,4 +113,6 @@
     $('.table').DataTable();
   });
 </script>
+
+{% block js_page %}
 {% endblock %}

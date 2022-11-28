@@ -1,35 +1,11 @@
 {% extends 'vent/basevent_list.html' %}
 
-{% block page_content %}
-<div class="card shadow mb-4">
-  <!-- Card Header - Dropdown -->
-  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-center">
-      <h2 class="m-0 font-weight-bold text-primary text-center">Ventas</h2>
-  </div>
-  <!-- Card Body -->
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-3">
-        <input type="text" class="form-class" name="f1" id="f1" readonly>
-      </div>
-      <div class="col-md-3">
-        <input type="text" class="form-class" name="f2" id="f2" readonly>
-      </div>
 
-      <div class="col-md-3">
-        <button class="btn btn-warning" type="button" id="btnPrint">Imprimir</button>
-      </div>
-      <div class="col-md-2">
-        <a class="btn btn-success" href="{% url 'vent:venta_new' %}"><i cass="far fa-calendar-plus"></i> Nuevo</a>
-    </div>
-    </div>
 
-    <hr>
+{% block mensaje %}
 
-    
-    {% if not obj %}
-    <div class="alert alert-info">No Hay Ventas</div>
-    {% endif %}
+{% endblock mensaje %}
+
 
 {% block header_list %}
 <tr>
@@ -74,7 +50,6 @@
 {% endblock body_list %}
 
 
-{% endblock page_content %}
 
 {% block js_page %}
 <script>
@@ -102,4 +77,4 @@ $(function(){
   });
 });
 </script>
-{% endblock %}
+{% endblock js_page%}

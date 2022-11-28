@@ -20,7 +20,7 @@
                         class="form-control" 
                         required id="id_nombre" placeholder="Nombre"
                         pattern="[a-zA-Z ]{2,100}"
-                value="{% if obj %} {{ obj.nombre }} {% endif %}">
+                value="{% if obj %} {{obj.nombre}} {% endif %}">
             </div>
         </div>
     </div>   <br/>
@@ -38,9 +38,11 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="identificacion" maxlength="13" minlength="8" 
+                <input type="text" name="identificacion" maxlength="13" 
                 class="form-control" 
-                required id="id_identificacion" placeholder="Identificación"
+                required id="id_identificacion" 
+                pattern="[A-Za-z0-9]{8,13}" title="Permitido Letras y números. Mín: 8 Max: 13"
+                placeholder="Identificación"
                 value="{% if obj %} {{ obj.identificacion }} {% endif %}">
             </div>
         </div>
@@ -48,10 +50,10 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="telefono" maxlength="10" minlength="7"   
+                <input type="text" name="telefono" maxlength="10" 
                 class="form-control" 
                 required id="id_telefono" placeholder="Teléfono"
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                pattern="[0-9]{7,10}" title="Campo de sólo números. Min: 7 Max: 10"
                 value="{% if obj %} {{ obj.telefono }} {% endif %}">
             </div>
         </div>
@@ -59,9 +61,9 @@
     <div class="row">
         <div class="col-10">
             <div class="input-group">
-                <input type="text" name="celular" maxlength="10" minlength="10"   
+                <input type="text" name="celular" maxlength="10"   
                 class="form-control" 
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                pattern="[0-9]{10}" title="Campo de sólo números. Min: 10"
                 required id="id_celular" placeholder="Celular"
                 value="{% if obj %} {{ obj.celular }} {% endif %}">
             </div>
@@ -74,6 +76,7 @@
                 class="form-control"  
                 required id="id_email" placeholder="Email / Correo electrónico"
                 pattern="[a-zA-Z0-9!#$%&'*_+-]([\.]?[a-zA-Z0-9!#$%&'*_+-])+@[a-zA-Z0-9]([^@&%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?"
+                title="Ingresa un mail correcto"
                 value="{% if obj %} {{ obj.email }} {% endif %}">
             </div>
         </div>
@@ -115,6 +118,7 @@
                     {% endif %} >
         </div>
     </div>
+
  {% endblock insert_update %}  
 
 {% block url_list %}
@@ -124,4 +128,16 @@
 {% endblock url_list %}
 
 {% block js_page %}
+<script type="text/javascript">
+    $(function(){
+    var campos = $('input');
+        
+    campos.each(function(index, campo){
+        var valor = $(campo).val().trim();
+        
+        $(campo).val(valor);
+    })
+    });
+</script>
 {% endblock %}
+

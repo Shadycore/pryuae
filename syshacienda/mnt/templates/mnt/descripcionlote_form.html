@@ -72,4 +72,15 @@
 {% endblock url_list %}
 
 {% block js_page %}
+    <script type="text/javascript">
+        $(function(){
+        var campos = $('input');
+            
+        campos.each(function(index, campo){
+            var valor = $(campo).val().trim();
+            
+            $(campo).val(valor);
+        })
+        });
+    </script>
 {% endblock %}
