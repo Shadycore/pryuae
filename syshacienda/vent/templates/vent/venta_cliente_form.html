@@ -1,6 +1,5 @@
-{% extends 'vent/venta_form.html'%}
-
-{% block info_cliente %}
+<!--{% extends 'vent/venta_form.html'%} -->
+<!-- {% block info_cliente %} -->
 <div class="row ">
     <div class="col-lg-1">No.:</div>
     <div class="col-lg-4">
@@ -10,12 +9,6 @@
         Cliente:
     </div>
     <div class="col-lg-5 form-group">
-        <!-- <select name="enc_cliente" id="enc_cliente" class="form-control">
-            <option value="0">Seleccione Cliente</option>
-            {% for item in clientes %}
-                <option value="{{item.id}}">{{ item.nombres }} {{item.apellidos}} </option>
-            {% endfor %}
-        </select> -->
         <div class="row">
             <div class="col-lg-11 col-md-11">
                 <select name="cliente" id="cliente" class="form-control">
@@ -31,10 +24,10 @@
         </div>
     </div>
 </div>
-{% endblock info_cliente %}
+<!--{% endblock info_cliente %} -->
 
 
-{% block js_page %}
+{% block js_page_cliente %}
 <script>
     function calcular_detalle()
     {
@@ -293,4 +286,4 @@ $("#popup").on('hidden.bs.modal',function(){
     return false
 })
 </script>
-{% endblock %}
+{% endblock js_page_cliente%}

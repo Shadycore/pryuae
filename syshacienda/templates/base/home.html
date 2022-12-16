@@ -123,11 +123,11 @@
 							<div id="submenu-4" class="collapse submenu submenu-4" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
 								
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Empleados</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Información personal Empleados</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:proveedor_list' %} ">Proveedores</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cliente_list' %} ">Cliente</a></li>
 							        <li><hr class="dropdown-divider"></li>
-									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_list' %} ">Registro Empleado</a></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_list' %} ">Registro de Empleados</a></li>
 									<li class="submenu-item"><a class="submenu-link" href=" {% url 'vent:venta_list' %} ">Registro de Ventas</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Inventario General de Cultivos</a></li>
 						        </ul>
@@ -149,13 +149,13 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-5" class="collapse submenu submenu-5" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-						        	<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:actividad_list' %} ">Actividad</a></li>
-									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacionmaterial_list' %} ">Asignacion Material</a></li>
+						        	<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:actividad_list' %} ">Registro de Actividades</a></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacionmaterial_list' %} ">Registro de Asignacion Material</a></li>
 							        <li><hr class="dropdown-divider"></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Manejo información personal</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_new' %} ">Asignacón de lotes</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href="{% url 'mnt:asignacion_new' %}">Asignación de cultivos</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacion_new' %} ">Asignación de actividades</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:empleado_list' %} ">Información personal Empleados</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroempleado_new' %} ">Nueva Asignacón Hacienda - Empleados</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href="{% url 'mnt:asignacion_new' %}">Asignación de cultivos y actividades</a></li>
+							        <!--<li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacion_new' %} ">Asignación de actividades</a></li> -->
 								</ul>
 					        </div>
 					    </li><!--//nav-item-->
@@ -175,7 +175,7 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-6" class="collapse submenu submenu-6" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_list' %} ">Insumos destinados a lotes</a</li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_list' %} ">Insumos destinados a lotes</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_new' %} ">Herramientas adquiridas</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:registroinsumo_list' %} ">Distribución</a></li>
 						        </ul>
@@ -197,7 +197,7 @@
 					        </a><!--//nav-link-->
 							<div id="submenu-7" class="collapse submenu submenu-7" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:descripcionlote_list' %} ">Número de lote</a</li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:descripcionlote_list' %} ">Número de lote</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cultivo_list' %} ">Estado de cultivo</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:produccion_list' %} ">Tiempo de produccir el producto</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:insumo_new' %} ">Necesidades de insumos agrícolas</a></li>
@@ -222,8 +222,8 @@
 							<div id="submenu-8" class="collapse submenu submenu-8" data-bs-parent="#menu-accordion">
 						        <ul class="submenu-list list-unstyled">
 							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:asignacion_list' %} ">Trabajadores asignados a la cosecha</a</li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Cultivo cosechado</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Cantidad Cosechada</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Cultivo / Cantidad cosechado</a></li>
+							        <!-- <li class="submenu-item"><a class="submenu-link" href=" {% url 'mnt:cosecha_list' %} ">Cantidad Cosechada</a></li> -->
 						        </ul>
 					        </div>
 					    </li><!--//nav-item-->

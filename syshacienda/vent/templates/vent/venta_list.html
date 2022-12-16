@@ -10,10 +10,9 @@
 {% block header_list %}
 <tr>
     <th>No.</th>
-    <th>Producción</th>
-    <th>clientes</th>
-    <th>Cantidad</th>
-    <th>Fecha</th>
+    <th>cliente</th>
+    <th>fechaVenta</th>
+    <th>totalVenta</th>
     <th>Estado</th>
     <th class="all">Acciones</th>
 </tr>
@@ -22,10 +21,9 @@
 {% block footer_list %}
   <!--<tr>
     <th>No.</th>
-    <th>Producción</th>
-    <th>clientes</th>
-    <th>Cantidad</th>
-    <th>Fecha</th>
+    <th>cliente</th>
+    <th>fechaVenta</th>
+    <th>totalVenta</th>
     <th>Estado</th>
     <th class="all">Acciones</th>
   </tr>-->
@@ -35,10 +33,9 @@
   {% for item in obj %}
   <tr>
         <td>{{ item.id }}</td>
-        <td>{{ item.produccion }}</td>
         <td>{{ item.cliente }}</td>
-        <td>{{ item.cantidadVenta }}</td>
         <td>{{ item.fechaVenta }}</td>
+        <td>{{ item.totalVenta }}</td>
         <td>{{item.estado|yesno:"Activo,Inactivo"}}</td>
         <td>
           <a href="{% url 'vent:venta_edit' item.id %}" class="href btn btn-warning btn-circle">
@@ -48,8 +45,6 @@
   </tr>
   {% endfor %}
 {% endblock body_list %}
-
-
 
 {% block js_page %}
 <script>

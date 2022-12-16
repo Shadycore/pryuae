@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from baseapp import urls
 from mnt import urls
-#from vent import urls
+from vent import urls
 
 urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),

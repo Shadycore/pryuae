@@ -1,6 +1,5 @@
-{% extends 'vent/venta_form.html'%}
 
-{% block cultivo %}
+<!-- {% block cultivo %} -->
 <div class="col-lg-6 from-group">
     <div class="row p-2">
         <div class="col-lg-1">Cod</div>
@@ -47,9 +46,9 @@
         </div>
     </div>
 </div>
-{% endblock cultivo %}
+<!-- {% endblock cultivo %} -->
 
-{% block js_page %}
+{% block js_page_cultivo %}
 <script>
     function calcular_detalle()
     {
@@ -308,4 +307,4 @@ $("#popup").on('hidden.bs.modal',function(){
     return false
 })
 </script>
-{% endblock %}
+{% endblock js_page_cultivo %}

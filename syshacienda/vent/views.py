@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-from vent.models import*
-from vent.forms import*
-from vent.models import*
+from vent.models import Venta, DetalleVenta
+from vent.forms import VentaForm,DetalleVentaForm
+from mnt.models import Cliente, Cosecha, Produccion, Cultivo
 
 ## Venta  ------------------------------------------------------------
 class VentaView(LoginRequiredMixin, generic.ListView):
@@ -79,3 +79,12 @@ class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
     def form_valid(self, form):
         form.instance.usuarioModificacion = self.request.user.id
         return super().form_valid(form)
+
+##Cliente
+class selectCliente(LoginRequiredMixin, generic.ListView):
+    model = Cliente
+    template_name = "vent/venta_cliente_form.html"
+    context_object_name ="obj"
+    login_url = "baseapp:login"
+
+##Cultivo

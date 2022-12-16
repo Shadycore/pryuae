@@ -1,5 +1,6 @@
 {% extends 'vent/basevent_form' %}
 
+
 {% block page_content %}
 <form method="post" id="frmVentas">
     {% csrf_token %}
@@ -17,6 +18,7 @@
                 <div class="col-lg-6 form-group">
                     <div class="content">
                         {% block info_cliente %}
+                            {% extends 'vent/venta_cliente_form' %}
                         {% endblock info_cliente %}
                         <div class="row">
                             <div class="col-lg-6 p-2" >
@@ -60,54 +62,9 @@
 
 
                 <!-- Sección Derecha -->
-                {% block cultivo %}
-                <!-- <div class="col-lg-6 from-group">
-                    <div class="row p-2">
-                        <div class="col-lg-1">Cod</div>
-                        <div class="col-lg-3">
-                            <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Cód. Producto">
-                        </div>
-                        <div class="col-lg-7">
-                            <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
-                        </div>
-                        <div class="col-lg-1">
-                            <button type="button" class="btn btn-info" id="btnBuscar">
-                                <i class="fab fa-searchengin"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-1">Cant</div>
-                        <div class="col-lg-3">
-                            <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad">
-                            <input type="hidden" class="form-control" name="existencia" id="existencia">
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" readonly>
-                        </div>
-                        <div class="col-lg-3">
-                            <input type="number" class="form-control" name="descuento_detalle" id="descuento_detalle" placeholder="Descuento">
-                        </div>
-                        <div class="col-lg-1">
-                            <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-lg-9 text-right">Sub Total</div>
-                        <div class="col-lg-3">
-                            <input type="number" class="form-control" name="sub_total_detalle" id="sub_total_detalle" placeholder="Sub Total"
-                             value="0.00" disabled>
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-lg-9 text-right">Total</div>
-                        <div class="col-lg-3">
-                            <input type="number" class="form-control" name="total_detalle" id="total_detalle" placeholder="Total"
-                             value="0.00" disabled>
-                        </div>
-                    </div>
-                </div>
-                {% endblock cultivo %} -->
+                {% block select_cultivo %}
+                    {% extends 'vent:venta_cultivo_form '%}
+                {% endblock select_cultivo %} 
                 <!-- Fin Sección Derecha -->
             </div>
             <!-- Fin Sección Superior -->
@@ -161,7 +118,7 @@
     </div>
 </div>
 </form>
-{% endblock %}
+{% endblock page_content%}
 {% block js_page %}
 <script>
     function calcular_detalle()
@@ -421,4 +378,4 @@ $("#popup").on('hidden.bs.modal',function(){
     return false
 })
 </script>
-{% endblock %}
+{% endblock js_page %}
