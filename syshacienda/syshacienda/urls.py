@@ -23,7 +23,7 @@ from vent import urls
 urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
     path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
-    path('vent/', include(('vent.urls','vent'), namespace="vent")),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        path('vent/', include(('vent.urls','vent'), namespace="vent")),
     path('admin',admin.site.urls),
 
 ]
@@ -31,3 +31,4 @@ urlpatterns = [
 admin.site.site_header = 'Panel de control de Administración de Hacienda'
 admin.site.index_title = 'ADMINISTRACIÓN DEL SISTEMA'
 #admin.site.site_title = 'SysAdmin'
+ # 

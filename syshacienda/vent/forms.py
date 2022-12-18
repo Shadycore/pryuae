@@ -5,7 +5,7 @@ from datetime import date
 from tkinter import Widget
 from django import forms
 from django.forms import DateInput
-from mnt import models
+
 from mnt.models import Cliente, Cultivo, Produccion
 from vent.models import Venta, DetalleVenta
 
@@ -19,14 +19,14 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
         fields = ['totalVenta',
-                    'fechaVenta',
+                    #'fechaVenta',
                     'estado']
-        labels = {'cantidadVenta':'Cantidad Venta',
-                'fechaVenta': 'Fecha de Venta',
+        labels = {'totalVenta':'Total Venta',
+                #'fechaVenta': 'Fecha de Venta',
                 'estado': 'Estado'}
 
-        Widget = {'cantidadVenta': forms.FloatField,
-                'fechaVenta': forms.DateInput,
+        Widget = {'totalVenta': forms.FloatField,
+                #'fechaVenta': forms.DateInput,
                 'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
@@ -44,10 +44,12 @@ class DetalleVentaForm:
                     .order_by('nombre'))
     produccion = forms.ModelChoiceField(
                 queryset=Produccion.objects.filter(estado=True)
-                    .order_by('cultivo_id'))
+                    .order_by('cultivo'))
     class Meta:
         model = DetalleVenta
-        fields = ['cantidad',
+        fields = ['cultivo',
+                    'produccion',
+                    'cantidad',
                     'precio',
                     'estado']
         labels = {'cantidad':'Ingres cantidad',

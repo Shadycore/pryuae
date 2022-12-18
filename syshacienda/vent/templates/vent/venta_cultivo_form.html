@@ -1,52 +1,27 @@
-
-<!-- {% block cultivo %} -->
-<div class="col-lg-6 from-group">
-    <div class="row p-2">
-        <div class="col-lg-1">Cod</div>
-        <div class="col-lg-3">
-            <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Cód. Producto">
-        </div>
-        <div class="col-lg-7">
-            <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
-        </div>
-        <div class="col-lg-1">
-            <button type="button" class="btn btn-info" id="btnBuscar">
-                <i class="fab fa-searchengin"></i>
-            </button>
-        </div>
+{% extends 'vent/venta_form.html'%}
+{% block cultivo %}
+<div class="row ">
+    <div class="col-lg-1">No.:</div>
+    <div class="col-lg-4">
+        <input type="text" name="id" id="id" readonly class="form-control">
     </div>
-    <div class="row">
-        <div class="col-lg-1">Cant</div>
-        <div class="col-lg-3">
-            <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad">
-            <input type="hidden" class="form-control" name="existencia" id="existencia">
-        </div>
-        <div class="col-lg-4">
-            <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" readonly>
-        </div>
-        <div class="col-lg-3">
-            <input type="number" class="form-control" name="descuento_detalle" id="descuento_detalle" placeholder="Descuento">
-        </div>
-        <div class="col-lg-1">
-            <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
-        </div>
+    <div class="col-lg-2">
+        Cliente:
     </div>
-    <div class="row p-1">
-        <div class="col-lg-9 text-right">Sub Total</div>
-        <div class="col-lg-3">
-            <input type="number" class="form-control" name="sub_total_detalle" id="sub_total_detalle" placeholder="Sub Total"
-                value="0.00" disabled>
-        </div>
-    </div>
-    <div class="row p-1">
-        <div class="col-lg-9 text-right">Total</div>
-        <div class="col-lg-3">
-            <input type="number" class="form-control" name="total_detalle" id="total_detalle" placeholder="Total"
-                value="0.00" disabled>
+    <div class="col-lg-5 form-group">
+        <div class="row">
+            <div class="col-lg-11 col-md-11">
+                <select name="cliente" id="cliente" class="form-control">
+                    <option value="0">Seleccione cultivo producido</option>
+                    {% for item in clientes %}
+                        <option value="{{item.id}}">{{ item.nombre }} {{item.apellido}} </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
     </div>
 </div>
-<!-- {% endblock cultivo %} -->
+{% endblock cultivo %}
 
 {% block js_page_cultivo %}
 <script>

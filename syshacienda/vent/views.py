@@ -87,4 +87,11 @@ class selectCliente(LoginRequiredMixin, generic.ListView):
     context_object_name ="obj"
     login_url = "baseapp:login"
 
-##Cultivo
+##Produccion
+class selectProduccion(LoginRequiredMixin, generic.ListView):
+    model = Produccion
+    template_name = "vent/venta_cultivo_form.html"
+    context_object_name ="obj"
+    login_url = "baseapp:login"
+
+

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from vent.views import *
+from vent.views import VentaView, VentaNew, VentaEdit, DetalleVentaEdit, DetalleVentaNew, DetalleVentaView, selectCliente, selectProduccion 
 
 urlpatterns = [
     #Ventas

@@ -278,7 +278,7 @@ class Produccion(BaseFields):
     cantidadDisponible = models.FloatField(default=0, blank=True, null=True) #cantidadCosecha - cantidadVentaCosecha
 
     def __str__(self):
-        return "{}: {} {} {}".format(self.id, self.cultivo, self.insumo, self.fecha)
+        return "{}: {} {} {}".format(self.id, self.cultivo.nombre, self.insumo, self.fecha)
 
     def save (self):
         self.fecha = self.fecha

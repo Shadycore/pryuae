@@ -1,6 +1,5 @@
 {% extends 'vent/basevent_form' %}
 
-
 {% block page_content %}
 <form method="post" id="frmVentas">
     {% csrf_token %}
@@ -18,7 +17,7 @@
                 <div class="col-lg-6 form-group">
                     <div class="content">
                         {% block info_cliente %}
-                            {% extends 'vent/venta_cliente_form' %}
+                            
                         {% endblock info_cliente %}
                         <div class="row">
                             <div class="col-lg-6 p-2" >
@@ -59,11 +58,8 @@
                     </div>
                 </div>
                 <!-- Fin Sección Izquierda -->
-
-
                 <!-- Sección Derecha -->
                 {% block select_cultivo %}
-                    {% extends 'vent:venta_cultivo_form '%}
                 {% endblock select_cultivo %} 
                 <!-- Fin Sección Derecha -->
             </div>
