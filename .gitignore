@@ -18,5 +18,3 @@ syshacienda/syshacienda_db.sql
 syshacienda/model_syshacienda.py
 syshacienda/syshacienda_db.sql
 syshacienda/syshacienda/settings.py
-
-syshacienda/templates/base/grafico.py

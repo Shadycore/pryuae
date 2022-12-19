@@ -1,28 +1,55 @@
-{% extends 'vent/basevent_form' %}
+{% extends 'base/home.html' %}
+{% load static %}
 
 {% block page_content %}
 <form method="post" id="frmVentas">
     {% csrf_token %}
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <a href="#" class="btn btn-danger">Guardar</a>
-        <!--<a href="{% url 'vent:venta_imprimir_one' venta.id %}" class="btn btn-success" target="_factura">Imprimir</a>
-        <a href="{% url 'vent:venta_list' %}" class="btn btn-info">Cancelar</a> -->
+    <div class="card-header py-3 d-flex flex-row align-items-rigth justify-content-between">
+        <div class="col-10">
+            <a href="#" class="btn btn-secondary">Imprimir</a>
+        </div>
+        <div class="col-10">
+           <a href="#" class="btn btn-danger">Guardar</a>
+        </div>
     </div>
     <div class="card-body">
         <div class="content">
             <!-- Sección Superior -->
             <div class="row">
                 <!-- Sección Izquierda -->
-                <div class="col-lg-6 form-group">
-                    <div class="content">
+                
+                    <div class="col">
                         {% block info_cliente %}
-                            
+                            <div class="row ">
+                                <div class="col-lg-2">Código :</div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="id" id="id" readonly class="form-control">
+                                </div>
+                                <div class="col-lg-2">
+                                    Cliente:
+                                </div>
+                                <div class="col-lg-5 form-group">
+                                    <div class="row">
+                                        <div class="col-lg-11 col-md-11">
+                                            <div class="input-group">
+                                                {{ form.cliente }}
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-lg-1 col-md-1">
+                                            <button class="btn btn-outline-danger btn-sm" id="btnEditCliente"><i class="far fa-edit"></i></button>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
                         {% endblock info_cliente %}
+                    </div>
+                    <div class="col">
+                        
                         <div class="row">
                             <div class="col-lg-6 p-2" >
                                 <div class="row">
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         Fecha:
                                     </div>
                                     <div class="col-lg-8 form-group">
@@ -56,10 +83,28 @@
                             </div>
                         </div>
                     </div>
-                </div>
+               
                 <!-- Fin Sección Izquierda -->
                 <!-- Sección Derecha -->
                 {% block select_cultivo %}
+                <div class="row ">
+                    <div class="col-lg-1">No.:</div>
+                    <div class="col-lg-1">
+                        <input type="text" name="id" id="id" readonly class="form-control">
+                    </div>
+                    <div class="col-lg-2">
+                        Producción:
+                    </div>
+                    <div class="col-lg-5 form-group">
+                        <div class="row">
+                            <div class="col-lg-11 col-md-11">
+                                <div class="input-group" id="btnProduccion">
+                                    {{ form.produccion }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endblock select_cultivo %} 
                 <!-- Fin Sección Derecha -->
             </div>
@@ -68,23 +113,17 @@
             <hr>
             <div class="row p-1">
                 <div class="col-lg-12">
-                    <table
-                        data-toggle="table"
-                        data-pagination="true"
-                        data-search="true"
-                        data-show-columns="true"
-                        data-show-toggle="true"
-                        data-show-fullscreen="true"
-                        data-locale="es-NI"
+                    <table class="table table-responsive table-bordered" 
+                               id="dataTable" width="100%" cellspacing="0"
                         >
                         <thead>
-                            <th data-sortable="true" data-field="id">Id.</th>        
-                            <th data-sortable="true" data-field="codigo">Código</th>
-                            <th data-sortable="true" data-field="descripcion">Descripción</th>
-                            <th data-field="cantidad">Cant</th>
-                            <th data-field="subtotal">S. Total</th>
-                            <th data-field="descuento">Des.</th>
-                            <th data-field="total">Total</th>
+                            <th>Id.</th>        
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Cant</th>
+                            <th>S. Total</th>
+                            <th>Des.</th>
+                            <th>Total</th>
                             <th class="all">Acciones</th>
                         </thead>
                         <tbody>
@@ -165,8 +204,8 @@
         if(codigo===""){
             return false;
         }
-
-        var path = "{% url 'api:producto_list' %}" + codigo;
+        
+        var path = "#" ;
         $.ajax({
             type:"GET",
             url: path,
@@ -217,14 +256,6 @@
         $('#enc_cliente').select2({
             placeholder: "Seleccione Cliente",
             allowClear: true
-        });
-
-        $("#btnBuscar").click(function(e){
-            if ($("#enc_cliente").val()==="0"){
-                mensaje("Cliente No Seleccionado",'red');
-                return false;
-            }
-            abrir_modal("{% url 'vent:venta_cultivo_form' %}");
         });
 
         $("#codigo").keypress(function(e){
@@ -328,33 +359,12 @@
             return false;
         }
     })
-
-    $("#btnEditCliente").click(function(e){
-        e.preventDefault();
-
-        var idCliente = $("#enc_cliente").val();
-        var url;
-        const qs = "?t=fc";
-        // alert(idCliente)
-
-        if(idCliente===null || idCliente===undefined || idCliente==0){
-            // url = "/fac/clientes/new" + qs;
-            url = "{% url 'mnt:Cliente_new' %}" + qs
-            //alert(url);
-            // abrir_modal(url);
-        }else{
-            url = "/mnt/Clientes/" + idCliente + qs;
-            //alert(url);
-            // abrir_modal(url);
-        }
-        abrir_modal(url);
-        var token = '{{csrf_token}}';
-    });
+    
 
 $("#popup").on('hidden.bs.modal',function(){
     const a = $("#id").val()
     // alert(a)
-    var url="{% url 'api:cliente_list' %}"
+    var url="{% url 'mnt:cliente_list' %}"
     $.ajax({
         type:"GET",
         url:url,

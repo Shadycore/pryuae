@@ -15,18 +15,20 @@ class VentaForm(forms.ModelForm):
         queryset=Cliente.objects.filter(estado=True)
         .order_by('nombre')
     )
-
+    produccion = forms.ModelChoiceField(
+                queryset=Produccion.objects.filter(estado=True)
+                    .order_by('cultivo'))
     class Meta:
         model = Venta
         fields = ['totalVenta',
-                    #'fechaVenta',
+                    'fechaVenta',
                     'estado']
         labels = {'totalVenta':'Total Venta',
-                #'fechaVenta': 'Fecha de Venta',
+                'fechaVenta': 'Fecha de Venta',
                 'estado': 'Estado'}
 
         Widget = {'totalVenta': forms.FloatField,
-                #'fechaVenta': forms.DateInput,
+                'fechaVenta': forms.DateInput,
                 'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
@@ -36,7 +38,7 @@ class VentaForm(forms.ModelForm):
                 'class':'form-control'
             })
         self.fields['cliente'].empty_label =  "Seleccione el cliente"
-
+        self.fields['produccion'].empty_label =  "Seleccione la producción"
 
 class DetalleVentaForm:
     cultivo = forms.ModelChoiceField(

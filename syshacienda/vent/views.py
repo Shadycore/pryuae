@@ -80,18 +80,4 @@ class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
         form.instance.usuarioModificacion = self.request.user.id
         return super().form_valid(form)
 
-##Cliente
-class selectCliente(LoginRequiredMixin, generic.ListView):
-    model = Cliente
-    template_name = "vent/venta_cliente_form.html"
-    context_object_name ="obj"
-    login_url = "baseapp:login"
-
-##Produccion
-class selectProduccion(LoginRequiredMixin, generic.ListView):
-    model = Produccion
-    template_name = "vent/venta_cultivo_form.html"
-    context_object_name ="obj"
-    login_url = "baseapp:login"
-
 

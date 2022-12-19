@@ -1,26 +1,6 @@
-{% extends 'vent/venta_form.html'%}
+
 {% block cultivo %}
-<div class="row ">
-    <div class="col-lg-1">No.:</div>
-    <div class="col-lg-4">
-        <input type="text" name="id" id="id" readonly class="form-control">
-    </div>
-    <div class="col-lg-2">
-        Cliente:
-    </div>
-    <div class="col-lg-5 form-group">
-        <div class="row">
-            <div class="col-lg-11 col-md-11">
-                <select name="cliente" id="cliente" class="form-control">
-                    <option value="0">Seleccione cultivo producido</option>
-                    {% for item in clientes %}
-                        <option value="{{item.id}}">{{ item.nombre }} {{item.apellido}} </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
+
 {% endblock cultivo %}
 
 {% block js_page_cultivo %}
