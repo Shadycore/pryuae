@@ -11,9 +11,9 @@ from vent.models import Venta, DetalleVenta
 
 
 class VentaForm(forms.ModelForm):
-    cliente = forms.ModelChoiceField(
+    clientes = forms.ModelChoiceField(
         queryset=Cliente.objects.filter(estado=True)
-        .order_by('nombre')
+        .order_by('identificacion')
     )
     produccion = forms.ModelChoiceField(
                 queryset=Produccion.objects.filter(estado=True)
@@ -37,11 +37,11 @@ class VentaForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
-        self.fields['cliente'].empty_label =  "Seleccione el cliente"
+        self.fields['clientes'].empty_label =  "Seleccione el cliente"
         self.fields['produccion'].empty_label =  "Seleccione la producción"
 
 class DetalleVentaForm:
-    cultivo = forms.ModelChoiceField(
+    cultivos = forms.ModelChoiceField(
                 queryset=Cultivo.objects.filter(estado=True)
                     .order_by('nombre'))
     produccion = forms.ModelChoiceField(
@@ -68,5 +68,5 @@ class DetalleVentaForm:
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
-        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+        self.fields['cultivos'].empty_label =  "Seleccione el cultivo"
         self.fields['produccion'].empty_label =  "Seleccione la producción"

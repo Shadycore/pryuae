@@ -40,16 +40,16 @@ class VentaEdit(LoginRequiredMixin, generic.UpdateView):
 ## DetalleVenta  ------------------------------------------------------------
 class DetalleVentaView(LoginRequiredMixin, generic.ListView):
     model = DetalleVenta
-    template_name="vent/detalleventa_list.html"
+    template_name="vent/venta_list.html"
     context_object_name = "obj"
     login_url = "baseapp:login"
 
 class DetalleVentaNew(LoginRequiredMixin, generic.CreateView):
     model = DetalleVenta
-    template_name = "vent/detalleventa_form.html"
+    template_name = "vent/venta_form.html"
     context_object_name =  "obj"
     form_class = DetalleVentaForm 
-    success_url = reverse_lazy("vent:detalleventa_list")
+    success_url = reverse_lazy("vent:venta_list")
     login_url = "baseapp:login"
 
     def form_valid(self, form):
@@ -58,10 +58,10 @@ class DetalleVentaNew(LoginRequiredMixin, generic.CreateView):
 
 class DetalleVentaEdit(LoginRequiredMixin, generic.UpdateView):
     model = DetalleVenta
-    template_name = "vent/detalleventa_form.html"
+    template_name = "vent/venta_form.html"
     context_object_name =  "obj"
     form_class = DetalleVentaForm 
-    success_url = reverse_lazy("vent:detalleventa_list")
+    success_url = reverse_lazy("vent:venta_list")
     login_url = "baseapp:login"
 
     def form_valid(self, form):
@@ -70,10 +70,10 @@ class DetalleVentaEdit(LoginRequiredMixin, generic.UpdateView):
 
 class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
     model = DetalleVenta
-    template_name = "vent/detalleventa_form.html"
+    template_name = "vent/venta_form.html"
     context_object_name =  "obj"
     form_class = DetalleVentaForm 
-    success_url = reverse_lazy("vent:detalleventa_list")
+    success_url = reverse_lazy("vent:venta_list")
     login_url = "baseapp:login"
 
     def form_valid(self, form):
