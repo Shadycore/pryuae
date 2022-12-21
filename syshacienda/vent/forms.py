@@ -11,16 +11,19 @@ from vent.models import Venta, DetalleVenta
 
 
 class VentaForm(forms.ModelForm):
-    clientes = forms.ModelChoiceField(
-        queryset=Cliente.objects.filter(estado=True)
-        .order_by('identificacion')
-    )
+    cliente = forms.ModelChoiceField(
+                queryset=Cliente.objects.filter(estado=True)
+                    .order_by('identificacion'))
+    cultivo = forms.ModelChoiceField(
+                queryset=Cultivo.objects.filter(estado=True)
+                    .order_by('nombre'))
     produccion = forms.ModelChoiceField(
                 queryset=Produccion.objects.filter(estado=True)
                     .order_by('cultivo'))
     class Meta:
         model = Venta
-        fields = ['totalVenta',
+        fields = ['cliente',
+                    'totalVenta',
                     'fechaVenta',
                     'estado']
         labels = {'totalVenta':'Total Venta',
@@ -37,11 +40,15 @@ class VentaForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
-        self.fields['clientes'].empty_label =  "Seleccione el cliente"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
         self.fields['produccion'].empty_label =  "Seleccione la producción"
+        self.fields['cliente'].empty_label =  "Seleccione el cliente"
 
 class DetalleVentaForm:
-    cultivos = forms.ModelChoiceField(
+    cliente = forms.ModelChoiceField(
+                queryset=Cliente.objects.filter(estado=True)
+                    .order_by('identificacion'))
+    cultivo = forms.ModelChoiceField(
                 queryset=Cultivo.objects.filter(estado=True)
                     .order_by('nombre'))
     produccion = forms.ModelChoiceField(
@@ -68,5 +75,7 @@ class DetalleVentaForm:
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
-        self.fields['cultivos'].empty_label =  "Seleccione el cultivo"
+        self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
         self.fields['produccion'].empty_label =  "Seleccione la producción"
+        self.fields['cliente'].empty_label =  "Seleccione el cliente"
+

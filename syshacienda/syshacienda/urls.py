@@ -23,7 +23,7 @@ from vent import urls
 urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
     path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        path('vent/', include(('vent.urls','vent'), namespace="vent")),
+    path('vent/', include(('vent.urls','vent'), namespace="vent")),
     path('admin',admin.site.urls),
 
 ]
