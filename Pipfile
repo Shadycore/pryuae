@@ -11,6 +11,7 @@ pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
 psycopg2 = "*"
+djangorestframework = "*"
 
 [dev-packages]
 pylint = "*"

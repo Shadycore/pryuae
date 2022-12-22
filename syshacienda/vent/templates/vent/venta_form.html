@@ -3,13 +3,11 @@
 
 {% block csstables %}
   <!-- Custom fonts for this template -->
-  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" 
-        rel="stylesheet">
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template --> 
-  <link href="{% static 'assets/vendor/css/sb-admin-2.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/css/sb-admin-2.min.css' %}" rel="stylesheet">
    <!-- Custom styles for this page -->
-   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
      <!-- jQuery Confirm -->
   <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
   <!-- XDSoft DateTimePicker  -->
@@ -17,6 +15,9 @@
             integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />   
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" /> 
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" 
+        rel="stylesheet">
+
 {% endblock csstables %}
 
 {% block page_content %}
@@ -180,7 +181,7 @@
                         >
                         <thead>
                             <th data-sortable="true" data-field="id">Id.</th>        
-                            <th data-sortable="true" data-field="codigo">Código</th>
+                            <th data-sortable="true" data-field="produccion_id">Código</th>
                             <th data-sortable="true" data-field="descripcion">Descripción</th>
                             <th data-field="cantidad">Cant</th>
                             <th data-field="subtotal">Sub Total</th>
@@ -219,18 +220,26 @@
 
 {% block js_tablas %}
 	<!-- Page level plugins -->
-	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js' %}"></script>
 	<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
 	<!-- Bootstrap core JavaScript-->
-	<script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
-	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 	<!-- Core plugin JavaScript-->
-	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js'%}"></script>
-
+	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/js/jquery.chained.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
+    
 	<!-- Page level custom scripts -->
-	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" 
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>  
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table-locale-all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+    
 {% endblock js_tablas %}
 
 
@@ -280,30 +289,30 @@
             return false;
         }
 
-        var codigo = $("#codigo").val();
-        if(codigo===""){
+        var produccion_id = $("#produccion_id").val();
+        if(produccion_id==="" || produccion_id=="0"){
             return false;
         }
         
-        var path = "#" ;
+        var path = "#" 
         $.ajax({
             type:"GET",
             url: path,
             success: function(r){
                 console.log(r);
-                console.log(r.existencia);
+                console.log(r.cantidadDisponible);
                 console.log(r.estado);
 
                 if(r.existencia<=0 || !r.estado){
                     mensaje("Producto No Tiene Existencia o está inactivo",'orange')
-                    $("#codigo").val("");
+                    $("#produccion_id").val("");
                     $("#descripcion").val("");
                     $("#precio").val("0.00");
-                    $("#codigo").focus();
+                    $("#produccion_id").focus();
                     return false;
                 }
 
-                $("#codigo").val(r.codigo);
+                $("#produccion_id").val(r.produccion_id);
                 $("#descripcion").val(r.descripcion);
                 $("#precio").val(r.precio);
                 $("#existencia").val(r.existencia);
@@ -319,11 +328,11 @@
                 // a.responseText["detail"]
                 // mensaje(c,'red');
                 if(a.status==404){
-                    mensaje("Producto -" + codigo + "- No Encontrado o No Existe",'red');
-                    $("#codigo").val("");
+                    mensaje("Producto -" + produccion_id + "- No Encontrado o No Existe",'red');
+                    $("#produccion_id").val("");
                     $("#descripcion").val("");
                     $("#precio").val("0.00");
-                    $("#codigo").focus();
+                    $("#produccion_id").focus();
                 }
 
             }
@@ -333,18 +342,24 @@
 
     $(function () {
         $("#sidebarToggle").click();
-        $('#cliente_id').select2-container({
+        $('#cliente_id').select2({
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
+        
+        $('#produccion_id').select2({
+            placeholder: "Seleccione Cultivo",
+            allowClear: true
+        });
 
+        /*
         $("#codigo").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();
                 buscarProducto();
             }
         });
-
+        */
         $('#cantidad,#precio,#descuento_detalle').change(function(){
             calcular_detalle();
         });
@@ -354,7 +369,7 @@
         $("#fechaVenta").val("{{ obj.fechaVenta|date:'Y-m-d' }}");
         $("#sub_total").val("{{ obj.sub_total }}");
         $("#descuento").val("{{ obj.descuento }}");
-        $("#total").val({{ obj.total }});
+        $("#total").val("{{ obj.total }}");
 
         // $('#cliente_id').select2().select2('val', $('#cliente_id option:eq(1)').val());
         // https://select2.org/programmatic-control/add-select-clear-items
@@ -441,27 +456,27 @@
     })
     
 
-$("#popup").on('hidden.bs.modal',function(){
-    const a = $("#id").val()
-    // alert(a)
-    var url="{% url 'mnt:cliente_list' %}"
-    $.ajax({
-        type:"GET",
-        url:url,
-        success: function(data){
-            console.log(data)
-            $("#cliente_id").find('option').remove()
-            $("#cliente_id").append('<option value="0">Seleccione Cliente</option>')
-            for(var i=0;i<data.length;i++){
-                $("#cliente_id").append(`<option value="${data[i].id}">${data[i].nombres} ${data[i].apellidos} </option>`)
+    $("#popup").on('hidden.bs.modal',function(){
+        const a = $("#id").val()
+        // alert(a)
+        var url="{% url 'mnt:cliente_list' %}"
+        $.ajax({
+            type:"GET",
+            url:url,
+            success: function(data){
+                console.log(data)
+                $("#cliente_id").find('option').remove()
+                $("#cliente_id").append('<option value="0">Seleccione Cliente</option>')
+                for(var i=0;i<data.length;i++){
+                    $("#cliente_id").append('<option value="${data[i].id}">${data[i].nombres} ${data[i].apellidos} </option>')
+                }
+                $("#cliente_id").val(a).change()
+            },
+            error: function(data){
+                console.log(data)
             }
-            $("#cliente_id").val(a).change()
-        },
-        error: function(data){
-            console.log(data)
-        }
+        })
+        return false
     })
-    return false
-})
 </script>
 {% endblock js_page %}

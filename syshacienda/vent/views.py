@@ -4,6 +4,11 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
+
+from django.http import HttpResponse
+from datetime import datetime
+from django.contrib import messages
+
 from vent.models import Venta, DetalleVenta
 from vent.forms import VentaForm,DetalleVentaForm
 from mnt.models import Cliente, Cosecha, Produccion, Cultivo
@@ -30,15 +35,96 @@ class VentaNew(LoginRequiredMixin, generic.CreateView):
 
 @login_required(login_url='/login/')
 def Ventas(request, id=None):
-    #model = Venta
-    detalleVenta = {}
+    detalle =  {}
     template_name = "vent/venta_form.html"
     clientes = Cliente.objects.filter(estado=True)
     cultivos = Cultivo.objects.filter(estado=True)
     produccion = Produccion.objects.filter(estado=True)
-    contexto = {"clientes":clientes, "produccion":produccion}
+    contexto = {}
+    
+    if request.method == "GET":
+        venta_cabecera = Venta.objects.filter(pk=id).first()
+        if id:
+            if not venta_cabecera:
+                messages.error(request,'Factura No Existe')
+                return redirect("vent:venta_list")
 
-    return render(request,template_name,contexto)
+            #usr = request.user
+            #if not usr.is_superuser:
+            #    if venta_cabecera.uc != usr:
+            #        messages.error(request,'Factura no fue creada por usuario')
+            #        return redirect("vent:venta_list")
+
+        if not venta_cabecera:
+            vent_cabecera = {
+                'id':0,
+                'fechaVenta':datetime.today(),
+                'cliente':0,
+                'totalVenta':0.00,
+                'porc_iva':0.00,
+                'valor_iva': 0.00
+            }
+            detalle=None
+        else:
+            vent_cabecera = {
+                'id':venta_cabecera.id,
+                'fechaVenta':venta_cabecera.fechaVenta,
+                'cliente':venta_cabecera.cliente,
+                'totalVenta':venta_cabecera.totalVenta,
+                'porc_iva':venta_cabecera.porc_iva,
+                'valor_iva':venta_cabecera.valor_iva
+            }
+            detalle = DetalleVenta.objects.filter(venta_id=venta_cabecera.id)
+        
+        contexto = { "venta":vent_cabecera,"det":detalle,"clientes":clientes, "produccion":produccion }
+        return render(request,template_name,contexto)
+    
+    if request.method == "POST":
+        cliente = request.POST.get("venta_cliente")
+        fecha  = request.POST.get("fecha")
+        cli=Cliente.objects.get(pk=cliente)
+
+        if not id:
+            venta_cabecera = Venta(
+                cliente = cli,
+                fechaVenta = fecha
+            )
+            if venta_cabecera:
+                venta_cabecera.save()
+                id = venta_cabecera.id
+        else:
+            venta_cabecera = Venta.objects.filter(pk=id).first()
+            if venta_cabecera:
+                venta_cabecera.cliente = cli
+                venta_cabecera.save()
+
+        if not id:
+            messages.error(request,'No Puedo Continuar No Pude Detectar No. de Factura')
+            return redirect("vent:venta_list")
+        
+        produccion_id = request.POST.get("produccion_id")
+        cantidad = request.POST.get("cantidad")
+        precio = request.POST.get("precio")
+        #s_total = request.POST.get("sub_total_detalle")
+        #descuento = request.POST.get("descuento_detalle")
+        total = request.POST.get("total_detalle")
+
+        prod = Produccion.objects.get(pk=produccion_id)
+        det = DetalleVenta(
+            venta = venta_cabecera,
+            produccion = produccion,
+            cantidad = cantidad,
+            precio = precio,
+            #sub_total = s_total,
+            #descuento = descuento,
+            total = total
+        )
+        
+        if det:
+            det.save()
+        
+        return redirect("vent:venta_edit",id=id)    
+
 
 class VentaEdit(LoginRequiredMixin, generic.UpdateView):
     model = Venta

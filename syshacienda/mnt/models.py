@@ -6,8 +6,6 @@ from baseapp.models import BaseFields
 from baseapp.models import ContactFields
 from baseapp.models import PersonFields
 
-
-
 ## tablas codigos principales ******************************************** ##
 # - Cultivo - #
 class Cultivo(BaseFields):
@@ -284,6 +282,8 @@ class Produccion(BaseFields):
         self.fecha = self.fecha
         self.cantidadCosecha = self.cantidadCosecha
         self.estado = self.estado
+        self.cantidadVentaCosecha = self.cantidadVentaCosecha
+        self.cantidadDisponible = (self.cantidadCosecha - self.cantidadDisponible)
         super(Produccion,self).save()
 
     class Meta:
@@ -343,43 +343,21 @@ class RegistroInsumo(BaseFields):
         verbose_name_plural = "RegistroInsumos"
         db_table = 'registro_insumo'
 
-"""
-## Venta ******************************************** ##
-# - Venta - #
-class Venta(BaseFields):
-    #idVenta = models.AutoField(primary_key=True)
-    cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
-    Produccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
-    cantidad = models.FloatField()
-    precio = models.FloatField()  
-    fecha = models.DateField(blank=True, null=True)
-
+# - Parámetro - #
+class Parametro():
+    nombreParametro = models.CharField(max_length=50, blank=False, null=False)
+    valorPrametro = models.CharField(max_length=25, blank=False, null=False)
+    
     def __str__(self):
-        return self.cantidad
+        return "{}: {} - {}".format(self.id, self.nombreParametro, self.valorPrametro)
 
     def save (self):
-        pass
-       
-  
-    class Meta:
-        verbose_name_plural = "Ventas"
-        db_table = 'venta'
-
-# - DetalleVenta - #
-class DetalleVenta(BaseFields):
-    #idDetalleVenta = models.AutoField(primary_key=True)
-    venta = models.ForeignKey(Venta, on_delete=models.CASCADE, null=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
-    fechaVenta = models.DateField(blank=True, null=True)
-    cantidadVenta = models.FloatField(blank=True, null=True)
-
-    def __str__(self):
-        return self.cantidadVenta
-
-    def save (self):
-        pass 
+        self.nombreParametro = self.nombreParametro
+        self.valorPrametro = self.valorPrametro
+        super(Parametro,self).save()
 
     class Meta:
-        verbose_name_plural = "DetalleVentas"
-        db_table = 'detalle_venta'
-"""
+        verbose_name_plural = "Parametros"
+        db_table = 'parametro'
+        unique_together=('nombreParametro','valorParametro')
+
