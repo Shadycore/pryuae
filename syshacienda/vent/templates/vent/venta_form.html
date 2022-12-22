@@ -81,14 +81,14 @@
                                     <div class="col-lg-3">Sub Total:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" readonly
-                                        name="sub_total" id="sub_total">
+                                        name="totalVenta" id="totalVenta">
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3">Descuento:</div>
+                                    <div class="col-lg-3">porc_iva:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" disabled
-                                            name="descuento" id="descuento">
+                                            name="porc_iva" id="porc_iva">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -140,19 +140,19 @@
                         <div class="col-lg-2">Cant</div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad">
-                            <input type="hidden" class="form-control" name="existencia" id="existencia">
+                            <input type="hidden" class="form-control" name="cantidadDisponible" id="cantidadDisponible">
                         </div>
                         <div class="col-lg-4">
                             <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" readonly>
                         </div>
                         <div class="col-lg-3">
-                            <input type="number" class="form-control" name="descuento_detalle" id="descuento_detalle" placeholder="Descuento">
+                            <input type="number" class="form-control" name="total" id="total" placeholder="porc_iva">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col-lg-9 text-right">Sub Total</div>
                         <div class="col-lg-3">
-                            <input type="number" class="form-control" name="sub_total_detalle" id="sub_total_detalle" placeholder="Sub Total"
+                            <input type="number" class="form-control" name="totalVenta_detalle" id="totalVenta_detalle" placeholder="Sub Total"
                              value="0.00" disabled>
                         </div>
                     </div>
@@ -186,7 +186,7 @@
                             <th data-sortable="true" data-field="descripcion">Descripción</th>
                             <th data-field="cantidad">Cant</th>
                             <th data-field="subtotal">Sub Total</th>
-                            <th data-field="descuento">Desc.</th>
+                            <th data-field="porc_iva">Desc.</th>
                             <th data-field="total">Total</th>
                             <th class="all">Acciones</th>
                         </thead>
@@ -197,8 +197,8 @@
                                 <td>{{ item.producto }}</td>
                                 <td>{{ item.producto.descripcion }}</td>
                                 <td>{{ item.cantidad }}</td>
-                                <td>{{ item.sub_total }}</td>
-                                <td>{{ item.descuento }}</td>
+                                <td>{{ item.totalVenta }}</td>
+                                <td>{{ item.porc_iva }}</td>
                                 <td>{{ item.total }}</td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-circle"
@@ -258,7 +258,7 @@
         prec = prec==="" ? 0 : +prec;
         prec = prec<0 ? 0 : prec;
 
-        desc = $('#descuento_detalle').val();
+        desc = $('#total').val();
         desc = desc==="" ? 0 : +desc;
         desc = desc<0 ? 0 : desc;
 
@@ -269,16 +269,16 @@
 
         $('#cantidad').val(cant);
         $('#precio').val(prec);
-        $('#descuento_detalle').val(desc);
+        $('#total').val(desc);
 
-        $('#sub_total_detalle').val(stotal);
+        $('#totalVenta_detalle').val(stotal);
         $('#total_detalle').val(total);
 
         console.log("Cantidad " + cant);
         console.log("prec " + prec);
         console.log("desc " + desc);
 
-        console.log("sub_total_detalle " + $('#sub_total_detalle').val());
+        console.log("totalVenta_detalle " + $('#totalVenta_detalle').val());
         console.log("total_detalle " + $('#total_detalle').val());
 
     }
@@ -304,8 +304,8 @@
                 console.log(r.cantidadDisponible);
                 console.log(r.estado);
 
-                if(r.existencia<=0 || !r.estado){
-                    mensaje("Producto No Tiene Existencia o está inactivo",'orange')
+                if(r.cantidadDisponible<=0 || !r.estado){
+                    mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
                     $("#produccion_id").val("");
                     $("#descripcion").val("");
                     $("#precio").val("0.00");
@@ -314,9 +314,9 @@
                 }
 
                 $("#produccion_id").val(r.produccion_id);
-                $("#descripcion").val(r.descripcion);
+                $("#descripcion").val(r.cultivo);
                 $("#precio").val(r.precio);
-                $("#existencia").val(r.existencia);
+                $("#cantidadDisponible").val(r.cantidadDisponible);
                 $("#cantidad").focus();
 
             },
@@ -354,22 +354,22 @@
         });
         */
         
-        $("#codigo").keypress(function(e){
+        $("#produccion_id").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();
                 buscarProducto();
             }
         });
         
-        $('#cantidad,#precio,#descuento_detalle').change(function(){
+        $('#cantidad,#precio,#total').change(function(){
             calcular_detalle();
         });
 
         $("#id").val("{{ obj.id }}");
         $("#cliente_id").val("{{ obj.cliente.id }}").change();
         $("#fechaVenta").val("{{ obj.fechaVenta|date:'Y-m-d' }}");
-        $("#sub_total").val("{{ obj.sub_total }}");
-        $("#descuento").val("{{ obj.descuento }}");
+        $("#totalVenta").val("{{ obj.totalVenta }}");
+        $("#porc_iva").val("{{ obj.porc_iva }}");
         $("#total").val("{{ obj.total }}");
 
         // $('#cliente_id').select2().select2('val', $('#cliente_id option:eq(1)').val());
@@ -447,11 +447,11 @@
     }
 
     $("form").submit(function(e){
-        var existencia = +$("#existencia").val();
+        var cantidadDisponible = +$("#cantidadDisponible").val();
         var cantidad = +$("#cantidad").val();
 
-        if(cantidad>existencia){
-            mensaje("No hay existencia suficiente");
+        if(cantidad>cantidadDisponible){
+            mensaje("No hay cantidadDisponible suficiente");
             return false;
         }
     })

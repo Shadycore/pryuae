@@ -31,9 +31,9 @@ ENVIRONMENT_VARIABLE = 'production' #'production'
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
+DEBUG = True
 if ENVIRONMENT_VARIABLE != 'production':
-        DEBUG = True
+    DEBUG = True
 
 # Application definition
 
