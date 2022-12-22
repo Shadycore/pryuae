@@ -19,7 +19,7 @@ class VentaView(LoginRequiredMixin, generic.ListView):
     template_name="vent/venta_list.html"
     context_object_name = "obj"
     login_url = "baseapp:login"
-##   
+##  Venta New
 class VentaNew(LoginRequiredMixin, generic.CreateView):
     model = Venta
     template_name = "vent/venta_form.html"
@@ -32,6 +32,62 @@ class VentaNew(LoginRequiredMixin, generic.CreateView):
         form.instance.usuarioCreacion = self.request.user
         return super().form_valid(form)
 ##
+
+class VentaEdit(LoginRequiredMixin, generic.UpdateView):
+    model = Venta
+    template_name = "vent/venta_form.html"
+    context_object_name =  "obj"
+    form_class = VentaForm 
+    success_url = reverse_lazy("vent:venta_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
+## DetalleVenta  ------------------------------------------------------------
+class DetalleVentaView(LoginRequiredMixin, generic.ListView):
+    model = DetalleVenta
+    template_name="vent/venta_list.html"
+    context_object_name = "obj"
+    login_url = "baseapp:login"
+
+class DetalleVentaNew(LoginRequiredMixin, generic.CreateView):
+    model = DetalleVenta
+    template_name = "vent/venta_form.html"
+    context_object_name =  "obj"
+    form_class = DetalleVentaForm 
+    success_url = reverse_lazy("vent:venta_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioCreacion = self.request.user
+        return super().form_valid(form)
+
+class DetalleVentaEdit(LoginRequiredMixin, generic.UpdateView):
+    model = DetalleVenta
+    template_name = "vent/venta_form.html"
+    context_object_name =  "obj"
+    form_class = DetalleVentaForm 
+    success_url = reverse_lazy("vent:venta_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
+class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
+    model = DetalleVenta
+    template_name = "vent/venta_form.html"
+    context_object_name =  "obj"
+    form_class = DetalleVentaForm 
+    success_url = reverse_lazy("vent:venta_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
 
 @login_required(login_url='/login/')
 def Ventas(request, id=None):
@@ -124,61 +180,3 @@ def Ventas(request, id=None):
             det.save()
         
         return redirect("vent:venta_edit",id=id)    
-
-
-class VentaEdit(LoginRequiredMixin, generic.UpdateView):
-    model = Venta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = VentaForm 
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioModificacion = self.request.user.id
-        return super().form_valid(form)
-
-## DetalleVenta  ------------------------------------------------------------
-class DetalleVentaView(LoginRequiredMixin, generic.ListView):
-    model = DetalleVenta
-    template_name="vent/venta_list.html"
-    context_object_name = "obj"
-    login_url = "baseapp:login"
-
-class DetalleVentaNew(LoginRequiredMixin, generic.CreateView):
-    model = DetalleVenta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = DetalleVentaForm 
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioCreacion = self.request.user
-        return super().form_valid(form)
-
-class DetalleVentaEdit(LoginRequiredMixin, generic.UpdateView):
-    model = DetalleVenta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = DetalleVentaForm 
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioModificacion = self.request.user.id
-        return super().form_valid(form)
-
-class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
-    model = DetalleVenta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = DetalleVentaForm 
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioModificacion = self.request.user.id
-        return super().form_valid(form)
-
-
