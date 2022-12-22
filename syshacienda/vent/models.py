@@ -40,7 +40,7 @@ class DetalleVenta(BaseFields):
     precio = models.FloatField(blank=True, null=True)  
     total = models.FloatField(blank=True, null=True, default=0)
     def __str__(self):
-        return "{} : {} {} {} ".format(self.venta_id, self.cultivo.nombre, self.cantidad, self.total)
+        return "{} : {} {} {} ".format(self.venta_id, self.cultivo, self.cantidad, self.total)
 
     def save (self):
         pass
