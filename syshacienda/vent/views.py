@@ -35,8 +35,8 @@ class VentaNew(LoginRequiredMixin, generic.CreateView):
 
 @login_required(login_url='/login/')
 def Ventas(request, id=None):
-    detalle =  {}
     template_name = "vent/venta_form.html"
+    detalle =  {}
     clientes = Cliente.objects.filter(estado=True)
     cultivos = Cultivo.objects.filter(estado=True)
     produccion = Produccion.objects.filter(estado=True)
@@ -75,7 +75,7 @@ def Ventas(request, id=None):
                 'valor_iva':venta_cabecera.valor_iva
             }
         
-        detalle = DetalleVenta.objects.filter(venta=venta_cabecera)
+        detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
         contexto = { "venta":vent_cabecera,"det":detalle,"clientes":clientes, "produccion":produccion }
         return render(request,template_name,contexto)
     

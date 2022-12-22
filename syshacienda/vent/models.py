@@ -32,7 +32,7 @@ class Venta(BaseFields):
         db_table = 'venta'
 
 # - DetalleVenta - #
-class DetalleVenta():
+class DetalleVenta(BaseFields):
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE, null=True)
     cultivo = models.ForeignKey(Cultivo, on_delete=models.CASCADE, null=True)
     produccion = models.ForeignKey(Produccion, on_delete=models.CASCADE, null=True)
@@ -40,7 +40,7 @@ class DetalleVenta():
     precio = models.FloatField(blank=True, null=True)  
     total = models.FloatField(blank=True, null=True, default=0)
     def __str__(self):
-        return "{} : {} {} {} ".format(self.venta_id, self.cultivo.nombre, self.cantidadVenta)
+        return "{} : {} {} {} ".format(self.venta_id, self.cultivo.nombre, self.cantidad, self.total)
 
     def save (self):
         pass
