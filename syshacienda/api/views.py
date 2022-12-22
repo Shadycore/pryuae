@@ -29,3 +29,9 @@ class ClienteList(APIView):
         data = ClienteSerializer(obj,many=True).data
         return Response(data)
 
+class ProduccionUpdate(APIView):
+    #Actualizar cantidad disponible, cantidad venta de Produccion
+    def put(self,request, codigo):
+        prod = get_object_or_404(Produccion,Q(id=codigo))
+        prod.update(request.data)
+        prod.save()

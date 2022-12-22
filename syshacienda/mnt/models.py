@@ -273,17 +273,20 @@ class Produccion(BaseFields):
     fecha = models.DateField(blank=True, null=True)
     cantidadCosecha = models.FloatField(blank=True, null=True)
     cantidadVentaCosecha = models.FloatField(default=0, blank=True, null=True)
-    cantidadDisponible = models.FloatField(default=0, blank=True, null=True) #cantidadCosecha - cantidadVentaCosecha
+    cantidadDisponible = models.FloatField(default=0, blank=True, null=True) 
+    precio = models.FloatField(blank=True, null=True, default=0)
+
 
     def __str__(self):
-        return "{}: {} {} {}".format(self.id, self.cultivo.nombre, self.insumo, self.fecha)
+        return "{}: {} {} {} {}".format(self.id, self.cultivo.nombre, self.insumo, self.fecha, self.precio)
 
     def save (self):
         self.fecha = self.fecha
         self.cantidadCosecha = self.cantidadCosecha
         self.estado = self.estado
-        self.cantidadVentaCosecha = self.cantidadVentaCosecha
-        self.cantidadDisponible = (self.cantidadCosecha - self.cantidadDisponible)
+        self.precio  = self.precio
+        #self.cantidadVentaCosecha = (self.cantidadVentaCosecha + self.cantidadVentaCosecha)
+        #self.cantidadDisponible = (self.cantidadCosecha - self.cantidadDisponible)
         super(Produccion,self).save()
 
     class Meta:

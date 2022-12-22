@@ -74,8 +74,8 @@ def Ventas(request, id=None):
                 'porc_iva':venta_cabecera.porc_iva,
                 'valor_iva':venta_cabecera.valor_iva
             }
-            detalle = DetalleVenta.objects.filter(venta_id=venta_cabecera.id)
         
+        detalle = DetalleVenta.objects.filter(venta=venta_cabecera)
         contexto = { "venta":vent_cabecera,"det":detalle,"clientes":clientes, "produccion":produccion }
         return render(request,template_name,contexto)
     

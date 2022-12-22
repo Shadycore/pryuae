@@ -110,30 +110,31 @@
                     <div class="row p-2">
                         <div class="col-lg-2">Cultivo</div>
                         <div class="col-lg-7">
-                            <select name="produccion_id" id="produccion_id" class="form-control">
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" name="produccion_id" id="produccion_id" placeholder="Cód. Producc..">
+                            </div>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
+                            </div>
+                            
+                            <div class="col-lg-1">
+                                <button type="button" class="btn btn-info" id="btnBuscar">
+                                    <i class="fab fa-searchengin"></i>
+                                </button>
+                            </div>
+                            <!--<select name="produccion_id" id="produccion_id" class="form-control">
                                 <option value="0">Seleccione Cultivo </option>
                                 {% for prod in produccion %}
                                     <option value="{{prod.id}}"> Cultivo: {{ prod.cultivo.nombre }} | Insumo: {{ prod.insumo }} | CantidadDisponible: {{ prod.cantidadDisponible }}
                                     </option>
                                 {% endfor %}
-                            </select>
+                            </select> -->
                         </div>
                         <div class="col-lg-1">
                             <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
                         </div>
                         <!--
-                        <div class="col-lg-3">
-                            <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Cód. Producto">
-                        </div>
-                        <div class="col-lg-7">
-                            <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
-                        </div>
-                        
-                        <div class="col-lg-1">
-                            <button type="button" class="btn btn-info" id="btnBuscar">
-                                <i class="fab fa-searchengin"></i>
-                            </button>
-                        </div>-->
+                        -->
                     </div>
                     <div class="row">
                         <div class="col-lg-2">Cant</div>
@@ -346,20 +347,20 @@
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
-        
+        /*
         $('#produccion_id').select2({
             placeholder: "Seleccione Cultivo",
             allowClear: true
         });
-
-        /*
+        */
+        
         $("#codigo").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();
                 buscarProducto();
             }
         });
-        */
+        
         $('#cantidad,#precio,#descuento_detalle').change(function(){
             calcular_detalle();
         });
