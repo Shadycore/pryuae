@@ -8,8 +8,8 @@ urlpatterns = [
     path('Venta/new', Ventas, name='venta_new'),
     path('Venta/edit/<int:pk>', Ventas, name='venta_edit'),
     #APIs
-    path('api/', include(('api.urls','api'), namespace="api")),
+    #path('api/', include(('api.urls','api'), namespace="api")),
     #mantenimientos
-    path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
+    #path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
     
 ]
