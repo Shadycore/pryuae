@@ -4,18 +4,18 @@
 {% block csstables %}
   <!-- Custom fonts for this template -->
   <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-  <!-- Custom styles for this template --> 
+  <!-- Custom styles for this template -->
   <link href="{% static 'assets/vendor/css/sb-admin-2.min.css' %}" rel="stylesheet">
    <!-- Custom styles for this page -->
    <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
      <!-- jQuery Confirm -->
   <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
   <!-- XDSoft DateTimePicker  -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" 
-            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" /> 
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
 {% endblock csstables %}
@@ -50,7 +50,7 @@
                                         <select name="cliente_id" id="cliente_id" class="form-control">
                                             <option value="0">Seleccione Cliente</option>
                                             {% for cliente in clientes %}
-                                                <option value="{{cliente.id}}">{{cliente.identificacion }} - {{ cliente.nombre }} {{ cliente.apellido}} 
+                                                <option value="{{cliente.id}}">{{cliente.identificacion }} - {{ cliente.nombre }} {{ cliente.apellido}}
                                                 </option>
                                             {% endfor %}
                                         </select>
@@ -71,7 +71,7 @@
                                         Fecha:
                                     </div>
                                     <div class="col-lg-5 form-group">
-                                        <input type="text" name="fechaVenta" id="fechaVenta" class="form-control form-control-user" 
+                                        <input type="text" name="fechaVenta" id="fechaVenta" class="form-control form-control-user"
                                         value="{{ obj.fechaVenta|date:'Y-m-d' }}" readonly />
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                             <div class="col-lg-7">
                                 <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
                             </div>
-                            
+
                             <div class="col-lg-1">
                                 <button type="button" class="btn btn-info" id="btnBuscar">
                                     <i class="fab fa-searchengin"></i>
@@ -181,7 +181,7 @@
                         data-locale="es-NI"
                         >
                         <thead>
-                            <th data-sortable="true" data-field="id">Id.</th>        
+                            <th data-sortable="true" data-field="id">Id.</th>
                             <th data-sortable="true" data-field="produccion_id">Código</th>
                             <th data-sortable="true" data-field="descripcion">Descripción</th>
                             <th data-field="cantidad">Cant</th>
@@ -233,14 +233,14 @@
     <script src="{% static 'assets/vendor/js/jquery.chained.min.js' %}"></script>
     <script src="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
     <script src="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
-    
+
 	<!-- Page level custom scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" 
-            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table-locale-all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-    
+
 {% endblock js_tablas %}
 
 
@@ -294,8 +294,8 @@
         if(produccion_id==="" || produccion_id=="0"){
             return false;
         }
-        
-        var path = "#" 
+        var path = "#" //"{% url 'api:produccion_detalle' %}" + produccion_id;
+        console.log(path);
         $.ajax({
             type:"GET",
             url: path,
@@ -353,14 +353,14 @@
             allowClear: true
         });
         */
-        
+
         $("#produccion_id").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();
                 buscarProducto();
             }
         });
-        
+
         $('#cantidad,#precio,#total').change(function(){
             calcular_detalle();
         });
@@ -375,7 +375,7 @@
         // $('#cliente_id').select2().select2('val', $('#cliente_id option:eq(1)').val());
         // https://select2.org/programmatic-control/add-select-clear-items
         $("#cliente_id").data('select2').trigger('select', {
-            data: {"id": 3}
+            data: {"id": 1}
         });
 
     });
@@ -455,7 +455,7 @@
             return false;
         }
     })
-    
+
 
     $("#popup").on('hidden.bs.modal',function(){
         const a = $("#id").val()

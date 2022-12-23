@@ -25,6 +25,8 @@ urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
     path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
     path('vent/', include(('vent.urls','vent'), namespace="vent")),
+    path('api/', include(('api.urls','api'), namespace="api")),
+    
     path('admin',admin.site.urls),
 
 ]

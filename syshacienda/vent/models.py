@@ -24,7 +24,7 @@ class Venta(BaseFields):
         self.proc_iva = self.proc_iva
         self.valor_iva = self.valor_iva
         self.cliente = self.cliente
-        super(DetalleVenta,self).save() 
+        super(Venta,self).save() 
  
        
     class Meta:
