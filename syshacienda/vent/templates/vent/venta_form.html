@@ -285,17 +285,19 @@
 
     function buscarProducto()
     {
+        alert("1");
         if ($("#cliente_id").val()==="0" || $("#cliente_id").val()===null){
             mensaje("Cliente No Seleccionado",'red');
             return false;
         }
-
+        alert("2");
         var produccion_id = $("#produccion_id").val();
         if(produccion_id==="" || produccion_id=="0"){
             return false;
         }
-        var path = "#" //"{% url 'api:produccion_detalle' %}" + produccion_id;
-        console.log(path);
+        alert("3");
+        var path = "{% url 'api:ProduccionDetalle' %}" + produccion_id;
+        alert(path);
         $.ajax({
             type:"GET",
             url: path,
