@@ -275,7 +275,7 @@
             return false;
         }
         alert("3");
-        var path = "{% url api:/v1/ProduccionDetalle/' %}" + produccion_id;
+        var path = 'url:/api/v1/ProduccionDetalle/' + produccion_id;
         alert(path);
         $.ajax({
             type:"GET",
