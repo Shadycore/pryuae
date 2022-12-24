@@ -29,7 +29,7 @@
                         <div class="row ">
                             <div class="col-lg-2">No.</div>
                             <div class="col-lg-2">
-                                <input type="text" name="id" id="id" readonly class="form-control">
+                                <input type="text" name="id" id="id_id" readonly class="form-control">
                             </div>
                             <div class="col-lg-3">
                                 Cliente:
@@ -37,7 +37,7 @@
                             <div class="col-lg-5 form-group">
                                 <div class="row">
                                     <div class="col-lg-11 col-md-11">
-                                        <select name="cliente_id" id="cliente_id" class="form-control">
+                                        <select name="cliente_id" id="id_cliente" class="form-control">
                                             <option value="0">Seleccione Cliente</option>
                                             {% for cliente in clientes %}
                                                 <option value="{{cliente.id}}">{{cliente.identificacion }} - {{ cliente.nombre }} {{ cliente.apellido}}
@@ -61,7 +61,7 @@
                                         Fecha:
                                     </div>
                                     <div class="col-lg-5 form-group">
-                                        <input type="text" name="fechaVenta" id="fechaVenta" class="form-control form-control-user"
+                                        <input type="text" name="fechaVenta" id="id_fechaVenta" class="form-control form-control-user"
                                         value="{{ obj.fechaVenta|date:'Y-m-d' }}" readonly />
                                     </div>
                                 </div>
@@ -71,21 +71,21 @@
                                     <div class="col-lg-3">Sub Total:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" readonly
-                                        name="totalVenta" id="totalVenta">
+                                        name="totalVenta" id="id_totalVenta">
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3">porc_iva:</div>
+                                    <div class="col-lg-3">IVA:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" disabled
-                                            name="porc_iva" id="porc_iva">
+                                            name="porc_iva" id="id_porc_iva">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3">Total:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" disabled
-                                            name="total" id="total">
+                                            name="total" id="id_total">
                                     </div>
                                 </div>
                             </div>
@@ -106,12 +106,6 @@
                             <div class="col-lg-7">
                                 <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
                             </div>
-
-                            <div class="col-lg-1">
-                                <button type="button" class="btn btn-info" id="btnBuscar">
-                                    <i class="fab fa-searchengin"></i>
-                                </button>
-                            </div>
                             <!--<select name="produccion_id" id="produccion_id" class="form-control">
                                 <option value="0">Seleccione Cultivo </option>
                                 {% for prod in produccion %}
@@ -123,17 +117,22 @@
                         <div class="col-lg-1">
                             <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
                         </div>
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" id="btnBuscar">
+                                <i class="fab fa-searchengin"></i>
+                            </button>
+                        </div>
                         <!--
                         -->
                     </div>
                     <div class="row">
                         <div class="col-lg-2">Cant</div>
                         <div class="col-lg-3">
-                            <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad">
+                            <input type="number" class="form-control" name="cantidad" id="id_cantidad" placeholder="Cantidad">
                             <input type="hidden" class="form-control" name="cantidadDisponible" id="cantidadDisponible">
                         </div>
                         <div class="col-lg-4">
-                            <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" readonly>
+                            <input type="number" class="form-control" name="precio" id="id_precio" placeholder="Precio" readonly>
                         </div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="total" id="total" placeholder="porc_iva">
@@ -264,19 +263,16 @@
 
     function buscarProducto()
     {
-        alert("1");
         if ($("#cliente_id").val()==="0" || $("#cliente_id").val()===null){
             mensaje("Cliente No Seleccionado",'red');
             return false;
         }
-        alert("2");
         var produccion_id = $("#produccion_id").val();
         if(produccion_id==="" || produccion_id=="0"){
             return false;
         }
-        alert("3");
-        var path = '/api/v1/DetalleProduccion/' + produccion_id;
-        alert(path);
+
+        var path = '/api/v1/ProduccionDetalle/' + produccion_id;
         $.ajax({
             type:"GET",
             url: path,
@@ -284,7 +280,7 @@
                 console.log(r);
                 console.log(r.cantidadDisponible);
                 console.log(r.estado);
-
+                
                 if(r.cantidadDisponible<=0 || !r.estado){
                     mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
                     $("#produccion_id").val("");
