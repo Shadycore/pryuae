@@ -273,7 +273,7 @@ class Produccion(BaseFields):
     fecha = models.DateField(blank=True, null=True)
     cantidadCosecha = models.FloatField(blank=True, null=True)
     cantidadVentaCosecha = models.FloatField(default=0, blank=True, null=True)
-    cantidadDisponible = models.FloatField(default=0, blank=True, null=True) 
+    #cantidadDisponible = models.FloatField(default=0, blank=True, null=True) 
     precio = models.FloatField(blank=True, null=True, default=0)
 
 
@@ -285,7 +285,7 @@ class Produccion(BaseFields):
         self.cantidadCosecha = self.cantidadCosecha
         self.estado = self.estado
         self.precio  = self.precio
-        #self.cantidadVentaCosecha = (self.cantidadVentaCosecha + self.cantidadVentaCosecha)
+        self.cantidadVentaCosecha = 0 #(self.cantidadVentaCosecha + self.cantidadVentaCosecha)
         #self.cantidadDisponible = (self.cantidadCosecha - self.cantidadDisponible)
         super(Produccion,self).save()
 
@@ -347,16 +347,16 @@ class RegistroInsumo(BaseFields):
         db_table = 'registro_insumo'
 
 # - Parámetro - #
-class Parametro():
+class Parametro(BaseFields):
     nombreParametro = models.CharField(max_length=50, blank=False, null=False)
-    valorPrametro = models.CharField(max_length=25, blank=False, null=False)
+    valorParametro = models.CharField(max_length=25, blank=False, null=False)
     
     def __str__(self):
-        return "{}: {} - {}".format(self.id, self.nombreParametro, self.valorPrametro)
+        return "{}: {} - {}".format(self.id, self.nombreParametro, self.valorParametro)
 
     def save (self):
-        self.nombreParametro = self.nombreParametro
-        self.valorPrametro = self.valorPrametro
+        self.nombreParametro = self.nombreParametro.capitalize()
+        self.valorPrametro = self.valorParametro
         super(Parametro,self).save()
 
     class Meta:

@@ -1,0 +1,67 @@
+{% extends 'mnt/base_form.html' %}
+
+{% block mensaje_editar %}
+    <h4 class="app-card-title text-secondary text-uppercase mb-1"> 
+        Actualizar  información de Parámetro
+    </h4>
+{% endblock mensaje_editar %}                 
+
+{% block mensaje_nuevo %}                     
+    <h4 class="app-card-title text-primary text-uppercase mb-1"> 
+        Registro de Nuevo Parámetro
+    </h4>
+{% endblock mensaje_nuevo %}      
+
+{% block insert_update %}
+<div class="row">
+    <div class="col-2">
+        <label for="id_nombreParametro">Nombre Parámetro: </label>
+    </div>
+    <div class="col-6">
+        <div class="input-group">
+			{{ form.nombreParametro }}
+        </div>
+    </div>
+</div>  <br/>
+<div class="row">
+    <div class="col-2">
+        <label for="id_valorParmetro">Valor Parámetro: </label>
+    </div>
+    <div class="col-6">
+        <div class="input-group">
+			{{ form.valorParametro }}
+        </div>
+    </div>
+</div>  <br/>
+{% endblock insert_update %}
+{% block msj_estado %}
+
+{% endblock msj_estado %}
+
+{% block url_list %}
+<a href="{% url 'mnt:parametro_list' %}" 
+    class="btn btn-danger">
+    <span class="fa fa-undo"></span>Cancelar</a>
+{% endblock url_list %}
+
+{% block js_page %}
+  	<script type="text/javascript">
+        $(function(){
+            $("#id_fecha").datetimepicker({
+                format: 'd/m/Y',
+                timepicker:false
+            });
+        });
+	</script>
+    <script type="text/javascript">
+        $(function(){
+        var campos = $('input');
+            
+        campos.each(function(index, campo){
+            var valor = $(campo).val().trim();
+            
+            $(campo).val(valor);
+        })
+        });
+    </script>
+{% endblock %}

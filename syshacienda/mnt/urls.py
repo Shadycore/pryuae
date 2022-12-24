@@ -12,7 +12,8 @@ from mnt.views import CultivoView, CultivoNew,CultivoEdit, \
                     RegistroEmpleadoView, RegistroEmpleadoNew, RegistroEmpleadoEdit, \
                     ProduccionView, ProduccionNew, ProduccionEdit, \
                     DescripcionLoteView, DescripcionLoteNew, DescripcionLoteEdit, \
-                    RegistroInsumoView, RegistroInsumoNew, RegistroInsumoEdit
+                    RegistroInsumoView, RegistroInsumoNew, RegistroInsumoEdit, \
+                    ParametroView, ParametroNew, ParametroEdit
 
 urlpatterns = [
     #Cultivos
@@ -84,5 +85,10 @@ urlpatterns = [
     path('RegistroInsumos/', RegistroInsumoView.as_view(template_name='mnt/registroinsumo_list.html'), name='registroinsumo_list'),
     path('RegistroInsumo/new', RegistroInsumoNew.as_view(template_name='mnt/registroinsumo_form.html'), name='registroinsumo_new'),
     path('RegistroInsumo/edit/<int:pk>', RegistroInsumoEdit.as_view(template_name='mnt/registroinsumo_form.html'), name='registroinsumo_edit'),
+
+    #Parámetro
+    path('Parametros/', ParametroView.as_view(template_name='mnt/parametro_list.html'), name='parametro_list'),
+    path('Parametro/new', ParametroNew.as_view(template_name='mnt/parametro_form.html'), name='parametro_new'),
+    path('Parametro/edit/<int:pk>', ParametroEdit.as_view(template_name='mnt/parametro_form.html'), name='parametro_edit'),
 
 ]

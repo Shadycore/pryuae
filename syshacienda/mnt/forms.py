@@ -18,7 +18,7 @@ from mnt.models import Cultivo, \
                     RegistroEmpleado, \
                     Produccion, \
                     DescripcionLote, \
-                    RegistroInsumo
+                    RegistroInsumo, Parametro
 
 class DateTimeInput(forms.DateTimeInput):
     input_type = 'datetime-local'
@@ -543,3 +543,23 @@ class RegistroInsumoForm(forms.ModelForm):
             })
         self.fields['insumo'].empty_label =  "Seleccione el insumo"
         self.fields['cultivo'].empty_label =  "Seleccione el cultivo"
+
+class ParametroForm(forms.ModelForm):
+    class Meta:
+        model = Parametro
+        fields = ['nombreParametro',
+                    'valorParametro']
+        labels = {
+                'nombreParametro': 'Nombre del parámetro',
+                'valorParametro': 'Ingrese valor del parámetro'
+                }
+
+        Widget = {'nombreParametro': forms.TextInput,
+                'valorParametro': forms.TextInput} 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })

@@ -16,7 +16,8 @@ from mnt.models import Cultivo, \
                     RegistroEmpleado, \
                     Produccion, \
                     DescripcionLote, \
-                    RegistroInsumo
+                    RegistroInsumo, \
+                    Parametro
 
 from mnt.forms import CultivoForm, \
                     InsumoForm, \
@@ -31,7 +32,8 @@ from mnt.forms import CultivoForm, \
                     RegistroEmpleadoForm, \
                     ProduccionForm, \
                     DescripcionLoteForm, \
-                    RegistroInsumoForm
+                    RegistroInsumoForm, \
+                    ParametroForm
 
 ## Cultivo ------------------------------------------------------------
 class CultivoView(LoginRequiredMixin, generic.ListView):
@@ -477,4 +479,34 @@ class RegistroInsumoEdit(LoginRequiredMixin, generic.UpdateView):
 
     def form_valid(self, form):
         form.instance.usuarioModificacion = self.request.user.id
+        return super().form_valid(form)
+
+
+## Parametro  ------------------------------------------------------------
+class ParametroView(LoginRequiredMixin, generic.ListView):
+    model = Parametro
+    template_name="mnt/parametro_list.html"
+    context_object_name = "obj"
+    login_url = "baseapp:login"
+
+class ParametroNew(LoginRequiredMixin, generic.CreateView):
+    model = Parametro
+    template_name = "mnt/parametro_form.html"
+    context_object_name =  "obj"
+    form_class = ParametroForm 
+    success_url = reverse_lazy("mnt:parametro_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+class ParametroEdit(LoginRequiredMixin, generic.UpdateView):
+    model = Parametro
+    template_name = "mnt/parametro_form.html"
+    context_object_name =  "obj"
+    form_class = ParametroForm 
+    success_url = reverse_lazy("mnt:parametro_list")
+    login_url = "baseapp:login"
+
+    def form_valid(self, form):
         return super().form_valid(form)

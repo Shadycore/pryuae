@@ -17,6 +17,7 @@
   <th>Insumo</th>
   <th>Fecha</th>
   <th>Cantidad Cosecha</th>
+  <th>Precio venta</th>
   <!--<th>Estado</th> -->
   <th class="all">Acciones</th>
 </tr>
@@ -41,6 +42,7 @@
       <td width="240px">{{ item.insumo }}</td>
       <td width="240px">{{ item.fecha | date:"d/m/Y" }}</td>
       <td width="240px">{{ item.cantidadCosecha }}</td>
+      <td width="240px">{{ item.precio }}</td>
       <!--<td> {% if item.estado %}
               Activo
             {% else %} 

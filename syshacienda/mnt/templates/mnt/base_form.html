@@ -64,9 +64,12 @@
                     {% block insert_update %}
 
                     {% endblock insert_update %}
+                    {% block msj_estado %}
                     <div class="row">
                         <label class="badge bg-warning h1">Si desactiva el [ Estado ], el registro se guardará como inactivo/eliminado.</label>
                     </div>
+                    {% endblock msj_estado %}
+
                     <!-- {{ form.as_p }} -->
                     <div class="dropdown-divider"></div>
                     <br/>
