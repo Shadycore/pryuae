@@ -69,22 +69,21 @@
         </div>
     </div>
 </div>  <br/>
-
-    <div class="row">
-        <div class="col-2">
-            <label for="id_estado">Estado</label>
-        </div>
-        <div class="form-group col-10">
-            <input type="checkbox" name="estado" 
-                class="form-check-input" 
-                id="id_estado" width="60px"
-                    {% if obj %} 
-                        {% if obj.estado %} checked {% else %} null {% endif %} 
-                    {% else %} 
-                        checked 
-                    {% endif %} >
-        </div>
+<div class="row">
+    <div class="col-2">
+        <label for="id_estado">Estado</label>
     </div>
+    <div class="form-group col-10">
+        <input type="checkbox" name="estado" 
+            class="form-check-input" 
+            id="id_estado" width="60px"
+                {% if obj %} 
+                    {% if obj.estado %} checked {% else %} null {% endif %} 
+                {% else %} 
+                    checked 
+                {% endif %} >
+    </div>
+</div>
 {% endblock insert_update %}
 
 {% block url_list %}

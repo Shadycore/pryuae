@@ -274,3 +274,4 @@ syshacienda/static/admin/js/vendor/select2/i18n/zh-TW.js
 syshacienda/static/admin/js/vendor/xregexp/LICENSE.txt
 syshacienda/static/admin/js/vendor/xregexp/xregexp.js
 syshacienda/static/admin/js/vendor/xregexp/xregexp.min.js
+syshacienda/syshacienda/settings.py

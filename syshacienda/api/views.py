@@ -18,7 +18,7 @@ class ProduccionList(APIView):
 
 class ProduccionDetalle(APIView):
     def get(self,request, codigo):
-        prod = get_object_or_404(Produccion,Q(id=codigo))
+        prod = get_object_or_404(Produccion,Q(id=codigo)|Q((cantidadCosecha - cantidadVentaCosecha)>0))
         data = ProduccionSerializer(prod).data
         return Response(data)
 

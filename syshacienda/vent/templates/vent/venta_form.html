@@ -29,7 +29,7 @@
                         <div class="row ">
                             <div class="col-lg-2">No.</div>
                             <div class="col-lg-2">
-                                <input type="text" name="id" id="id_id" readonly class="form-control">
+                                <input type="text" name="id" id="id" readonly class="form-control">
                             </div>
                             <div class="col-lg-3">
                                 Cliente:
@@ -37,7 +37,7 @@
                             <div class="col-lg-5 form-group">
                                 <div class="row">
                                     <div class="col-lg-11 col-md-11">
-                                        <select name="cliente_id" id="id_cliente" class="form-control">
+                                        <select name="id_cliente" id="id_cliente" class="form-control">
                                             <option value="0">Seleccione Cliente</option>
                                             {% for cliente in clientes %}
                                                 <option value="{{cliente.id}}">{{cliente.identificacion }} - {{ cliente.nombre }} {{ cliente.apellido}}
@@ -61,7 +61,7 @@
                                         Fecha:
                                     </div>
                                     <div class="col-lg-5 form-group">
-                                        <input type="text" name="fechaVenta" id="id_fechaVenta" class="form-control form-control-user"
+                                        <input type="text" name="id_fechaVenta" id="id_fechaVenta" class="form-control form-control-user"
                                         value="{{ obj.fechaVenta|date:'Y-m-d' }}" readonly />
                                     </div>
                                 </div>
@@ -71,14 +71,14 @@
                                     <div class="col-lg-3">Sub Total:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" readonly
-                                        name="totalVenta" id="id_totalVenta">
+                                        name="id_totalVenta" id="id_totalVenta">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3">IVA:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" disabled
-                                            name="porc_iva" id="id_porc_iva">
+                                            name="id_porc_iva" id="id_porc_iva">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -135,13 +135,13 @@
                             <input type="number" class="form-control" name="precio" id="id_precio" placeholder="Precio" readonly>
                         </div>
                         <div class="col-lg-3">
-                            <input type="number" class="form-control" name="total" id="total" placeholder="porc_iva">
+                            <input type="number" class="form-control" name="total" id="total" placeholder="id_porc_iva">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col-lg-9 text-right">Sub Total</div>
                         <div class="col-lg-3">
-                            <input type="number" class="form-control" name="totalVenta_detalle" id="totalVenta_detalle" placeholder="Sub Total"
+                            <input type="number" class="form-control" name="id_totalVenta_detalle" id="id_totalVenta_detalle" placeholder="Sub Total"
                              value="0.00" disabled>
                         </div>
                     </div>
@@ -249,21 +249,21 @@
         $('#precio').val(prec);
         $('#total').val(desc);
 
-        $('#totalVenta_detalle').val(stotal);
+        $('#id_totalVenta_detalle').val(stotal);
         $('#total_detalle').val(total);
 
         console.log("Cantidad " + cant);
         console.log("prec " + prec);
         console.log("desc " + desc);
 
-        console.log("totalVenta_detalle " + $('#totalVenta_detalle').val());
+        console.log("id_totalVenta_detalle " + $('#id_totalVenta_detalle').val());
         console.log("total_detalle " + $('#total_detalle').val());
 
     }
 
     function buscarProducto()
     {
-        if ($("#cliente_id").val()==="0" || $("#cliente_id").val()===null){
+        if ($("#id_cliente").val()==="0" || $("#id_cliente").val()===null){
             mensaje("Cliente No Seleccionado",'red');
             return false;
         }
@@ -320,7 +320,7 @@
 
     $(function () {
         $("#sidebarToggle").click();
-        $('#cliente_id').select2({
+        $('#id_cliente').select2({
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
@@ -343,15 +343,15 @@
         });
 
         $("#id").val("{{ obj.id }}");
-        $("#cliente_id").val("{{ obj.cliente.id }}").change();
-        $("#fechaVenta").val("{{ obj.fechaVenta|date:'Y-m-d' }}");
-        $("#totalVenta").val("{{ obj.totalVenta }}");
-        $("#porc_iva").val("{{ obj.porc_iva }}");
+        $("#id_cliente").val("{{ obj.cliente.id }}").change();
+        $("#id_fechaVenta").val("{{ obj.fechaVenta|date:'Y-m-d' }}");
+        $("#id_totalVenta").val("{{ obj.totalVenta }}");
+        $("#id_porc_iva").val("{{ obj.porc_iva }}");
         $("#total").val("{{ obj.total }}");
 
-        // $('#cliente_id').select2().select2('val', $('#cliente_id option:eq(1)').val());
+        // $('#id_cliente').select2().select2('val', $('#id_cliente option:eq(1)').val());
         // https://select2.org/programmatic-control/add-select-clear-items
-        $("#cliente_id").data('select2').trigger('select', {
+        $("#id_cliente").data('select2').trigger('select', {
             data: {"id": 1}
         });
 
@@ -443,12 +443,12 @@
             url:url,
             success: function(data){
                 console.log(data)
-                $("#cliente_id").find('option').remove()
-                $("#cliente_id").append('<option value="0">Seleccione Cliente</option>')
+                $("#id_cliente").find('option').remove()
+                $("#id_cliente").append('<option value="0">Seleccione Cliente</option>')
                 for(var i=0;i<data.length;i++){
-                    $("#cliente_id").append('<option value="${data[i].id}">${data[i].nombres} ${data[i].apellidos} </option>')
+                    $("#id_cliente").append('<option value="${data[i].id}">${data[i].nombres} ${data[i].apellidos} </option>')
                 }
-                $("#cliente_id").val(a).change()
+                $("#id_cliente").val(a).change()
             },
             error: function(data){
                 console.log(data)

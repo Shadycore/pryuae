@@ -37,7 +37,7 @@
                                     <td>{{ item.insumo }}</td>
                                     <td>{{item.cantidadCosecha}}</td>
                                     <td>{{item.cantidadVentaCosecha}}</td>
-                                    <td>{{item.cantidadDisponible}}</td>
+                                    <td>{{item.cantidadCosecha - item.cantidadVentaCosecha }}</td>
                                     <td>{{item.precio}}</td>
                                     <td>
                                         {% if item.existencia > 0 and item.estado %}
