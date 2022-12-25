@@ -78,7 +78,7 @@
                                     <div class="col-lg-3">IVA:</div>
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control text-right" value="0.00" disabled
-                                            name="id_porc_iva" id="id_porc_iva">
+                                            name="id_porc_iva" id="id_porc_iva" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -101,12 +101,12 @@
                         <div class="col-lg-2">Cultivo</div>
                         <div class="col-lg-7">
                             <div class="col-lg-3">
-                                <input type="text" class="form-control" name="produccion_id" id="produccion_id" placeholder="Cód. Producc..">
+                                <input type="text" class="form-control" name="id_produccion" id="id_produccion" placeholder="Cód. Producc..">
                             </div>
-                            <div class="col-lg-7">
-                                <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" disabled>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" name="id_cultivo" id="id_cultivo" placeholder="Descripción" disabled>
                             </div>
-                            <!--<select name="produccion_id" id="produccion_id" class="form-control">
+                            <!--<select name="id_produccion" id="id_produccion" class="form-control">
                                 <option value="0">Seleccione Cultivo </option>
                                 {% for prod in produccion %}
                                     <option value="{{prod.id}}"> Cultivo: {{ prod.cultivo.nombre }} | Insumo: {{ prod.insumo }} | CantidadDisponible: {{ prod.cantidadDisponible }}
@@ -128,11 +128,11 @@
                     <div class="row">
                         <div class="col-lg-2">Cant</div>
                         <div class="col-lg-3">
-                            <input type="number" class="form-control" name="cantidad" id="id_cantidad" placeholder="Cantidad">
+                            <input type="number" class="form-control" name="id_cantidad" id="id_cantidad" placeholder="Cantidad">
                             <input type="hidden" class="form-control" name="cantidadDisponible" id="cantidadDisponible">
                         </div>
                         <div class="col-lg-4">
-                            <input type="number" class="form-control" name="precio" id="id_precio" placeholder="Precio" readonly>
+                            <input type="number" class="form-control" name="id_precio" id="id_precio" placeholder="Precio" readonly>
                         </div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="total" id="total" placeholder="id_porc_iva">
@@ -171,9 +171,9 @@
                         >
                         <thead>
                             <th data-sortable="true" data-field="id">Id.</th>
-                            <th data-sortable="true" data-field="produccion_id">Código</th>
-                            <th data-sortable="true" data-field="descripcion">Descripción</th>
-                            <th data-field="cantidad">Cant</th>
+                            <th data-sortable="true" data-field="id_produccion">Código</th>
+                            <th data-sortable="true" data-field="id_cultivo">Descripción</th>
+                            <th data-field="id_cantidad">Cant</th>
                             <th data-field="subtotal">Sub Total</th>
                             <th data-field="porc_iva">Desc.</th>
                             <th data-field="total">Total</th>
@@ -183,8 +183,8 @@
                             {% for item in det %}
                             <tr>
                                 <td>{{ item.id }}</td>
-                                <td>{{ item.producto }}</td>
-                                <td>{{ item.producto.descripcion }}</td>
+                                <td>{{ item.produccion }}</td>
+                                <td>{{ item.cultivo }}</td>
                                 <td>{{ item.cantidad }}</td>
                                 <td>{{ item.totalVenta }}</td>
                                 <td>{{ item.porc_iva }}</td>
@@ -211,8 +211,8 @@
 {% block js_tablas %}
 
 	<!-- Core plugin JavaScript-->
-	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-    <script src="{% static 'assets/vendor/js/jquery.chained.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/js/jquery.chained.min.js'%}"></script>
 
 	<!-- Page level custom scripts -->
     <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
@@ -228,11 +228,11 @@
     {
         var cant,prec,desc,stotal,total;
 
-        cant = $("#cantidad").val();
+        cant = $("#id_cantidad").val();
         cant = cant==="" ? 0 : +cant;
         cant = cant<0 ? 0 : cant;
 
-        prec =$('#precio').val();
+        prec =$('#id_precio').val();
         prec = prec==="" ? 0 : +prec;
         prec = prec<0 ? 0 : prec;
 
@@ -245,8 +245,8 @@
         stotal = cant * prec;
         total  = stotal - desc;
 
-        $('#cantidad').val(cant);
-        $('#precio').val(prec);
+        $('#id_cantidad').val(cant);
+        $('#id_precio').val(prec);
         $('#total').val(desc);
 
         $('#id_totalVenta_detalle').val(stotal);
@@ -267,34 +267,34 @@
             mensaje("Cliente No Seleccionado",'red');
             return false;
         }
-        var produccion_id = $("#produccion_id").val();
-        if(produccion_id==="" || produccion_id=="0"){
+        var id_produccion = $("#id_produccion").val();
+        if(id_produccion==="" || id_produccion=="0"){
             return false;
         }
 
-        var path = '/api/v1/ProduccionDetalle/' + produccion_id;
+        var path = '/api/v1/ProduccionDetalle/' + id_produccion;
         $.ajax({
             type:"GET",
             url: path,
             success: function(r){
+                var  cantidadDisponible = r.cantidadCosechada - r.cantidadVentaCosecha;
                 console.log(r);
-                console.log(r.cantidadDisponible);
+                console.log( r.cantidadCosechada - r.cantidadVentaCosecha);
                 console.log(r.estado);
-                
                 if(r.cantidadDisponible<=0 || !r.estado){
                     mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
-                    $("#produccion_id").val("");
-                    $("#descripcion").val("");
-                    $("#precio").val("0.00");
-                    $("#produccion_id").focus();
+                    $("#id_produccion").val("");
+                    $("#id_cultivo").val("");
+                    $("#id_precio").val("0.00");
+                    $("#id_produccion").focus();
                     return false;
                 }
 
-                $("#produccion_id").val(r.produccion_id);
-                $("#descripcion").val(r.cultivo);
-                $("#precio").val(r.precio);
-                $("#cantidadDisponible").val(r.cantidadDisponible);
-                $("#cantidad").focus();
+                $("#id_produccion").val(r.produccion_id);
+                $("#id_cultivo").val(r.cultivo);
+                $("#id_precio").val(r.precio);
+                $("#cantidadDisponible").val(cantidadDisponible) ;
+                $("#id_cantidad").focus();
 
             },
             error: function(a,b,c){
@@ -306,11 +306,11 @@
                 // a.responseText["detail"]
                 // mensaje(c,'red');
                 if(a.status==404){
-                    mensaje("Producto -" + produccion_id + "- No Encontrado o No Existe",'red');
-                    $("#produccion_id").val("");
-                    $("#descripcion").val("");
-                    $("#precio").val("0.00");
-                    $("#produccion_id").focus();
+                    mensaje("Producto -" + id_produccion + "- No Encontrado o No Existe",'red');
+                    $("#id_produccion").val("");
+                    $("#id_cultivo").val("");
+                    $("#id_precio").val("0.00");
+                    $("#id_produccion").focus();
                 }
 
             }
@@ -324,21 +324,22 @@
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
-        /*
-        $('#produccion_id').select2({
-            placeholder: "Seleccione Cultivo",
-            allowClear: true
-        });
-        */
 
-        $("#produccion_id").keypress(function(e){
+        $("#btnBuscar").click(function(e){
+            if ($("#id_cliente").val()==="0"){
+                mensaje("Cliente No Seleccionado",'red');
+                return false;
+            }
+            abrir_modal("{% url 'vent:venta_busca_produccion' %}");
+        });
+        $("#id_produccion").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();
                 buscarProducto();
             }
         });
 
-        $('#cantidad,#precio,#total').change(function(){
+        $('#id_cantidad,#id_precio,#total').change(function(){
             calcular_detalle();
         });
 
@@ -425,7 +426,7 @@
 
     $("form").submit(function(e){
         var cantidadDisponible = +$("#cantidadDisponible").val();
-        var cantidad = +$("#cantidad").val();
+        var cantidad = +$("#id_cantidad").val();
 
         if(cantidad>cantidadDisponible){
             mensaje("No hay cantidadDisponible suficiente");

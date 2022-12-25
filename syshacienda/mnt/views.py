@@ -498,6 +498,7 @@ class ParametroNew(LoginRequiredMixin, generic.CreateView):
     login_url = "baseapp:login"
 
     def form_valid(self, form):
+        form.instance.usuarioCreacion = self.request.user
         return super().form_valid(form)
 
 class ParametroEdit(LoginRequiredMixin, generic.UpdateView):
@@ -509,4 +510,5 @@ class ParametroEdit(LoginRequiredMixin, generic.UpdateView):
     login_url = "baseapp:login"
 
     def form_valid(self, form):
+        form.instance.usuarioModificacion = self.request.user.id
         return super().form_valid(form)

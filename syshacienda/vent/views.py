@@ -12,6 +12,7 @@ from django.contrib import messages
 from vent.models import Venta, DetalleVenta
 from vent.forms import VentaForm,DetalleVentaForm
 from mnt.models import Cliente, Cosecha, Produccion, Cultivo
+from mnt.views import ProduccionView
 
 ## Venta  ------------------------------------------------------------
 class VentaView(LoginRequiredMixin, generic.ListView):
@@ -181,3 +182,6 @@ def Ventas(request, id=None):
 
         return redirect("vent:venta_edit",id=id)
     return render(request,template_name,contexto)
+
+class ProduccionView(ProduccionView):
+    template_name="vent/venta_busca_produccion.html" 

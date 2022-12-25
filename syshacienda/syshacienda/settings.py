@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import mimetypes
 from django.conf import ENVIRONMENT_VARIABLE
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 mimetypes.add_type("text/javascript", ".js", True)
 BASE_DIR = Path(__file__).resolve().parent.parent
