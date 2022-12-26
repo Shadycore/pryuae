@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-v$g592%*cac^5qnbc_d=ca3jfkwe)f(wrtboqb46*xk0=6du=9
 
 ENVIRONMENT_VARIABLE = 'dev' #'production'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1','*']
 
 DEBUG = True
 if ENVIRONMENT_VARIABLE != 'production':
@@ -159,8 +159,8 @@ MEDIA_ROOT = (os.path.join(BASE_DIR,'media'),)
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = (os.path.join(BASE_DIR,'static'),)
-STATIC_ROOT = (os.path.join(BASE_DIR,'static'),)
+STATICFILES_DIR = os.path.join(BASE_DIR,'static')
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 #STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 

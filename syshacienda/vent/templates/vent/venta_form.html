@@ -324,14 +324,15 @@
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
-
+        
         $("#btnBuscar").click(function(e){
             if ($("#id_cliente").val()==="0"){
                 mensaje("Cliente No Seleccionado",'red');
                 return false;
             }
-            abrir_modal("{% url 'vent:venta_busca_produccion' %}");
+            abrir_modal("#");
         });
+        
         $("#id_produccion").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();

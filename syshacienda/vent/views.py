@@ -134,7 +134,11 @@ def Ventas(request, id=None):
             }
 
         detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
-        contexto = { "venta":vent_cabecera,"det":detalle,"clientes":clientes, "produccion":produccion, "iva": iva }
+        contexto = { "venta":vent_cabecera,
+                     "det":detalle,
+                    "clientes":clientes,
+                    "produccion":produccion, 
+                    "iva": iva }
         return render(request,template_name,contexto)
 
     if request.method == "POST":
