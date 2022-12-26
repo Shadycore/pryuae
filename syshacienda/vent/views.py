@@ -11,8 +11,8 @@ from django.contrib import messages
 
 from vent.models import Venta, DetalleVenta
 from vent.forms import VentaForm,DetalleVentaForm
-from mnt.models import Cliente, Cosecha, Produccion, Cultivo
-from mnt.views import ProduccionView
+from mnt.models import Cliente, Cosecha, Produccion, Cultivo, Parametro
+from mnt.views import ProduccionView, ParametroView
 
 ## Venta  ------------------------------------------------------------
 class VentaView(LoginRequiredMixin, generic.ListView):
@@ -97,6 +97,7 @@ def Ventas(request, id=None):
     clientes = Cliente.objects.filter(estado=True)
     cultivos = Cultivo.objects.filter(estado=True)
     produccion = Produccion.objects.filter(estado=True)
+    iva = Parametro.objects.filter(nombreParametro='IVA')
     contexto = {}
 
     if request.method == "GET":
@@ -133,7 +134,7 @@ def Ventas(request, id=None):
             }
 
         detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
-        contexto = { "venta":vent_cabecera,"det":detalle,"clientes":clientes, "produccion":produccion }
+        contexto = { "venta":vent_cabecera,"det":detalle,"clientes":clientes, "produccion":produccion, "iva": iva }
         return render(request,template_name,contexto)
 
     if request.method == "POST":

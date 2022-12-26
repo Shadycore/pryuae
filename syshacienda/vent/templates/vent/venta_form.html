@@ -77,8 +77,8 @@
                                 <div class="row">
                                     <div class="col-lg-3">IVA:</div>
                                     <div class="col-lg-8">
-                                        <input type="number" class="form-control text-right" value="0.00" disabled
-                                            name="id_porc_iva" id="id_porc_iva" readonly>
+                                        <input type="number" class="form-control text-right" value="{{ iva.valorParametro }}" disabled
+                                            name="id_porc_iva" id="id_porc_iva" disabled>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -355,6 +355,8 @@
         $("#id_cliente").data('select2').trigger('select', {
             data: {"id": 1}
         });
+
+        
 
     });
 

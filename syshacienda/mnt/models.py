@@ -352,10 +352,10 @@ class Parametro(BaseFields):
     valorParametro = models.CharField(max_length=25, blank=False, null=False)
     
     def __str__(self):
-        return "{}: {} - {}".format(self.id, self.nombreParametro, self.valorParametro)
+        return "{}: {} - {}".format(self.id, self.nombreParametro.upper(), self.valorParametro)
 
     def save (self):
-        self.nombreParametro = self.nombreParametro.capitalize()
+        self.nombreParametro = self.nombreParametro.upper()
         self.valorPrametro = self.valorParametro
         super(Parametro,self).save()
 
