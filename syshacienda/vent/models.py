@@ -14,8 +14,8 @@ class Venta(BaseFields):
     fechaVenta = models.DateTimeField(auto_now_add=True)
     subTotal = models.FloatField(blank=True, null=True, default=0)
     totalVenta = models.FloatField(blank=True, null=True, default=0)
-    porcIva    = models.FloatField(blank=True, null=True)
-    totalIva = models.FloatField(blank=True, null=True)
+    porcIva    = models.FloatField(blank=True, null=True, default=0)
+    totalIva = models.FloatField(blank=True, null=True, default=0)
 
     def __str__(self):
         return '{}'.format(self.id)
