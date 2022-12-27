@@ -172,7 +172,7 @@
                         <thead>
                             <th data-sortable="true" data-field="id">Id.</th>
                             <th data-sortable="true" data-field="id_produccion">Código</th>
-                            <th data-sortable="true" data-field="id_cultivo">Descripción</th>
+                            <th data-sortable="true" data-field="id_cultivo">Cultivo</th>
                             <th data-field="id_cantidad">Cant</th>
                             <th data-field="subtotal">Sub Total</th>
                             <th data-field="porc_iva">Desc.</th>
@@ -184,7 +184,7 @@
                             <tr>
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.produccion }}</td>
-                                <td>{{ item.cultivo }}</td>
+                                <td>{{ item.cultivo.nombre }}</td>
                                 <td>{{ item.cantidad }}</td>
                                 <td>{{ item.totalVenta }}</td>
                                 <td>{{ item.porc_iva }}</td>
@@ -281,6 +281,10 @@
                 console.log(r);
                 console.log( r.cantidadCosechada - r.cantidadVentaCosecha);
                 console.log(r.estado);
+                alert(r);
+                alert( r.cantidadCosechada);
+                alert(r.cantidadVentaCosecha);
+                
                 if(r.cantidadDisponible<=0 || !r.estado){
                     mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
                     $("#id_produccion").val("");
@@ -291,7 +295,7 @@
                 }
 
                 $("#id_produccion").val(r.produccion_id);
-                $("#id_cultivo").val(r.cultivo);
+                $("#id_cultivo").val(r.cultivo.nombre);
                 $("#id_precio").val(r.precio);
                 $("#cantidadDisponible").val(cantidadDisponible) ;
                 $("#id_cantidad").focus();
@@ -330,7 +334,7 @@
                 mensaje("Cliente No Seleccionado",'red');
                 return false;
             }
-            abrir_modal("#");
+            abrir_modal("/vent/venta_busca_produccion");
         });
         
         $("#id_produccion").keypress(function(e){
