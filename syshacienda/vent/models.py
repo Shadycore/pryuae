@@ -22,9 +22,9 @@ class Venta(BaseFields):
 
     def save (self):
         self.totalVenta = float(self.totalVenta)
-        self.procIva = float(self.porcIva)
-        self.subTotal = float(self.subtotal)
-        self.totalIva = self.totalIva
+        self.porcIva = float(self.porcIva)
+        self.subTotal = float(self.subTotal)
+        self.totalIva = float(self.totalIva)
         super(Venta,self).save() 
        
     class Meta:
