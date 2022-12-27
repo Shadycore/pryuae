@@ -270,10 +270,12 @@
         }
 
         var path = '/api/v1/ProduccionDetalle/' + id_produccion;
+        mensaje(path,'orange')
         $.ajax({
             type:"GET",
             url: path,
             success: function(r){
+                mensaje("ok",'orange')
                 var  cantidadDisponible = (r.cantidadCosechada - r.cantidadVentaCosecha);
                 console.log(r);
                 console.log( r.cantidadCosechada - r.cantidadVentaCosecha);
@@ -299,6 +301,7 @@
 
             },
             error: function(a,b,c){
+                mensaje("err",'orange')
                 console.log(a);
                 // console.log(b);
                 // console.log(c);
