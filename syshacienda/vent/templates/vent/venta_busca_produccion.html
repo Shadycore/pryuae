@@ -40,9 +40,9 @@
                                     <td>{{item.cantidadCosecha - item.cantidadVentaCosecha }}</td>
                                     <td>{{item.precio}}</td>
                                     <td>
-                                        {% if item.existencia > 0 and item.estado %}
+                                        {% if {{item.cantidadCosecha - item.cantidadVentaCosecha }} > 0 and item.estado %}
                                         <button class="btn btn-warning btn-circle" id="btnSelect" 
-                                        onclick="seleccionarProducto({{item.id}},'{{item.codigo}}','{{item.descripcion}}',{{item.precio}})">
+                                        onclick="seleccionarProducto({{item.id}},'{{item.cultivo.nombre}}',{{item.precio}})">
                                             <i class="far fa-hand-pointer"></i>
                                         </button>
                                         {% endif %}
