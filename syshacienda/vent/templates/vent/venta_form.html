@@ -331,7 +331,7 @@
                 mensaje("Cliente No Seleccionado",'red');
                 return false;
             }
-            abrir_modal("url:/vent/venta_busca_produccion");
+            abrir_modal("{% url 'vent:venta_busca_produccion' %}");
         });
         
         $("#id_produccion").keypress(function(e){
@@ -341,7 +341,7 @@
             }
         });
 
-        $('#id_cantidad,#id_precio,#total').change(function(){
+        $('#id_cantidad,#id_precio,#id_total').change(function(){
             calcular_detalle();
         });
 
@@ -433,7 +433,7 @@
         var cantidad = +$("#id_cantidad").val();
 
         if(cantidad>cantidadDisponible){
-            mensaje("No hay cantidadDisponible suficiente");
+            mensaje("No hay cantidad Disponible suficiente (" + cantidadDisponible + ")");
             return false;
         }
     })
