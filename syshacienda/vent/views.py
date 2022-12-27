@@ -20,85 +20,22 @@ class VentaView(LoginRequiredMixin, generic.ListView):
     template_name="vent/venta_list.html"
     context_object_name = "obj"
     login_url = "baseapp:login"
-##  Venta New
-class VentaNew(LoginRequiredMixin, generic.CreateView):
-    model = Venta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = VentaForm
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
 
-    def form_valid(self, form):
-        form.instance.usuarioCreacion = self.request.user
-        return super().form_valid(form)
-##
+    def get_queryset(self):
+        return super().get_queryset()
+        #return Venta.objects.all()
 
-class VentaEdit(LoginRequiredMixin, generic.UpdateView):
-    model = Venta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = VentaForm
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioModificacion = self.request.user.id
-        return super().form_valid(form)
-
-## DetalleVenta  ------------------------------------------------------------
-class DetalleVentaView(LoginRequiredMixin, generic.ListView):
-    model = DetalleVenta
-    template_name="vent/venta_list.html"
-    context_object_name = "obj"
-    login_url = "baseapp:login"
-
-class DetalleVentaNew(LoginRequiredMixin, generic.CreateView):
-    model = DetalleVenta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = DetalleVentaForm
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioCreacion = self.request.user
-        return super().form_valid(form)
-
-class DetalleVentaEdit(LoginRequiredMixin, generic.UpdateView):
-    model = DetalleVenta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = DetalleVentaForm
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioModificacion = self.request.user.id
-        return super().form_valid(form)
-
-class DetalleVentaDel(LoginRequiredMixin, generic.DeleteView):
-    model = DetalleVenta
-    template_name = "vent/venta_form.html"
-    context_object_name =  "obj"
-    form_class = DetalleVentaForm
-    success_url = reverse_lazy("vent:venta_list")
-    login_url = "baseapp:login"
-
-    def form_valid(self, form):
-        form.instance.usuarioModificacion = self.request.user.id
-        return super().form_valid(form)
 
 
 @login_required(login_url='/login/',)
 def Ventas(request, id=None):
     template_name = "vent/venta_form.html"
-    detalle =  {}
     clientes = Cliente.objects.filter(estado=True)
     cultivos = Cultivo.objects.filter(estado=True)
     produccion = Produccion.objects.filter(estado=True)
     iva = Parametro.objects.filter(nombreParametro='IVA')
     contexto = {}
+    detalle =  {}
 
     if request.method == "GET":
         venta_cabecera = Venta.objects.filter(pk=id).first()
@@ -119,8 +56,9 @@ def Ventas(request, id=None):
                 'fechaVenta':datetime.today(),
                 'cliente':0,
                 'totalVenta':0.00,
-                'porc_iva':0.00,
-                'valor_iva': 0.00
+                'subTotal': 0.00,
+                'porcIva':0.00,
+                'totalIva': 0.00
             }
             detalle=None
         else:
@@ -129,8 +67,9 @@ def Ventas(request, id=None):
                 'fechaVenta':venta_cabecera.fechaVenta,
                 'cliente':venta_cabecera.cliente,
                 'totalVenta':venta_cabecera.totalVenta,
-                'porc_iva':venta_cabecera.porc_iva,
-                'valor_iva':venta_cabecera.valor_iva
+                'subTotal' venta_cabecera.subTotal,
+                'porcIva':venta_cabecera.porcIva,
+                'totalIva':venta_cabecera.totalIva
             }
 
         detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
@@ -142,8 +81,8 @@ def Ventas(request, id=None):
         return render(request,template_name,contexto)
 
     if request.method == "POST":
-        cliente = request.POST.get("cliente_id")
-        fecha  = request.POST.get("fechaVenta")
+        cliente = request.POST.get("id_cliente")
+        fecha  = request.POST.get("id_fechaVenta")
         cli=Cliente.objects.get(pk=cliente)
 
         if not id:
@@ -164,12 +103,10 @@ def Ventas(request, id=None):
             messages.error(request,'No Puedo Continuar No Pude Detectar No. de Factura')
             return redirect("vent:venta_list")
 
-        produccion_id = request.POST.get("produccion_id")
-        cantidad = request.POST.get("cantidad")
-        precio = request.POST.get("precio")
-        #s_total = request.POST.get("sub_total_detalle")
-        #descuento = request.POST.get("descuento_detalle")
-        total = request.POST.get("total_detalle")
+        produccion_id = request.POST.get("id_produccion")
+        cantidad = request.POST.get("id_cantidad")
+        precio = request.POST.get("id_precio")
+        total = request.POST.get("id_total")
 
         prod = Produccion.objects.get(pk=produccion_id)
         det = DetalleVenta(
@@ -177,8 +114,6 @@ def Ventas(request, id=None):
             produccion = produccion,
             cantidad = cantidad,
             precio = precio,
-            #sub_total = s_total,
-            #descuento = descuento,
             total = total
         )
 

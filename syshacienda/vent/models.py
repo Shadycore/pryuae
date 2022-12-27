@@ -5,27 +5,27 @@ from django.dispatch import receiver
 from django.db.models import Sum
 
 from baseapp.models import BaseFields
-from mnt.models import Cliente, Cosecha, Produccion, Cultivo
+from mnt.models import Cliente, Cosecha, Produccion, Cultivo, Parametro
 
 ## Venta ******************************************** ##
 # - Venta - #
 class Venta(BaseFields):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
-    fechaVenta = models.DateField(blank=True, null=True)
+    fechaVenta = models.DateTimeField(auto_now_add=True)
+    subTotal = models.FloatField(blank=True, null=True, default=0)
     totalVenta = models.FloatField(blank=True, null=True, default=0)
-    porc_iva    = models.FloatField(blank=True, null=True)
-    valor_iva = models.FloatField(blank=True, null=True)
+    porcIva    = models.FloatField(blank=True, null=True)
+    totalIva = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return "{} : {}  {}  {} ".format(self.id, self.id,self.cliente, self.totalVenta)
+        return '{}'.format(self.id)
 
     def save (self):
-        self.total = float(float(int(self.cantidad)) * float(self.precio))
-        self.proc_iva = self.proc_iva
-        self.valor_iva = self.valor_iva
-        self.cliente = self.cliente
+        self.totalVenta = float(self.totalVenta)
+        self.procIva = float(self.porcIva)
+        self.subTotal = float(self.subtotal)
+        self.totalIva = self.totalIva
         super(Venta,self).save() 
- 
        
     class Meta:
         verbose_name_plural = "Ventas"
@@ -40,10 +40,12 @@ class DetalleVenta(BaseFields):
     precio = models.FloatField(blank=True, null=True)  
     total = models.FloatField(blank=True, null=True, default=0)
     def __str__(self):
-        return "{} : {} {} {} ".format(self.venta_id, self.cultivo, self.cantidad, self.total)
+        return "{}".format(self.cultivo.nombre)
 
     def save (self):
-        pass
+        self.total = float(float(int(self.cantidad)) * float(self.precio))
+        super(DetalleVenta, self).save()
+
 
     class Meta:
         verbose_name_plural = "DetalleVentas"
@@ -54,26 +56,25 @@ class DetalleVenta(BaseFields):
 def detalle_fac_guardar(sender,instance,**kwargs):
     venta_id = instance.factura.id
     produccion_id = instance.produccion.id
-    
-    enc = Venta.objects.get(pk=venta_id)
-    if enc:
+    porciva = Parametro.objects.filter(nombreParametro='IVA')
+    venta = Venta.objects.get(pk=venta_id)
+    if venta:
         sub_total = DetalleVenta.objects \
             .filter(factura=venta_id) \
-            .aggregate(tota=Sum('total')) \
+            .aggregate(total=Sum('total')) \
             .get('total',0.00)
         
-        #descuento = DetalleVenta.objects \
-        #    .filter(factura=venta_id) \
-        #    .aggregate(descuento=Sum('descuento')) \
-        #    .get('descuento',0.00)
-        
-        enc.sub_total = sub_total
-        #enc.descuento = descuento
-        enc.save()
+        totaliva = sub_total * (porciva /100)
+        totalventa = sub_total + totaliva
+        venta.totalVenta = totalventa
+        venta.subTotal  = sub_total
+        venta.totalIva = totaliva
+        venta.porcIva = porciva
+        venta.save()
 
     prod=Produccion.objects.filter(pk=produccion_id).first()
     if prod:
-        cantidad = int(prod.existencia) - int(instance.cantidad)
-        prod.existencia = cantidad
+        cantidad = int(prod.cantidadVentaCosecha) + int(instance.cantidad)
+        prod.cantidadVentaCosecha = cantidad
         prod.save()
 
