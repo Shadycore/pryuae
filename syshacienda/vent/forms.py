@@ -23,15 +23,12 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
         fields = ['cliente',
-                    'totalVenta',
-                    'fechaVenta',
+                    'totalVenta',                   
                     'estado']
         labels = {'totalVenta':'Total Venta',
-                'fechaVenta': 'Fecha de Venta',
                 'estado': 'Estado'}
 
         Widget = {'totalVenta': forms.FloatField,
-                'fechaVenta': forms.DateInput,
                 'estado': forms.CheckboxInput} 
 
     def __init__(self, *args, **kwargs):
