@@ -67,7 +67,7 @@ def Ventas(request, id=None):
                 'fechaVenta':venta_cabecera.fechaVenta,
                 'cliente':venta_cabecera.cliente,
                 'totalVenta':venta_cabecera.totalVenta,
-                'subTotal' venta_cabecera.subTotal,
+                'subTotal': venta_cabecera.subTotal,
                 'porcIva':venta_cabecera.porcIva,
                 'totalIva':venta_cabecera.totalIva
             }
