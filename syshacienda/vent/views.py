@@ -1,13 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
 
+
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages
+from django.contrib.auth import authenticate
 
 from vent.models import Venta, DetalleVenta
 from vent.forms import VentaForm,DetalleVentaForm
