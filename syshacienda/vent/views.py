@@ -58,7 +58,8 @@ def Ventas(request, id=None):
                 'totalVenta':0.00,
                 'subTotal': 0.00,
                 'porcIva':0.00,
-                'totalIva': 0.00
+                'totalIva': 0.00,
+                'usuarioCreacion': request.user
             }
             detalle=None
         else:
@@ -88,7 +89,8 @@ def Ventas(request, id=None):
         if not id:
             venta_cabecera = Venta(
                 cliente = cli,
-                fechaVenta = fecha
+                fechaVenta = fecha,
+                usuarioCreacion = request.user
             )
             if venta_cabecera:
                 venta_cabecera.save()
@@ -97,6 +99,7 @@ def Ventas(request, id=None):
             venta_cabecera = Venta.objects.filter(pk=id).first()
             if venta_cabecera:
                 venta_cabecera.cliente = cli
+                venta_cabecera.usuarioCreacion = request.user
                 venta_cabecera.save()
 
         if not id:
