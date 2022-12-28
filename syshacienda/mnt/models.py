@@ -288,6 +288,10 @@ class Produccion(BaseFields):
         #self.cantidadVentaCosecha = 0 #(self.cantidadVentaCosecha + self.cantidadVentaCosecha)
         #self.cantidadDisponible = (self.cantidadCosecha - self.cantidadDisponible)
         super(Produccion,self).save()
+    
+    @property
+    def disponible(self):
+        return self.cantidadCosecha - self.cantidadVentaCosecha
 
     class Meta:
         verbose_name_plural = "Producciones"
