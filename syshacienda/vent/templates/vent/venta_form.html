@@ -145,7 +145,7 @@
                         <select name="id_produccion2" id="id_prodiccion2" class="form-control">
                             <option value="0">Seleccione Producto</option>
                             {% for producto in produccion %}
-                                <option value="{{producto.id}}">{{producto.cultivo.nombre }} - Precio: {{ producto.precio }} | Disponible: {{ producto.cantidadCosecha - producto.cantidadVentaCosecha }}</option>
+                                <option value="{{producto.id}}">{{producto.cultivo.nombre }} - Precio: {{ producto.precio }} | Disponible: {{ producto.cantidadCosecha }} - {{ producto.cantidadVentaCosecha }}</option>
                                 </option>
                             {% endfor %}
                         </select>
