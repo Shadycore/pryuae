@@ -368,10 +368,11 @@
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
-        $('#id_produccion_2').select2({
-            placeholder: "Seleccione Cliente",
+        $('#id_produccion').select2({
+            placeholder: "Seleccione Producto",
             allowClear: true
         });
+
         $("#btnBuscar").click(function(e){
             if ($("#id_cliente").val()==="0"){
                 mensaje("Cliente No Seleccionado",'red');
@@ -385,6 +386,11 @@
                 e.preventDefault();
                 buscarProducto();
             }
+        });
+
+        $("#id_produccion").change(function(e){
+                e.preventDefault();
+                buscarProducto();
         });
 
         $('#id_cantidad,#id_precio,#id_total').change(function(){
@@ -414,39 +420,18 @@
             icon:"fab fa-keycdn",
             type:'red',
             title: "Confirmación Requerida",
-            content: '#',//'url:/fac/facturas/borrar-detalle/' + id,
-            onContentReady: function () {
-                var self = this;
-                this.$content.find('#usuario').val('{{ user.username }}');
-                this.$content.find('#usuario').select();
-                this.$content.find('#usuario').focus();
-            },
+            //content: '#',//'url:/fac/facturas/borrar-detalle/' + id,
+            //onContentReady: function () {
+            //    var self = this;
+            //    this.$content.find('#usuario').val('{{ user.username }}');
+            //    this.$content.find('#usuario').select();
+            //    this.$content.find('#usuario').focus();
+            //},
             buttons:{
                 borrar:{
                     text:"Borrar",
                     btnClass:"btn btn-danger",
                     action: function(){
-                        var usuario = this.$content.find('input#usuario');
-	                    var pass = this.$content.find('input#password');
-
-                        if(!usuario.val().trim()){
-                            mensaje("Usuario es requerido",'red');
-                            return false;
-                        }
-
-                        if(!pass.val().trim()){
-                            // $.alert({
-                            //     title:"Error",
-                            //     content: "Contraseña es Requerida",
-                            //     type: 'red'
-                            // });
-                            mensaje("Contraseña es Requerida","red");
-                            return false;
-                        }
-
-                        var data = {"usuario":usuario.val(),"pass":pass.val()};
-	                    console.log(data);
-
                         var token = '{{csrf_token}}';
                         $.ajax({
                             headers: { "X-CSRFToken": token },
@@ -482,7 +467,26 @@
         }
     })
 
-    
+    function actualizarProduccion(){
+        var url="{% url 'vent:produccion_list' %}"
+        $.ajax({
+            type:"GET",
+            url:url,
+            success: function(data){
+                console.log(data)
+                $("#id_produccion").find('option').remove()
+                $("#id_produccion").append('<option value="0">Seleccione Producto</option>')
+                for(var i=0;i<data.length;i++){
+                    $("#id_produccion").append('<option value="${data[i].id}">${data[i].nombres} ${data[i].apellidos} </option>')
+                }
+                $("#id_cliente").val(a).change()
+            },
+            error: function(data){
+                console.log(data)
+            }
+        })
+
+    }
     $("#popup").on('hidden.bs.modal',function(){
         const a = $("#id").val()
         // alert(a)

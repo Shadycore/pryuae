@@ -131,5 +131,40 @@ def Ventas(request, id=None):
 
 class ProduccionView(LoginRequiredMixin, generic.ListView):
     template_name="vent/busca_produccion.html" 
-    model = Produccion
-    context_object_name = "obj"
+    ##model = Produccion
+    ##context_object_name = "obj"
+
+
+def borrar_detalle_factura(request, id):
+    template_name = "fac/factura_borrar_detalle.html"
+
+    det = FacturaDet.objects.get(pk=id)
+
+    if request.method=="GET":
+        context={"det":det}
+
+    if request.method == "POST":
+        usr = request.POST.get("usuario")
+        pas = request.POST.get("pass")
+
+        user =authenticate(username=usr,password=pas)
+
+        if not user:
+            return HttpResponse("Usuario o Clave Incorrecta")
+        
+        if not user.is_active:
+            return HttpResponse("Usuario Inactivo")
+
+        if user.is_superuser or user.has_perm("fac.sup_caja_facturadet"):
+            det.id = None
+            det.cantidad = (-1 * det.cantidad)
+            det.sub_total = (-1 * det.sub_total)
+            det.descuento = (-1 * det.descuento)
+            det.total = (-1 * det.total)
+            det.save()
+
+            return HttpResponse("ok")
+
+        return HttpResponse("Usuario no autorizado")
+    
+    return render(request,template_name,context)
