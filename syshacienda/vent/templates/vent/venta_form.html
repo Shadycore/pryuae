@@ -278,7 +278,7 @@
 
         console.log("Cantidad " + cant);
         console.log("prec " + prec);
-        console.log("desc " + desc);
+        //console.log("desc " + desc);
 
         console.log("id_total " + $('#id_total').val());
 
@@ -300,7 +300,6 @@
             type:"GET",
             url: path,
             success: function(r){
-                
                 var  cantidadDisponible = (r.cantidadCosecha - r.cantidadVentaCosecha);
                 console.log(r);
                 console.log("cantidadCosecha: " + r.cantidadCosecha);
@@ -372,7 +371,7 @@
             calcular_detalle();
         });
 
-        $("#id").val("{{ obj.id }}");
+        $("#id_produccion").val("{{ obj.id }}");
         $("#id_cliente").val("{{ obj.cliente.id }}").change();
         $("#id_fechaVenta").val("{{ obj.fechaVenta|date:'Y-m-d' }}");
         $("#id_subTotal").val("{{ obj.subTotal }}");
