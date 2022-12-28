@@ -124,4 +124,4 @@ def Ventas(request, id=None):
     return render(request,template_name,contexto)
 
 class ProduccionView(ProduccionView):
-    template_name="vent/venta_busca_produccion.html" 
+    template_name="vent/busca_produccion.html" 

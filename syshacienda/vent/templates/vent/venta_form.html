@@ -110,44 +110,34 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <input type="text" class="form-control" name="id_cultivo" 
                                         id="id_cultivo" placeholder="" hidden>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <input type="text" class="form-control" name="id_cultivo" id="id_cultivo" placeholder="Descripción" disabled>
                         </div>
-
+                        <div class="col-lg-3">
+                            <input type="number" class="form-control" name="id_precio" id="id_precio" placeholder="Precio" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-2">Cant</div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="id_cantidad" id="id_cantidad" placeholder="Cantidad">
                             <input type="hidden" class="form-control" name="cantidadDisponible" id="cantidadDisponible">
                         </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="id_precio" id="id_precio" placeholder="Precio" readonly>
-                        </div>
-                        <!--<div class="col-lg-3">
-                            <input type="number" class="form-control" name="total" id="total" placeholder="id_porc_iva">
-                        </div> -->
                     </div>
-                    <!--<div class="row p-1">
-                        <div class="col-lg-9 text-right">Sub Total</div>
-                        <div class="col-lg-3">
-                            <input type="number" class="form-control" name="id_subTotal_detalle" id="id_subTotal_detalle" placeholder="Sub Total"
-                             value="0.00" disabled>
-                        </div>
-                    </div> -->
-                    <div class="row p-1">
-                        <div class="col-lg-9 text-right">Total</div>
+                    <div class="row">
+                        <div class="col-lg-2 text-right">Total</div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="id_total" id="id_total" placeholder="Total"
                              value="0.00" disabled>
                         </div>
+                        <div class="col-lg-1">
+                                <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
+                        </div>
                     </div>
-                    <div class="col-lg-1">
-                            <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
-                    </div>
-
                 </div>
                 <!-- Fin Sección Derecha -->
             </div>
@@ -215,6 +205,57 @@
 
 {% endblock js_tablas %}
 
+	{% block control_modal%}
+		<script>
+			function abrir_modal(url)
+			{
+                mensaje("Modal: " + url,'red');
+		
+				$("#popup").load(url, function(){
+				$(this).modal({
+					backdrop:'static',
+					keyboard: false
+				})
+				$(this).modal('show');
+				});
+				return false;
+			}
+		
+			function cerrar_modal()
+			{
+				$('#popup').modal('hide');
+				return false;
+			}
+		
+			function mensaje(msg,color='green')
+			{
+				if (color=="success")
+				{
+				color="green";
+				}
+				if (color=="error")
+				{
+				color="red";
+				}
+		
+		
+				$.alert({
+				title:'',
+				theme:'material',
+				type:color,
+				content:msg
+				});
+			}
+		
+			{% if messages %}
+				{% for message in messages %}
+				console.log("{{ message.tags }}");
+				mensaje("{{ message }}","{{ message.tags }}");
+				{% endfor %}
+			{% endif %}
+	
+		</script>
+	{% endblock control_modal %}
 
 {% block js_page %}
 <script>
@@ -229,27 +270,16 @@
         prec =$('#id_precio').val();
         prec = prec==="" ? 0 : +prec;
         prec = prec<0 ? 0 : prec;
-
-        //desc = $('#total').val();
-        //desc = desc==="" ? 0 : +desc;
-        //desc = desc<0 ? 0 : desc;
-        //desc = desc>(cant * prec) ? 0 : desc;
-        //stotal = cant * prec;
-        //total  = stotal - desc;
         total = cant * prec;  
 
         $('#id_cantidad').val(cant);
         $('#id_precio').val(prec);
         $('#id_total').val(total);
 
-        //$('#id_subTotal_detalle').val(stotal);
-        //$('#id_total').val(total);
-
         console.log("Cantidad " + cant);
         console.log("prec " + prec);
         console.log("desc " + desc);
 
-        //console.log("id_subTotal_detalle " + $('#id_subTotal_detalle').val());
         console.log("id_total " + $('#id_total').val());
 
     }
@@ -266,7 +296,6 @@
         }
 
         var path = '/api/v1/ProduccionDetalle/' + id_produccion;
-        mensaje(path,'orange')
         $.ajax({
             type:"GET",
             url: path,
@@ -329,7 +358,7 @@
                 mensaje("Cliente No Seleccionado",'red');
                 return false;
             }
-            abrir_modal("{% url 'vent:venta_busca_produccion' %}");
+            abrir_modal("{% url 'vent:busca_produccion' %}");
         });
         
         $("#id_produccion").keypress(function(e){
