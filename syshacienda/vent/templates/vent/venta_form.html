@@ -190,6 +190,7 @@
     </div>
 </div>
 </form>
+<div class="modal fade" id="popup"></div>
 {% endblock page_content%}
 
 {% block js_tablas %}
@@ -209,7 +210,6 @@
 		<script>
 			function abrir_modal(url)
 			{
-                mensaje("Modal: " + url,'red');
 		
 				$("#popup").load(url, function(){
 				$(this).modal({
@@ -317,7 +317,7 @@
                     return false;
                 }
 
-                $("#id_produccion").val(r.produccion_id);
+                $("#id_produccion").val(id_produccion);
                 $("#id_cultivo").val(r.cultivo.nombre);
                 $("#id_precio").val(r.precio);
                 $("#cantidadDisponible").val(cantidadDisponible) ;
@@ -384,8 +384,6 @@
         //$("#id_cliente").data('select2').trigger('select', {
         //    data: {"id": 1}
         //});
-
-        
 
     });
 
@@ -465,7 +463,7 @@
         }
     })
 
-
+    
     $("#popup").on('hidden.bs.modal',function(){
         const a = $("#id").val()
         // alert(a)
