@@ -126,5 +126,7 @@ def Ventas(request, id=None):
         return redirect("vent:venta_edit",id=id)
     return render(request,template_name,contexto)
 
-class ProduccionView(ProduccionView):
+class ProduccionView(LoginRequiredMixin, generic.ListView):
     template_name="vent/busca_produccion.html" 
+    model = Produccion
+    context_object_name = "obj"
