@@ -15,6 +15,7 @@ from vent.models import Venta, DetalleVenta
 from vent.forms import VentaForm,DetalleVentaForm
 from mnt.models import Cliente, Cosecha, Produccion, Cultivo, Parametro
 from mnt.views import ProduccionView, ParametroView
+from django.db.models import Q
 
 ## Venta  ------------------------------------------------------------
 class VentaView(LoginRequiredMixin, generic.ListView):

@@ -45,11 +45,6 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <!--
-                                    <div class="col-lg-1 col-md-1">
-                                        <button class="btn btn-outline-danger btn-sm" id="btnEditCliente"><i class="far fa-edit"></i></button>
-                                    </div>
-                                    -->
                                 </div>
                             </div>
                         </div>
@@ -140,6 +135,22 @@
                     </div>
                 </div>
                 <!-- Fin Sección Derecha -->
+            </div>
+            <div class="col-lg-3">
+                Producto:
+            </div>
+            <div class="col-lg-5 form-group">
+                <div class="row">
+                    <div class="col-lg-11 col-md-11">
+                        <select name="id_produccion2" id="id_prodiccion2" class="form-control">
+                            <option value="0">Seleccione Producto</option>
+                            {% for producto in produccion %}
+                                <option value="{{producto.id}}">{{producto.cultivo.nombre }} - Precio: {{ producto.precio }} | Disponible: {{ producto.cantidadCosecha - producto.cantidadVentaCosecha }}</option>
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
             <!-- Fin Sección Superior -->
             <!-- Inicio Detalle -->
@@ -292,6 +303,7 @@
         }
         var id_produccion = $("#id_produccion").val();
         if(id_produccion==="" || id_produccion=="0"){
+            mensaje("Producto No Seleccionado",'red');
             return false;
         }
 
@@ -351,7 +363,10 @@
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
-        
+        $('#id_produccion_2').select2({
+            placeholder: "Seleccione Cliente",
+            allowClear: true
+        });
         $("#btnBuscar").click(function(e){
             if ($("#id_cliente").val()==="0"){
                 mensaje("Cliente No Seleccionado",'red');
