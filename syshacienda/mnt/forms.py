@@ -438,20 +438,23 @@ class ProduccionForm(forms.ModelForm):
     class Meta:
         model = Produccion
         fields = ['cultivo',
-        'estado',
+                    'estado',
                     'insumo',
                     'fecha',
-                    'cantidadCosecha'
+                    'cantidadCosecha',
+                    'precio'
                     ]
         labels = {
                 'cantidadCosecha': 'Cantidad cosecha',
                 'fecha': 'Fecha',
-                'estado': 'Estado'
+                'estado': 'Estado',
+                'precio': 'Precio unidad'
                 }
 
         Widget = {'cantidadCosecha': forms.IntegerField,
                 'fecha': forms.DateInput,
-                'estado': forms.CheckboxInput} 
+                'estado': forms.CheckboxInput,
+                'precio': forms.FloatField,} 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)

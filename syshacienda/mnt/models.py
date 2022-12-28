@@ -285,7 +285,7 @@ class Produccion(BaseFields):
         self.cantidadCosecha = self.cantidadCosecha
         self.estado = self.estado
         self.precio  = self.precio
-        self.cantidadVentaCosecha = 0 #(self.cantidadVentaCosecha + self.cantidadVentaCosecha)
+        #self.cantidadVentaCosecha = 0 #(self.cantidadVentaCosecha + self.cantidadVentaCosecha)
         #self.cantidadDisponible = (self.cantidadCosecha - self.cantidadDisponible)
         super(Produccion,self).save()
 

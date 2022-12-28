@@ -68,22 +68,22 @@
                             </div>
                             <div class="col-lg-6 p-2 form-group">
                                 <div class="row">
-                                    <div class="col-lg-3">Sub Total:</div>
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-4">SubTotal</div>
+                                    <div class="col-lg-7">
                                         <input type="number" class="form-control text-right" value="0.00" readonly
                                         name="id_subTotal" id="id_subTotal">
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3">IVA: + "{{ iva.valorParametro }}" </div>
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-4">IVA: {{ iva.valorParametro }} </div>
+                                    <div class="col-lg-7">
                                         <input type="number" class="form-control text-right" value"0.00" disabled
-                                            name="id_totalIva" id="id_totalIva" readonly>
+                                            name="id_totalIva" id="id_totalIva">
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3">Total:</div>
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-4">Total:</div>
+                                    <div class="col-lg-7">
                                         <input type="number" class="form-control text-right" value="0.00" disabled
                                             name="total" id="id_totalVenta">
                                     </div>
@@ -99,33 +99,25 @@
                 <div class="col-lg-6 from-group">
                     <div class="row p-2">
                         <div class="col-lg-2">Cultivo</div>
-                        <div class="col-lg-7">
-                            <div class="col-lg-3">
-                                <input type="text" class="form-control" name="id_produccion" id="id_produccion" placeholder="Cód. Producc..">
-                            </div>
-                            <div class="col-lg-5">
-                                <input type="text" class="form-control" name="id_cultivo" id="id_cultivo" placeholder="Descripción" disabled>
-                            </div>
-                            <!--<select name="id_produccion" id="id_produccion" class="form-control">
-                                <option value="0">Seleccione Cultivo </option>
-                                {% for prod in produccion %}
-                                    <option value="{{prod.id}}"> Cultivo: {{ prod.cultivo.nombre }} | Insumo: {{ prod.insumo }} | CantidadDisponible: {{ prod.cantidadDisponible }}
-                                    </option>
-                                {% endfor %}
-                            </select> -->
+                        <div class="col-lg-3">
+                                <input type="text" class="form-control" name="id_produccion" 
+                                        id="id_produccion" placeholder="Cód. Producc..">
                         </div>
-                        <div class="col-lg-1">
-                            <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
-                        </div>
-                        <div class="col-lg-1">
+                        <div class="col-lg-3">
                             <button type="button" class="btn btn-info" id="btnBuscar">
                                 <i class="fab fa-searchengin"></i>
                             </button>
                         </div>
-                        <!--
-                        -->
                     </div>
                     <div class="row">
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" name="id_cultivo" 
+                                        id="id_cultivo" placeholder="" hidden>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" name="id_cultivo" id="id_cultivo" placeholder="Descripción" disabled>
+                        </div>
+
                         <div class="col-lg-2">Cant</div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="id_cantidad" id="id_cantidad" placeholder="Cantidad">
@@ -152,6 +144,10 @@
                              value="0.00" disabled>
                         </div>
                     </div>
+                    <div class="col-lg-1">
+                            <button type="submit" class="btn btn-danger" id="btnGuardar"> <i class="far fa-plus-square"></i> </button>
+                    </div>
+
                 </div>
                 <!-- Fin Sección Derecha -->
             </div>
@@ -275,15 +271,14 @@
             type:"GET",
             url: path,
             success: function(r){
-                mensaje("ok",'orange')
-                var  cantidadDisponible = (r.cantidadCosechada - r.cantidadVentaCosecha);
-                console.log(r);
-                console.log( r.cantidadCosechada - r.cantidadVentaCosecha);
-                console.log(r.estado);
-                alert(r);
-                alert( r.cantidadCosechada);
-                alert(r.cantidadVentaCosecha);
                 
+                var  cantidadDisponible = (r.cantidadCosecha - r.cantidadVentaCosecha);
+                console.log(r);
+                console.log("cantidadCosecha: " + r.cantidadCosecha);
+                console.log("cantidadVentaCosecha: " + r.cantidadVentaCosecha);
+                console.log(r.cantidadCosecha - r.cantidadVentaCosecha);
+                console.log(r.estado);
+
                 if(r.cantidadDisponible<=0 || !r.estado){
                     mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
                     $("#id_produccion").val("");
