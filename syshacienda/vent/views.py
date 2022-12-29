@@ -28,10 +28,8 @@ class VentaView(LoginRequiredMixin, generic.ListView):
         return super().get_queryset()
         #return Venta.objects.all()
 
-
-
 @login_required(login_url='/login/')
-def ventas(request, id=None):
+def ventasView(request, id=None):
     template_name = "vent/venta_form.html"
     clientes = Cliente.objects.filter(estado=True)
     #cultivos = Cultivo.objects.filter(estado=True)
