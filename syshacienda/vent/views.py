@@ -83,10 +83,11 @@ def ventasView(request, id=None):
         #return render(request,template_name,contexto)
 
     if request.method == "POST":
-        cliente_id = request.POST.get("id_cliente").value()
-        fecha  = request.POST.get("id_fechaVenta").value()
+        cliente_id = request.POST.get("id_cliente")
+        fecha  = request.POST.get("id_fechaVenta")
         cli=Cliente.objects.get(pk=cliente_id)
-
+        messages.info(request,cliente_id + ": " + request.POST.get("id_cliente"))
+        
         if not id:
             cabecera = Venta(
                 cliente = cli.id,
@@ -107,11 +108,11 @@ def ventasView(request, id=None):
             messages.error(request,'No Puedo Continuar No Pude Detectar No. de Factura')
             return redirect("vent:venta_list")
 
-        produccion_id = request.POST.get("id_produccion").value()
-        cultivo_id = request.POST.get("id_cultivo").value()
-        cantidad = request.POST.get("id_cantidad").value()
-        precio = request.POST.get("id_precio").value()
-        total = request.POST.get("id_total").value()
+        produccion_id = request.POST.get("id_produccion")
+        cultivo_id = request.POST.get("id_cultivo")
+        cantidad = request.POST.get("id_cantidad")
+        precio = request.POST.get("id_precio")
+        total = request.POST.get("id_total")
 
         prod = Produccion.objects.get(pk=produccion_id)
         det = DetalleVenta(
