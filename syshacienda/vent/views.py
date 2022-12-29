@@ -47,12 +47,6 @@ def Ventas(request, id=None):
                 messages.error(request,'Factura No Existe')
                 return redirect("vent:venta_list")
 
-            #usr = request.user
-            #if not usr.is_superuser:
-            #    if venta_cabecera.uc != usr:
-            #        messages.error(request,'Factura no fue creada por usuario')
-            #        return redirect("vent:venta_list")
-
         if not venta_cabecera:
             cabecera = {
                 'id':0,
@@ -76,7 +70,7 @@ def Ventas(request, id=None):
                 'totalIva':venta_cabecera.totalIva
             }
 
-        detalle =  DetalleVenta.objects.filter(venta_id=cabecera.id)
+        detalle =  DetalleVenta.objects.filter(venta=cabecera)
         contexto = { "venta":cabecera,
                      "det":detalle,
                     "clientes":clientes,
