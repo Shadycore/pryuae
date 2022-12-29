@@ -80,7 +80,7 @@ def ventasView(request, id=None):
                     "clientes":clientes,
                     "produccion":produccion, 
                     "iva": iva}
-        return render(request,template_name,contexto)
+        #return render(request,template_name,contexto)
 
     if request.method == "POST":
         cliente_id = request.POST.get("id_cliente")
@@ -108,7 +108,7 @@ def ventasView(request, id=None):
             return redirect("vent:venta_list")
 
         produccion_id = request.POST.get("id_produccion")
-        #cultivo_id = request.POST.get("id_cultivo")
+        cultivo_id = request.POST.get("id_cultivo")
         cantidad = request.POST.get("id_cantidad")
         precio = request.POST.get("id_precio")
         total = request.POST.get("id_total")
@@ -117,7 +117,7 @@ def ventasView(request, id=None):
         det = DetalleVenta(
             venta = venta_cabecera,
             produccion = produccion,
-            cultivo = prod.cultivo,
+            cultivo = cultivo_id,
             cantidad = cantidad,
             precio = precio,
             total = total
@@ -127,6 +127,7 @@ def ventasView(request, id=None):
             det.save()
 
         return redirect("vent:venta_edit",id=id)
+   
     return render(request,template_name,contexto)
 
 class ProduccionView(LoginRequiredMixin, generic.ListView):
