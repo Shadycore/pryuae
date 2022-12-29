@@ -302,6 +302,7 @@
     {
         if ($("#id_cliente_detalle").val()==="0" || $("#id_cliente_detalle").val()===null){
             mensaje("Cliente No Seleccionado",'red');
+            $("#id_produccion_detalle").val("").click(); ///------
             return false;
         }
         var id_produccion = $("#id_produccion_detalle").val();

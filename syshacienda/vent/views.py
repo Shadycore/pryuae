@@ -34,7 +34,7 @@ class VentaView(LoginRequiredMixin, generic.ListView):
 def Ventas(request, id=None):
     template_name = "vent/venta_form.html"
     clientes = Cliente.objects.filter(estado=True)
-    cultivos = Cultivo.objects.filter(estado=True)
+    #cultivos = Cultivo.objects.filter(estado=True)
     produccion = Produccion.objects.filter(estado=True)
     iva = Parametro.objects.filter(nombreParametro='IVA')
     contexto = {}
@@ -54,7 +54,7 @@ def Ventas(request, id=None):
             #        return redirect("vent:venta_list")
 
         if not venta_cabecera:
-            vent_cabecera = {
+            cabecera = {
                 'id':0,
                 'fechaVenta':datetime.today(),
                 'cliente':0,
@@ -66,7 +66,7 @@ def Ventas(request, id=None):
             }
             detalle=None
         else:
-            vent_cabecera = {
+            cabecera = {
                 'id':venta_cabecera.id,
                 'fechaVenta':venta_cabecera.fechaVenta,
                 'cliente':venta_cabecera.cliente,
@@ -76,8 +76,8 @@ def Ventas(request, id=None):
                 'totalIva':venta_cabecera.totalIva
             }
 
-        detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
-        contexto = { "venta":vent_cabecera,
+        detalle =  DetalleVenta.objects.filter(venta_id=cabecera.id)
+        contexto = { "venta":cabecera,
                      "det":detalle,
                     "clientes":clientes,
                     "produccion":produccion, 
@@ -85,25 +85,25 @@ def Ventas(request, id=None):
         return render(request,template_name,contexto)
 
     if request.method == "POST":
-        cliente = request.POST.get("id_cliente")
+        cliente_id = request.POST.get("id_cliente")
         fecha  = request.POST.get("id_fechaVenta")
-        cli=Cliente.objects.get(pk=cliente)
+        cli=Cliente.objects.get(pk=cliente_id)
 
         if not id:
-            venta_cabecera = Venta(
-                cliente = cli,
+            cabecera = Venta(
+                cliente = cli.id,
                 fechaVenta = fecha,
                 usuarioCreacion = request.user
             )
-            if venta_cabecera:
-                venta_cabecera.save()
-                id = venta_cabecera.id
+            if cabecera:
+                cabecera.save()
+                id = cabecera.id
         else:
-            venta_cabecera = Venta.objects.filter(pk=id).first()
-            if venta_cabecera:
-                venta_cabecera.cliente = cli
-                venta_cabecera.usuarioCreacion = request.user
-                venta_cabecera.save()
+            cabecera = Venta.objects.filter(pk=id).first()
+            if cabecera:
+                cabecera.cliente = cli
+                cabecera.usuarioCreacion = request.user
+                cabecera.save()
 
         if not id:
             messages.error(request,'No Puedo Continuar No Pude Detectar No. de Factura')
