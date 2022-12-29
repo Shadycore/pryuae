@@ -34,9 +34,7 @@ def ventasView(request, id=None):
     clientes = Cliente.objects.filter(estado=True)
     #cultivos = Cultivo.objects.filter(estado=True)
     produccion = Produccion.objects.filter(estado=True)
-    iva = {} 
     contexto = {}
-    detalle =  {}
 
     if request.method == "GET":
         venta_cabecera = Venta.objects.filter(pk=id).first()
@@ -80,18 +78,17 @@ def ventasView(request, id=None):
                     "clientes":clientes,
                     "produccion":produccion, 
                     "iva": iva}
-        #return render(request,template_name,contexto)
+        return render(request,template_name,contexto)
 
     if request.method == "POST":
-        cliente_id = request.POST.get("id_cliente")
-        fecha  = request.POST.get("id_fechaVenta")
-        cli=Cliente.objects.get(pk=cliente_id)
-        messages.info(request,cliente_id + ": " + request.POST.get("id_cliente"))
+        cliente = request.POST.get("id_cliente")
+        fechaVenta  = request.POST.get("id_fechaVenta")
+        cli = Cliente.objects.get(pk=cliente_id)      
         
         if not id:
             cabecera = Venta(
                 cliente = cli.id,
-                fechaVenta = fecha,
+                fechaVenta = fechaVenta,
                 usuarioCreacion = request.user
             )
             if cabecera:
@@ -116,7 +113,7 @@ def ventasView(request, id=None):
 
         prod = Produccion.objects.get(pk=produccion_id)
         det = DetalleVenta(
-            venta = venta_cabecera,
+            venta = cabecera,
             produccion = produccion,
             cultivo = cultivo_id,
             cantidad = cantidad,
