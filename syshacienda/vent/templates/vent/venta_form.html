@@ -95,9 +95,7 @@
                     <div class="col-lg-3">
                         Producto:
                     </div>
-                    <div class="col-lg-5 form-group">
-                        <div class="row">
-                            <div class="col-lg-11 col-md-11">
+                    <div class="col-lg-6 form-group">
                                 <select name="id_produccion" id="id_produccion" class="form-control">
                                     <option value="0">Seleccione Producto</option>
                                     {% for producto in produccion %}
@@ -105,8 +103,6 @@
                                         </option>
                                     {% endfor %}
                                 </select>
-                            </div>
-                        </div>
                     </div>
                     <!--
                     <div class="row p-2">
@@ -123,16 +119,13 @@
                     </div>
                     -->
                     <div class="row">
-                        <div class="col-lg-2">
-                            <input type="text" class="form-control" name="id_cultivo" 
-                                        id="id_cultivo" placeholder="" hidden>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" name="id_cultivo" id="id_cultivo" 
-                            placeholder="Descripción" disabled>
-                        </div>
+                        <div class="col-lg-2">Precio</div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="id_precio" id="id_precio" placeholder="Precio" readonly>
+                        </div>
+                        <div class="col-lg-2">Dispon.</div>
+                        <div class="col-lg-3">
+                            <input type="number" class="form-control" name="cantidadDisponible" id="cantidadDisponible" disabled>
                         </div>
                     </div>
 
@@ -140,7 +133,6 @@
                         <div class="col-lg-2">Cant</div>
                         <div class="col-lg-3">
                             <input type="number" class="form-control" name="id_cantidad" id="id_cantidad" placeholder="Cantidad">
-                            <input type="number" class="form-control" name="cantidadDisponible" id="cantidadDisponible" disabled>
                         </div>
                     </div>
                     <div class="row">
@@ -468,7 +460,7 @@
     })
 
     function actualizarProduccion(){
-        var url="{% url 'vent:produccion_list' %}"
+        var url="'/api/v1/ProduccionList'"
         $.ajax({
             type:"GET",
             url:url,
@@ -477,7 +469,7 @@
                 $("#id_produccion").find('option').remove()
                 $("#id_produccion").append('<option value="0">Seleccione Producto</option>')
                 for(var i=0;i<data.length;i++){
-                    $("#id_produccion").append('<option value="${data[i].id}">${data[i].nombres} ${data[i].apellidos} </option>')
+                    $("#id_produccion").append('<option value="${data[i].id}"> "${data[i].id}" : ${data[i].cultivo.nombre} ${data[i].apellidos} </option>')
                 }
                 $("#id_cliente").val(a).change()
             },

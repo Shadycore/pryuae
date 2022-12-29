@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['127.0.0.1','*']
 
 DEBUG = True
 if ENVIRONMENT_VARIABLE != 'production':
-    DEBUG = False
+    DEBUG = True
 
 # Application definition
 
