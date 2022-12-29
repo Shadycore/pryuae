@@ -31,7 +31,7 @@ class VentaView(LoginRequiredMixin, generic.ListView):
 
 
 @login_required(login_url='/login/')
-def Ventas(request, id=None):
+def ventas(request, id=None):
     template_name = "vent/venta_form.html"
     clientes = Cliente.objects.filter(estado=True)
     #cultivos = Cultivo.objects.filter(estado=True)
@@ -84,6 +84,52 @@ def Ventas(request, id=None):
                     "iva": iva}
         return render(request,template_name,contexto)
 
+    if request.method == "POST":
+        cliente_id = request.POST.get("id_cliente")
+        fecha  = request.POST.get("id_fechaVenta")
+        cli=Cliente.objects.get(pk=cliente_id)
+
+        if not id:
+            cabecera = Venta(
+                cliente = cli.id,
+                fechaVenta = fecha,
+                usuarioCreacion = request.user
+            )
+            if cabecera:
+                cabecera.save()
+                id = cabecera.id
+        else:
+            cabecera = Venta.objects.filter(pk=id).first()
+            if cabecera:
+                cabecera.cliente = cli
+                cabecera.usuarioCreacion = request.user
+                cabecera.save()
+
+        if not id:
+            messages.error(request,'No Puedo Continuar No Pude Detectar No. de Factura')
+            return redirect("vent:venta_list")
+
+        produccion_id = request.POST.get("id_produccion")
+        #cultivo_id = request.POST.get("id_cultivo")
+        cantidad = request.POST.get("id_cantidad")
+        precio = request.POST.get("id_precio")
+        total = request.POST.get("id_total")
+
+        prod = Produccion.objects.get(pk=produccion_id)
+        det = DetalleVenta(
+            venta = venta_cabecera,
+            produccion = produccion,
+            cultivo = prod.cultivo,
+            cantidad = cantidad,
+            precio = precio,
+            total = total
+        )
+
+        if det:
+            det.save()
+
+        return redirect("vent:venta_edit",id=id)
+    return render(request,template_name,contexto)
 
 class ProduccionView(LoginRequiredMixin, generic.ListView):
     template_name="vent/busca_produccion.html" 
