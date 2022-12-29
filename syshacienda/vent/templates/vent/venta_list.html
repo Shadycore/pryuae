@@ -75,10 +75,11 @@
                                 {% block header_list %}
                                 <tr>
                                     <th>No.</th>
-                                    <th>cliente</th>
-                                    <th>fechaVenta</th>
-                                    <th>totalVenta</th>
-                                    <th>Estado</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha Venta</th>
+                                    <th>Sub-Total</th>
+                                    <th>Total Iva</th>
+                                    <th>Total Venta</th>
                                     <th class="all">Acciones</th>
                                 </tr>
                                 {% endblock %}
@@ -87,10 +88,11 @@
                                 {% block footer_list %}
                                   <!--<tr>
                                     <th>No.</th>
-                                    <th>cliente</th>
-                                    <th>fechaVenta</th>
-                                    <th>totalVenta</th>
-                                    <th>Estado</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha Venta</th>
+                                    <th>Sub-Total</th>
+                                    <th>Total Iva</th>
+                                    <th>Total Venta</th>
                                     <th class="all">Acciones</th>
                                   </tr>-->
                                 {% endblock %}
@@ -101,9 +103,10 @@
                                     <tr>
                                           <td>{{ item.id }}</td>
                                           <td>{{ item.cliente }}</td>
-                                          <td>{{ item.fechaVenta }}</td>
+                                          <td>{{ item.fechaVenta | date:"d/m/Y" }}</td>
+                                          <td>{{ item.subTotal }}</td>
+                                          <td>{{ item.totalIva }}</td>
                                           <td>{{ item.totalVenta }}</td>
-                                          <td>{{item.estado|yesno:"Activo,Inactivo"}}</td>
                                           <td>
                                             <a href="{% url 'vent:venta_edit' item.id %}" class="href btn btn-warning btn-circle">
                                                 <i class="far fa-edit"></i>
@@ -172,5 +175,14 @@ $(function(){
     $('.table').DataTable();
   });
 </script>
+
 {% block js_page %}
+  	<script type="text/javascript">
+        $(function(){
+            $("#id_fchNacimiento").datetimepicker({
+                format: 'd/m/Y',
+                timepicker:false
+            });
+        });
+	</script>
 {% endblock %}

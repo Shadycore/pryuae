@@ -110,6 +110,7 @@ def Ventas(request, id=None):
             return redirect("vent:venta_list")
 
         produccion_id = request.POST.get("id_produccion")
+        #cultivo_id = request.POST.get("id_cultivo")
         cantidad = request.POST.get("id_cantidad")
         precio = request.POST.get("id_precio")
         total = request.POST.get("id_total")
@@ -118,6 +119,7 @@ def Ventas(request, id=None):
         det = DetalleVenta(
             venta = venta_cabecera,
             produccion = produccion,
+            cultivo = prod.cultivo,
             cantidad = cantidad,
             precio = precio,
             total = total
@@ -131,14 +133,12 @@ def Ventas(request, id=None):
 
 class ProduccionView(LoginRequiredMixin, generic.ListView):
     template_name="vent/busca_produccion.html" 
-    ##model = Produccion
-    ##context_object_name = "obj"
 
 
 def borrar_detalle_factura(request, id):
     template_name = "fac/factura_borrar_detalle.html"
 
-    det = FacturaDet.objects.get(pk=id)
+    det = DetalleVenta.objects.get(pk=id)
 
     if request.method=="GET":
         context={"det":det}

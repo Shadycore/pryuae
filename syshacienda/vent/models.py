@@ -43,6 +43,10 @@ class DetalleVenta(BaseFields):
         return "{}".format(self.cultivo.nombre)
 
     def save (self):
+        self.produccion = self.produccion
+        self.cultivo = self.produccion.cultivo
+        self.cantidad = self.cantidad
+        self.precio = self.precio
         self.total = float(float(int(self.cantidad)) * float(self.precio))
         super(DetalleVenta, self).save()
 
@@ -54,13 +58,13 @@ class DetalleVenta(BaseFields):
 
 @receiver(post_save, sender=DetalleVenta)
 def detalle_fac_guardar(sender,instance,**kwargs):
-    venta_id = instance.factura.id
+    venta_id = instance.venta.id
     produccion_id = instance.produccion.id
     porciva = Parametro.objects.filter(nombreParametro='IVA')
     venta = Venta.objects.get(pk=venta_id)
     if venta:
         sub_total = DetalleVenta.objects \
-            .filter(factura=venta_id) \
+            .filter(venta=venta_id) \
             .aggregate(total=Sum('total')) \
             .get('total',0.00)
         

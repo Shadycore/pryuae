@@ -37,13 +37,15 @@
                             <div class="col-lg-5 form-group">
                                 <div class="row">
                                     <div class="col-lg-11 col-md-11">
-                                        <select name="id_cliente" id="id_cliente" class="form-control">
+                                        <select name="id_cliente_detalle" id="id_cliente_detalle" class="form-control">
                                             <option value="0">Seleccione Cliente</option>
                                             {% for cliente in clientes %}
                                                 <option value="{{cliente.id}}">{{cliente.identificacion }} - {{ cliente.nombre }} {{ cliente.apellido}}
                                                 </option>
                                             {% endfor %}
                                         </select>
+                                        <input type="text" class="form-control" name="id_cliente" 
+                                        id="id_cliente" disabled  />
                                     </div>
                                 </div>
                             </div>
@@ -96,20 +98,24 @@
                         Producto:
                     </div>
                     <div class="col-lg-6 form-group">
-                                <select name="id_produccion" id="id_produccion" class="form-control">
+                                <select name="id_produccion_detalle" id="id_produccion_detalle" class="form-control">
                                     <option value="0">Seleccione Producto</option>
                                     {% for producto in produccion %}
                                         <option value="{{producto.id}}">{{producto.id}} : {{producto.cultivo.nombre }} - Precio: {{ producto.precio }} | Disponible: {{ producto.disponible }} </option>
                                         </option>
                                     {% endfor %}
                                 </select>
+                                <input type="text" class="form-control" name="id_produccion" 
+                                        id="id_produccion" disabled  />
+                                <input type="text" class="form-control" name="id_cultivo" 
+                                        id="id_cultivo" disabled  />
                     </div>
                     <!--
                     <div class="row p-2">
                         <div class="col-lg-2">Cultivo</div>
                         <div class="col-lg-3">
-                                <input type="text" class="form-control" name="id_produccion" 
-                                        id="id_produccion" placeholder="Cód. Producc..">
+                                <input type="text" class="form-control" name="id_produccion_detalle" 
+                                        id="id_produccion_detalle" placeholder="Cód. Producc..">
                         </div>
                         <div class="col-lg-3">
                             <button type="button" class="btn btn-info" id="btnBuscar">
@@ -294,11 +300,11 @@
 
     function buscarProducto()
     {
-        if ($("#id_cliente").val()==="0" || $("#id_cliente").val()===null){
+        if ($("#id_cliente_detalle").val()==="0" || $("#id_cliente_detalle").val()===null){
             mensaje("Cliente No Seleccionado",'red');
             return false;
         }
-        var id_produccion = $("#id_produccion").val();
+        var id_produccion = $("#id_produccion_detalle").val();
         if(id_produccion==="" || id_produccion=="0"){
             mensaje("Producto No Seleccionado",'red');
             return false;
@@ -318,15 +324,17 @@
 
                 if(r.cantidadDisponible<=0 || !r.estado){
                     mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
-                    $("#id_produccion").val("");
+                    $("#id_produccion_detalle").val("");
                     $("#id_cultivo").val("");
+                    $("#id_produccion").val("");
                     $("#id_precio").val("0.00");
-                    $("#id_produccion").focus();
+                    $("#id_produccion_detalle").focus();
                     return false;
                 }
 
-                $("#id_produccion").val(id_produccion);
-                $("#id_cultivo").val(r.cultivo.nombre);
+                $("#id_produccion_detalle").val(id_produccion_detalle);
+                $("#id_produccion").val(r.id);
+                $("#id_cultivo").val(r.cultivo);
                 $("#id_precio").val(r.precio);
                 $("#cantidadDisponible").val(cantidadDisponible) ;
                 $("#id_cantidad").focus();
@@ -343,10 +351,11 @@
                 // mensaje(c,'red');
                 if(a.status==404){
                     mensaje("Producto -" + id_produccion + "- No Encontrado o No Existe",'red');
-                    $("#id_produccion").val("");
+                    $("#id_produccion_detalle").val("");
                     $("#id_cultivo").val("");
+                    $("#id_produccion").val("");
                     $("#id_precio").val("0.00");
-                    $("#id_produccion").focus();
+                    $("#id_produccion_detalle").focus();
                 }
 
             }
@@ -356,41 +365,61 @@
 
     $(function () {
         $("#sidebarToggle").click();
-        $('#id_cliente').select2({
+        $('#id_cliente_detalle').select2({
             placeholder: "Seleccione Cliente",
             allowClear: true
         });
-        $('#id_produccion').select2({
+        $('#id_produccion_detalle').select2({
             placeholder: "Seleccione Producto",
             allowClear: true
         });
 
         $("#btnBuscar").click(function(e){
-            if ($("#id_cliente").val()==="0"){
+            if ($("#id_cliente_detalle").val()==="0"){
                 mensaje("Cliente No Seleccionado",'red');
                 return false;
             }
             abrir_modal("{% url 'vent:busca_produccion' %}");
         });
         
-        $("#id_produccion").keypress(function(e){
+        $("#id_produccion_detalle").keypress(function(e){
             if(e.keyCode===13){
                 e.preventDefault();
                 buscarProducto();
             }
         });
 
-        $("#id_produccion").change(function(e){
+        $("#id_produccion_detalle").change(function(e){
                 e.preventDefault();
                 buscarProducto();
         });
+
+
+        $("#id_cliente_detalle").keypress(function(e){
+            if(e.keyCode===13){
+                e.preventDefault();
+                if ($("#id_cliente_detalle").val()==="0"){
+                    $("#id_cliente").val("");
+                }else {
+                    $("#id_cliente").val($("#id_cliente_detalle").val());}
+            }
+        });
+
+        $("#id_cliente_detalle").change(function(e){
+            e.preventDefault();
+                if ($("#id_cliente_detalle").val()==="0"){
+                $("#id_cliente").val("");;
+            }else {
+                $("#id_cliente").val($("#id_cliente_detalle").val())}
+        });
+
 
         $('#id_cantidad,#id_precio,#id_total').change(function(){
             calcular_detalle();
         });
 
-        $("#id_produccion").val("{{ obj.id }}");
-        $("#id_cliente").val("{{ obj.cliente.id }}").change();
+        $("#id").val("{{ obj.id }}");
+        $("#id_cliente_detalle").val("{{ obj.cliente.id }}").change();
         $("#id_fechaVenta").val("{{ obj.fechaVenta|date:'Y-m-d' }}");
         $("#id_subTotal").val("{{ obj.subTotal }}");
         $("#id_totalIva").val("{{ obj.totalIva }}");
@@ -466,10 +495,10 @@
             url:url,
             success: function(data){
                 console.log(data)
-                $("#id_produccion").find('option').remove()
-                $("#id_produccion").append('<option value="0">Seleccione Producto</option>')
+                $("#id_produccion_detalle").find('option').remove()
+                $("#id_produccion_detalle").append('<option value="0">Seleccione Producto</option>')
                 for(var i=0;i<data.length;i++){
-                    $("#id_produccion").append('<option value="${data[i].id}"> "${data[i].id}" : ${data[i].cultivo.nombre} ${data[i].apellidos} </option>')
+                    $("#id_produccion_detalle").append('<option value="${data[i].id}"> "${data[i].id}" : ${data[i].cultivo.nombre} ${data[i].apellidos} </option>')
                 }
                 $("#id_cliente").val(a).change()
             },
