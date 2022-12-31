@@ -56,9 +56,9 @@ def ventasView(request, id=None):
                 'totalIva': 0.00,
                 'usuarioCreacion': request.user
             }
-            detalle=None
-            
+            detalle=None  
         else:
+
             cabecera = {
                 'id':venta_cabecera.id,
                 'fechaVenta':venta_cabecera.fechaVenta,
@@ -69,12 +69,9 @@ def ventasView(request, id=None):
                 'totalIva':venta_cabecera.totalIva
             }
 
-        detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
-        contexto = { "venta":cabecera,
-                     "det":detalle,
-                    "clientes":clientes,
-                    "produccion":produccion
-                    }
+            detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
+        contexto = { "venta":cabecera, "det":detalle,
+                    "clientes":clientes,  "produccion":produccion }
         return render(request,template_name,contexto)
 
     if request.method == "POST":
@@ -113,22 +110,22 @@ def ventasView(request, id=None):
         prod = Produccion.objects.get(pk=produccion_id)
         cult = Cultivo.objects.get(pk=cultivo_id)
         det = DetalleVenta(
-            venta = cabecera,
-            produccion = prod,
-            cultivo = cult,
-            cantidad = cantidad,
-            precio = precio,
-            total = total,
-            usuarioCreacion = request.user
-        )
+                venta = cabecera,
+                produccion = prod,
+                cultivo = cult,
+                cantidad = cantidad,
+                precio = precio,
+                total = total,
+                usuarioCreacion = request.user
+                )
 
         if det:
             det.save()
 
         return redirect('vent:venta_edit',id)
-        #return render(request, 'vent:venta_edit', {'form': form, 'success': True, })
-   
-    return render(request,template_name,contexto)
+
+    #return render(request,template_name,contexto)
+
 
 class ProduccionView(LoginRequiredMixin, generic.ListView):
     template_name="vent/busca_produccion.html" 
