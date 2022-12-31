@@ -7,12 +7,12 @@ from vent.models import Venta, DetalleVenta
 def imprimir_venta_recibo(request,id):
     template_name="vent/venta_imprimir.html"
 
-    enc = Venta.objects.get(id=id)
-    det = DetalleVenta.objects.filter(factura=id)
+    vent = Venta.objects.get(id=id)
+    det = DetalleVenta.objects.filter(venta=id)
 
     context={
         'request':request,
-        'enc':enc,
+        'venta':vent,
         'detalle':det
     }
 
