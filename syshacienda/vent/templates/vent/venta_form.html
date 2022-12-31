@@ -418,6 +418,8 @@
         $("#id_subTotal").val("{{ venta.subTotal }}");
         $("#id_totalIva").val("{{ venta.totalIva }}");
         $("#id_totalVenta").val("{{ venta.totalVenta }}");
+        iiva = "{{ venta.porcIva }}"
+        iiva.replace(",",".")
         $("#id_porciva").val("{{ venta.porcIva }}");
 
         // $('#id_cliente').select2().select2('val', $('#id_cliente option:eq(1)').val());
