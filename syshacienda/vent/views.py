@@ -25,7 +25,7 @@ class VentaView(LoginRequiredMixin, generic.ListView):
     login_url = "baseapp:login"
 
     def get_queryset(self):
-        return super().get_queryset()
+        return super().get_queryset().order_by("-id")
 
 
 @login_required(login_url='/login/')
@@ -45,7 +45,7 @@ def ventasView(request, id=None):
         if not venta_cabecera:
             porciva = Parametro.objects.filter(nombreParametro='IVA').first()
             iIva = porciva.valorParametro
-            iIva.replace(",",".")
+            #iIva.replace(",",".")
             cabecera = {
                 'id':0,
                 'fechaVenta':datetime.today(),
@@ -81,7 +81,7 @@ def ventasView(request, id=None):
         produccion_id = request.POST.get("cod_produccion")     
         cultivo_id = request.POST.get("cod_cultivo")
         porciva = request.POST.get("id_porciva")
-        porciva.replace(",", ".")
+        #porciva.replace(",", ".")
         #iIva = float(porciva)
         if not id:
             cabecera = Venta(
@@ -134,7 +134,7 @@ class ProduccionView(LoginRequiredMixin, generic.ListView):
 
 
 def borrar_detalle_factura(request, id):
-    template_name = "fac/factura_borrar_detalle.html"
+    template_name = "vent/borrar_detalle.html"
 
     det = DetalleVenta.objects.get(pk=id)
 
@@ -142,27 +142,21 @@ def borrar_detalle_factura(request, id):
         context={"det":det}
 
     if request.method == "POST":
-        usr = request.POST.get("usuario")
-        pas = request.POST.get("pass")
-
-        user =authenticate(username=usr,password=pas)
-
-        if not user:
-            return HttpResponse("Usuario o Clave Incorrecta")
-        
-        if not user.is_active:
-            return HttpResponse("Usuario Inactivo")
-
-        if user.is_superuser or user.has_perm("fac.sup_caja_facturadet"):
+        if det:
             det.id = None
             det.cantidad = (-1 * det.cantidad)
-            #det.sub_total = (-1 * det.sub_total)
+            #det.total = (-1 * det.sub_total)
             #det.descuento = (-1 * det.descuento)
             det.total = (-1 * det.total)
+            prod=Produccion.objects.filter(pk=det.produccion).first()
+            mcantidad = det.cantidad
             det.save()
+        
+            if prod:
+                cantidad = float(prod.cantidadVentaCosecha) + float(mcantidad)
+                prod.cantidadVentaCosecha = round(cantidad,2)
+                prod.save()
 
             return HttpResponse("ok")
-
-        #return HttpResponse("Usuario no autorizado")
     
     return render(request,template_name,context)

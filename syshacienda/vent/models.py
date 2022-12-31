@@ -14,7 +14,7 @@ class Venta(BaseFields):
     fechaVenta = models.DateTimeField(auto_now_add=True)
     subTotal = models.FloatField(blank=True, null=True, default=0)
     totalVenta = models.FloatField(blank=True, null=True, default=0)
-    porcIva    = models.FloatField(blank=True, null=True, default=0)
+    porcIva    = models.IntegerField(blank=True, null=True, default=0)
     totalIva = models.FloatField(blank=True, null=True, default=0)
 
     def __str__(self):
@@ -48,7 +48,7 @@ class DetalleVenta(BaseFields):
         self.cultivo = self.cultivo
         self.cantidad = self.cantidad
         self.precio = self.precio
-        self.total = float(float(int(self.cantidad)) * float(self.precio))
+        self.total = round(float(int(self.cantidad)) * float(self.precio),2)
         super(DetalleVenta, self).save()
 
     class Meta:
@@ -68,17 +68,17 @@ def detalle_fac_guardar(sender,instance,**kwargs):
             .aggregate(total=Sum('total')) \
             .get('total',0.00)
         
-        totaliva = sub_total * (iIva /100)
-        totalventa = sub_total + totaliva
+        totaliva = round((sub_total * (iIva /100)),2)
+        totalventa = round((sub_total + totaliva),2)
         venta.totalVenta = totalventa
-        venta.subTotal  = sub_total
+        venta.subTotal  = round(sub_total,2)
         venta.totalIva = totaliva
         venta.porcIva = iIva
         venta.save()
 
     prod=Produccion.objects.filter(pk=produccion_id).first()
     if prod:
-        cantidad = int(prod.cantidadVentaCosecha) + int(instance.cantidad)
-        prod.cantidadVentaCosecha = cantidad
+        cantidad = float(prod.cantidadVentaCosecha) + float(instance.cantidad)
+        prod.cantidadVentaCosecha = round(cantidad,2)
         prod.save()
 
