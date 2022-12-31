@@ -44,18 +44,20 @@ def ventasView(request, id=None):
                 return redirect("vent:venta_list")
 
         if not venta_cabecera:
+            porciva = Parametro.objects.filter(nombreParametro='IVA').first()
+            iIva = float(porciva.valorParametro)
             cabecera = {
                 'id':0,
                 'fechaVenta':datetime.today(),
                 'cliente':0,
                 'totalVenta':0.00,
                 'subTotal': 0.00,
-                'porcIva':0.00,
+                'porcIva':iIva,
                 'totalIva': 0.00,
                 'usuarioCreacion': request.user
             }
             detalle=None
-            iva = Parametro.objects.filter(nombreParametro='IVA')
+            
         else:
             cabecera = {
                 'id':venta_cabecera.id,
@@ -66,28 +68,26 @@ def ventasView(request, id=None):
                 'porcIva':venta_cabecera.porcIva,
                 'totalIva':venta_cabecera.totalIva
             }
-            iva = {
-                    'nombreParametro': "IVA",
-                    'valorParametro': venta_cabecera.porcIva
-                }
-
 
         detalle =  DetalleVenta.objects.filter(venta=venta_cabecera)
         contexto = { "venta":cabecera,
                      "det":detalle,
                     "clientes":clientes,
-                    "produccion":produccion, 
-                    "iva": iva}
+                    "produccion":produccion
+                    }
         return render(request,template_name,contexto)
 
     if request.method == "POST":
-        cliente = request.POST.get("id_cliente")
+        cliente = request.POST.get("id_cliente_detalle")
         fechaVenta  = request.POST.get("id_fechaVenta")
-        cli = Cliente.objects.get(pk=cliente_id)      
-        
+        cli = Cliente.objects.get(pk=cliente)     
+        produccion_id = request.POST.get("cod_produccion")     
+        cultivo_id = request.POST.get("cod_cultivo")
+        porciva = request.POST.get("id_porciva")
+
         if not id:
             cabecera = Venta(
-                cliente = cli.id,
+                cliente = cli,
                 fechaVenta = fechaVenta,
                 usuarioCreacion = request.user
             )
@@ -99,32 +99,34 @@ def ventasView(request, id=None):
             if cabecera:
                 cabecera.cliente = cli
                 cabecera.usuarioCreacion = request.user
+                cabecera.porcIva = porciva 
                 cabecera.save()
 
         if not id:
             messages.error(request,'No Puedo Continuar No Pude Detectar No. de Factura')
             return redirect("vent:venta_list")
 
-        produccion_id = request.POST.get("id_produccion")
-        cultivo_id = request.POST.get("id_cultivo")
         cantidad = request.POST.get("id_cantidad")
         precio = request.POST.get("id_precio")
         total = request.POST.get("id_total")
 
         prod = Produccion.objects.get(pk=produccion_id)
+        cult = Cultivo.objects.get(pk=cultivo_id)
         det = DetalleVenta(
             venta = cabecera,
-            produccion = produccion,
-            cultivo = cultivo_id,
+            produccion = prod,
+            cultivo = cult,
             cantidad = cantidad,
             precio = precio,
-            total = total
+            total = total,
+            usuarioCreacion = request.user
         )
 
         if det:
             det.save()
 
-        return redirect("vent:venta_edit",id=id)
+        return redirect('vent:venta_edit',id)
+        #return render(request, 'vent:venta_edit', {'form': form, 'success': True, })
    
     return render(request,template_name,contexto)
 
@@ -155,13 +157,13 @@ def borrar_detalle_factura(request, id):
         if user.is_superuser or user.has_perm("fac.sup_caja_facturadet"):
             det.id = None
             det.cantidad = (-1 * det.cantidad)
-            det.sub_total = (-1 * det.sub_total)
-            det.descuento = (-1 * det.descuento)
+            #det.sub_total = (-1 * det.sub_total)
+            #det.descuento = (-1 * det.descuento)
             det.total = (-1 * det.total)
             det.save()
 
             return HttpResponse("ok")
 
-        return HttpResponse("Usuario no autorizado")
+        #return HttpResponse("Usuario no autorizado")
     
     return render(request,template_name,context)

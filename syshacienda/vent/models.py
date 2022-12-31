@@ -16,17 +16,37 @@ class Venta(BaseFields):
     totalVenta = models.FloatField(blank=True, null=True, default=0)
     porcIva    = models.FloatField(blank=True, null=True, default=0)
     totalIva = models.FloatField(blank=True, null=True, default=0)
+    
+    #def _get_totalIva(self):
+    #  return (self.subTotal * (self.porcIva /100))
+    #totalIva = property(_get_totalIva)
+
+    #def _get_totalVenta(self):
+    #  return (self.subTotal + self.totalIva)
+    #totalVenta = property(_get_totalVenta)
 
     def __str__(self):
         return '{}'.format(self.id)
-
+   
     def save (self):
         self.totalVenta = float(self.totalVenta)
         self.porcIva = float(self.porcIva)
         self.subTotal = float(self.subTotal)
         self.totalIva = float(self.totalIva)
         super(Venta,self).save() 
-       
+     
+    #@property
+    #def totalIva(self):
+    #    return (self.subTotal * (self.porcIva /100))
+    
+    #@totalIva.getter
+    #def totalIva(self):
+    #    return self.totalIva 
+
+    #@property
+    #def totalVenta(self):
+    #    return (self.subTotal + self.totalIva)
+
     class Meta:
         verbose_name_plural = "Ventas"
         db_table = 'venta'
@@ -39,17 +59,21 @@ class DetalleVenta(BaseFields):
     cantidad = models.FloatField(blank=True, null=True)
     precio = models.FloatField(blank=True, null=True)  
     total = models.FloatField(blank=True, null=True, default=0)
+
     def __str__(self):
         return "{}".format(self.cultivo.nombre)
 
     def save (self):
         self.produccion = self.produccion
-        self.cultivo = self.produccion.cultivo
+        self.cultivo = self.cultivo
         self.cantidad = self.cantidad
         self.precio = self.precio
         self.total = float(float(int(self.cantidad)) * float(self.precio))
         super(DetalleVenta, self).save()
 
+    #@property
+    #def total(self):
+    #    return float(self.cantidad * self.precio)
 
     class Meta:
         verbose_name_plural = "DetalleVentas"
@@ -59,21 +83,21 @@ class DetalleVenta(BaseFields):
 @receiver(post_save, sender=DetalleVenta)
 def detalle_fac_guardar(sender,instance,**kwargs):
     venta_id = instance.venta.id
-    produccion_id = instance.produccion.id
-    porciva = Parametro.objects.filter(nombreParametro='IVA')
+    produccion_id = instance.produccion.id    
     venta = Venta.objects.get(pk=venta_id)
+    iIva = venta.porcIva
     if venta:
         sub_total = DetalleVenta.objects \
             .filter(venta=venta_id) \
             .aggregate(total=Sum('total')) \
             .get('total',0.00)
         
-        totaliva = sub_total * (porciva /100)
+        totaliva = sub_total * (iIva /100)
         totalventa = sub_total + totaliva
         venta.totalVenta = totalventa
         venta.subTotal  = sub_total
         venta.totalIva = totaliva
-        venta.porcIva = porciva
+        venta.porcIva = iIva
         venta.save()
 
     prod=Produccion.objects.filter(pk=produccion_id).first()

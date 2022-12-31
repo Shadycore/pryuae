@@ -45,21 +45,21 @@
                                                 {% endfor %}
                                             </select>
                                             <input type="text" class="form-control" name="id_cliente" 
-                                            id="id_cliente" disabled  />
+                                            id="id_cliente" disabled hidden  />
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-6 p-2" >
+                                <div class="col-lg-6 p-2 form-group" >
                                     <div class="row">
                                         <div class="col-lg-3">
                                             Fecha:
                                         </div>
-                                        <div class="col-lg-5 form-group">
+                                        <div class="col-lg-7 form-group">
                                             <input type="text" name="id_fechaVenta" id="id_fechaVenta" class="form-control form-control-user"
-                                            value="{{ obj.fechaVenta|date:'Y-m-d' }}" readonly />
+                                            value="{{ venta.fechaVenta|date:'Y-m-d' }}" readonly />
                                         </div>
                                     </div>
                                 </div>
@@ -67,21 +67,28 @@
                                     <div class="row">
                                         <div class="col-lg-4">SubTotal</div>
                                         <div class="col-lg-7">
-                                            <input type="number" class="form-control text-right" value="0.00" readonly
+                                            <input type="text" class="form-control text-right" readonly
                                             name="id_subTotal" id="id_subTotal">
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-4" id="id_iva">IVA: {{ iva.valorParametro }} </div>
+                                        <div class="col-lg-4" id="labelIva">IVA %: </div>
                                         <div class="col-lg-7">
-                                            <input type="number" class="form-control text-right" value"0.00" disabled
+                                            <input type="text" class="form-control text-right" readonly
+                                                name="id_porciva" id="id_porciva">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4" id="id_iva">IVA $: </div>
+                                        <div class="col-lg-7">
+                                            <input type="text" class="form-control text-right" disabled
                                                 name="id_totalIva" id="id_totalIva">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4">Total:</div>
                                         <div class="col-lg-7">
-                                            <input type="number" class="form-control text-right" value="0.00" disabled
+                                            <input type="text" class="form-control text-right" disabled
                                                 name="total" id="id_totalVenta">
                                         </div>
                                     </div>
@@ -103,10 +110,10 @@
                                             </option>
                                         {% endfor %}
                                     </select>
-                                    <input type="text" class="form-control" name="id_produccion" 
-                                            id="id_produccion" disabled  />
-                                    <input type="text" class="form-control" name="id_cultivo" 
-                                            id="id_cultivo" disabled  />
+                                    <input type="number" class="form-control" name="cod_produccion" 
+                                            id="cod_produccion" readonly hidden />
+                                    <input type="number" class="form-control" name="cod_cultivo" 
+                                            id="cod_cultivo"  readonly hidden />
                         </div>
                         <div class="row">
                             <div class="col-lg-2">Precio</div>
@@ -115,7 +122,7 @@
                             </div>
                             <div class="col-lg-2">Dispon.</div>
                             <div class="col-lg-3">
-                                <input type="number" class="form-control" name="cantidadDisponible" id="cantidadDisponible" disabled>
+                                <input type="number" class="form-control" name="cantidadDisponible" id="cantidadDisponible" readonly>
                             </div>
                         </div>
 
@@ -154,11 +161,11 @@
                             >
                             <thead>
                                 <th data-sortable="true" data-field="id">Id.</th>
-                                <th data-sortable="true" data-field="id_produccion">Código</th>
-                                <th data-sortable="true" data-field="id_cultivo">Cultivo</th>
-                                <th data-field="id_cantidad">Cant</th>
-                                <th data-field="id_precio">Precio</th>
-                                <th data-field="id_total">Total</th>
+                                <th data-sortable="true" data-field="produccion">Código</th>
+                                <th data-sortable="true" data-field="cultivo">Cultivo</th>
+                                <th data-field="cantidad">Cant</th>
+                                <th data-field="precio">Precio</th>
+                                <th data-field="total">Total</th>
                                 <th class="all">Acciones</th>
                             </thead>
                             <tbody>
@@ -275,6 +282,8 @@
 
         console.log("Cantidad " + cant);
         console.log("prec " + prec);
+        console.log("prod_deta " + $("#id_produccion_detalle").val());
+        console.log("id_prod " + $("#cod_produccion").val());
         //console.log("desc " + desc);
 
         console.log("id_total " + $('#id_total').val());
@@ -309,16 +318,16 @@
                 if(r.cantidadDisponible<=0 || !r.estado){
                     mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
                     $("#id_produccion_detalle").val("");
-                    $("#id_cultivo").val("");
-                    $("#id_produccion").val("");
+                    $("#cod_cultivo").val("");
+                    $("#cod_produccion").val("");
                     $("#id_precio").val("0.00");
                     $("#id_produccion_detalle").focus();
                     return false;
                 }
 
                 $("#id_produccion_detalle").val(id_produccion_detalle);
-                $("#id_produccion").val(r.id);
-                $("#id_cultivo").val(r.cultivo);
+                $("#cod_produccion").val(r.id);
+                $("#cod_cultivo").val(r.cultivo);
                 $("#id_precio").val(r.precio);
                 $("#cantidadDisponible").val(cantidadDisponible) ;
                 $("#id_cantidad").focus();
@@ -336,8 +345,8 @@
                 if(a.status==404){
                     mensaje("Producto -" + id_produccion + "- No Encontrado o No Existe",'red');
                     $("#id_produccion_detalle").val("");
-                    $("#id_cultivo").val("");
-                    $("#id_produccion").val("");
+                    $("#cod_cultivo").val("");
+                    $("#cod_produccion").val("");
                     $("#id_precio").val("0.00");
                     $("#id_produccion_detalle").focus();
                 }
@@ -408,6 +417,7 @@
         $("#id_subTotal").val("{{ venta.subTotal }}");
         $("#id_totalIva").val("{{ venta.totalIva }}");
         $("#id_totalVenta").val("{{ venta.totalVenta }}");
+        $("#id_porciva").val("{{ venta.porcIva }}");
 
         // $('#id_cliente').select2().select2('val', $('#id_cliente option:eq(1)').val());
         // https://select2.org/programmatic-control/add-select-clear-items
