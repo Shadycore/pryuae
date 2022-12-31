@@ -25,14 +25,14 @@ def imprimir_venta_list(request,f1,f2):
     f2=parse_date(f2)
     f2=f2 + timedelta(days=1)
 
-    enc = Venta.objects.filter(fecha__gte=f1,fecha__lt=f2)
+    ventas = Venta.objects.filter(fechaVenta__gte=f1,fechaVenta__lt=f2)
     f2=f2 - timedelta(days=1)
     
     context = {
         'request':request,
         'f1':f1,
         'f2':f2,
-        'enc':enc
+        'vent':ventas
     }
 
     return render(request,template_name,context)

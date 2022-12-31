@@ -124,6 +124,15 @@
         <!-- /.container-fluid -->
 {% endblock page_content %}
 
+<script type="text/javascript">
+    $(function(){
+        $("#id_fchNacimiento").datetimepicker({
+            format: 'd/m/Y',
+            timepicker:false
+        });
+    });
+</script>
+
 {% block js_lista %}
 <script>
 $(function(){
@@ -145,7 +154,7 @@ $(function(){
       var f2 = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
     }
     
-    //var url = "imprimir-todas/" + f1 + "/" + f2;
+    var url = "imprimir-todas/" + f1 + "/" + f2;
 
     window.open(url,'facturas');
     
@@ -186,3 +195,4 @@ $(function(){
         });
 	</script>
 {% endblock %}
+
