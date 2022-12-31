@@ -16,36 +16,16 @@ class Venta(BaseFields):
     totalVenta = models.FloatField(blank=True, null=True, default=0)
     porcIva    = models.FloatField(blank=True, null=True, default=0)
     totalIva = models.FloatField(blank=True, null=True, default=0)
-    
-    #def _get_totalIva(self):
-    #  return (self.subTotal * (self.porcIva /100))
-    #totalIva = property(_get_totalIva)
-
-    #def _get_totalVenta(self):
-    #  return (self.subTotal + self.totalIva)
-    #totalVenta = property(_get_totalVenta)
 
     def __str__(self):
         return '{}'.format(self.id)
    
     def save (self):
         self.totalVenta = float(self.totalVenta)
-        self.porcIva = float(self.porcIva)
+        self.porcIva = self.porcIva
         self.subTotal = float(self.subTotal)
         self.totalIva = float(self.totalIva)
         super(Venta,self).save() 
-     
-    #@property
-    #def totalIva(self):
-    #    return (self.subTotal * (self.porcIva /100))
-    
-    #@totalIva.getter
-    #def totalIva(self):
-    #    return self.totalIva 
-
-    #@property
-    #def totalVenta(self):
-    #    return (self.subTotal + self.totalIva)
 
     class Meta:
         verbose_name_plural = "Ventas"
@@ -70,10 +50,6 @@ class DetalleVenta(BaseFields):
         self.precio = self.precio
         self.total = float(float(int(self.cantidad)) * float(self.precio))
         super(DetalleVenta, self).save()
-
-    #@property
-    #def total(self):
-    #    return float(self.cantidad * self.precio)
 
     class Meta:
         verbose_name_plural = "DetalleVentas"

@@ -81,14 +81,14 @@
                                     <div class="row">
                                         <div class="col-lg-4" id="id_iva">IVA $: </div>
                                         <div class="col-lg-7">
-                                            <input type="text" class="form-control text-right" disabled
+                                            <input type="text" class="form-control text-right" readonly
                                                 name="id_totalIva" id="id_totalIva">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4">Total:</div>
                                         <div class="col-lg-7">
-                                            <input type="text" class="form-control text-right" disabled
+                                            <input type="text" class="form-control text-right" readonly
                                                 name="total" id="id_totalVenta">
                                         </div>
                                     </div>
@@ -413,7 +413,7 @@
         });
 
         $("#id").val("{{ venta.id }}");
-        $("#id_cliente_detalle").val("{{ venta.cliente }}").change();
+        $("#id_cliente_detalle").val("{{ venta.cliente.id }}").change();
         $("#id_fechaVenta").val("{{ venta.fechaVenta|date:'Y-m-d' }}");
         $("#id_subTotal").val("{{ venta.subTotal }}");
         $("#id_totalIva").val("{{ venta.totalIva }}");

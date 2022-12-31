@@ -26,14 +26,13 @@ class VentaView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return super().get_queryset()
-        #return Venta.objects.all()
+
 
 @login_required(login_url='/login/')
 def ventasView(request, id=None):
     template_name = "vent/venta_form.html"
     clientes = Cliente.objects.filter(estado=True)
-    #cultivos = Cultivo.objects.filter(estado=True)
-    produccion = Produccion.objects.filter(estado=True)
+    produccion = Produccion.objects.filter(Q(estado=True)).order_by('id')
     contexto = {}
 
     if request.method == "GET":
@@ -45,7 +44,8 @@ def ventasView(request, id=None):
 
         if not venta_cabecera:
             porciva = Parametro.objects.filter(nombreParametro='IVA').first()
-            iIva = float(porciva.valorParametro)
+            iIva = porciva.valorParametro
+            iIva.replace(",",".")
             cabecera = {
                 'id':0,
                 'fechaVenta':datetime.today(),
@@ -81,12 +81,14 @@ def ventasView(request, id=None):
         produccion_id = request.POST.get("cod_produccion")     
         cultivo_id = request.POST.get("cod_cultivo")
         porciva = request.POST.get("id_porciva")
-
+        porciva.replace(",", ".")
+        #iIva = float(porciva)
         if not id:
             cabecera = Venta(
                 cliente = cli,
                 fechaVenta = fechaVenta,
-                usuarioCreacion = request.user
+                usuarioCreacion = request.user,
+                porcIva = porciva
             )
             if cabecera:
                 cabecera.save()
