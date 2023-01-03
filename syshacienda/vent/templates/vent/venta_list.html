@@ -53,10 +53,20 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                              <input type="text" class="form-class" name="f1" id="f1" readonly>
+                              <input type="text" 
+                                    class="form-class" 
+                                    name="f1" 
+                                    id="f1" 
+                                    size="10"
+                                    readonly>
                             </div>
                             <div class="col-md-3">
-                              <input type="text" class="form-class" name="f2" id="f2" readonly>
+                              <input type="text" 
+                                    class="form-class" 
+                                    name="f2" 
+                                    id="f2" 
+                                    size="10"
+                                    readonly>
                             </div>
 
                             <div class="col-md-3">
@@ -124,46 +134,34 @@
         <!-- /.container-fluid -->
 {% endblock page_content %}
 
-<script type="text/javascript">
-    $(function(){
-        $("#id_fchNacimiento").datetimepicker({
-            format: 'd/m/Y',
-            timepicker:false
-        });
-    });
-</script>
-
 {% block js_lista %}
-<script>
-$(function(){
-  $("#f1, #f2").datetimepicker({
-      format: 'Y-m-d',
-      timepicker:false
+<script type="text/javascript">
+  $(function(){
+    $("#f1, #f2").datetimepicker({
+        format: 'Y-m-d',
+        timepicker:false,
+    });
+
+    $("#btnPrint").click(function(e){
+      e.preventDefault();
+      var f1,f2;
+      f1 = $("#f1").val();
+      f2 = $("#f2").val();
+      if(f1=="" || f1==null){
+        f1="2019-06-01";
+      }
+      if(f2=="" || f2==null){
+        var d = new Date();
+        var f2 = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+      }
+      
+      var url = "imprimir-todas/" + f1 + "/" + f2;
+
+      window.open(url,'facturas');
+      
+    });
   });
-
-  $("#btnPrint").click(function(e){
-    e.preventDefault();
-    var f1,f2;
-    f1 = $("#f1").val();
-    f2 = $("#f2").val();
-    if(f1=="" || f1==null){
-      f1="2019-06-01";
-    }
-    if(f2=="" || f2==null){
-      var d = new Date();
-      var f2 = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
-    }
-    
-    var url = "imprimir-todas/" + f1 + "/" + f2;
-
-    window.open(url,'facturas');
-    
-  });
-});
 </script>
-</script>
-
-
 {% endblock js_lista %}
 
 {% block js_tablas %}
@@ -186,13 +184,5 @@ $(function(){
 </script>
 
 {% block js_page %}
-  	<script type="text/javascript">
-        $(function(){
-            $("#id_fchNacimiento").datetimepicker({
-                format: 'd/m/Y',
-                timepicker:false
-            });
-        });
-	</script>
 {% endblock %}
 
