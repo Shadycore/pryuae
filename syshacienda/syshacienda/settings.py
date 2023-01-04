@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'mnt',
     'vent',
     'api',
-    'rest_framework'
+    'rest_framework',
+    'rpts'
 ]
 
 MIDDLEWARE = [
