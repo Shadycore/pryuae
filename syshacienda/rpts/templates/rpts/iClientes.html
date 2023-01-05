@@ -1,11 +1,16 @@
-{% extends 'rpts/base_list.html' %}
+{% extends 'rpts/baserpts.html' %}
 
 {% block mensaje %}
 <h2 class="h3 mb-2 text-success">Informe de Clientes</h2>
 {% endblock %}
 
-{% block btnnuevo %}
-{% endblock  %}
+{% block btnimprimir %}
+  <a href="{% url 'rpts:imprimelista' 1 %}" 
+    class="btn btn-primary btn-icon-split">
+    <span class="text">Imprimir</span>
+  </a>
+{% endblock  btnimprimir %}
+
 {% block header_list %}
     <tr>
       <th>id</th>
