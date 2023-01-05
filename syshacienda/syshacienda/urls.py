@@ -26,6 +26,7 @@ urlpatterns = [
     path('mnt/', include(('mnt.urls','mnt'), namespace="mnt")),
     path('vent/', include(('vent.urls','vent'), namespace="vent")),
     path('api/', include(('api.urls','api'), namespace="api")),
+    path('rpts/', include(('rpts.urls','rpts'), namespace="rpts")),
     path('admin',admin.site.urls),
 
 ]

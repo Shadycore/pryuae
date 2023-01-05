@@ -8,6 +8,6 @@ urlpatterns = [
     path('Venta/edit/<int:id>', ventasView, name='venta_edit'),
     path('Venta/busca_produccion',ProduccionView.as_view(), name="busca_produccion"),
     path('Venta/imprimir/<int:id>',imprimir_venta_recibo, name="venta_imprimir"),
-    path('Venta/imprimir-todas/<str:f1>/<str:f2>',imprimir_venta_list, name="venta_imprimir_all"),
+    path('Ventas/imprimir-todas/<str:f1>/<str:f2>',imprimir_venta_list, name="venta_imprimir_all"),
 
 ]

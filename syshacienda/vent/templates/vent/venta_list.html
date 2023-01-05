@@ -52,7 +52,8 @@
                 {% else %}
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-lg-1"> Fecha Inicio</div>
+                            <div class="col-md-2">
                               <input type="text" 
                                     class="form-class" 
                                     name="f1" 
@@ -60,7 +61,8 @@
                                     size="10"
                                     readonly>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-1"> Fecha Fin</div>
+                            <div class="col-md-2">
                               <input type="text" 
                                     class="form-class" 
                                     name="f2" 
@@ -69,7 +71,7 @@
                                     readonly>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                               <button class="btn btn-warning" type="button" id="btnPrint">Imprimir</button>
                             </div>
                         </div>
@@ -134,35 +136,6 @@
         <!-- /.container-fluid -->
 {% endblock page_content %}
 
-{% block js_lista %}
-<script type="text/javascript">
-  $(function(){
-    $("#f1, #f2").datetimepicker({
-        format: 'Y-m-d',
-        timepicker:false,
-    });
-
-    $("#btnPrint").click(function(e){
-      e.preventDefault();
-      var f1,f2;
-      f1 = $("#f1").val();
-      f2 = $("#f2").val();
-      if(f1=="" || f1==null){
-        f1="2019-06-01";
-      }
-      if(f2=="" || f2==null){
-        var d = new Date();
-        var f2 = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
-      }
-      
-      var url = "imprimir-todas/" + f1 + "/" + f2;
-
-      window.open(url,'facturas');
-      
-    });
-  });
-</script>
-{% endblock js_lista %}
 
 {% block js_tablas %}
 	<!-- Core plugin JavaScript-->
@@ -182,7 +155,6 @@
     $('.table').DataTable();
   });
 </script>
-
 {% block js_page %}
 {% endblock %}
 

@@ -259,9 +259,9 @@
 							        <li class="submenu-item"><a class="submenu-link" href="#">Ganancias</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href="#">Productos más vendidos</a></li>
 									<li><hr class="dropdown-divider"></li>
-									<li class="submenu-item"><a class="submenu-link" href="#">Informe proveedores</a></li>
-									<li class="submenu-item"><a class="submenu-link" href="#">Informe clientes</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href="#">Informe compras</a></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'rpts:iproveedores' %} ">Informe proveedores</a></li>
+									<li class="submenu-item"><a class="submenu-link" href=" {% url 'rpts:iclientes' %} ">Informe clientes</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'rpts:icompras' %} ">Informe compras</a></li>
 									
 						        </ul>
 					        </div>
@@ -350,7 +350,33 @@
             });
         });
 	</script>
+	<script type="text/javascript">
+	$(function(){
+		$("#f1, #f2").datetimepicker({
+			format: 'Y-m-d',
+			timepicker:false
+		});
 
+		$("#btnPrint").click(function(e){
+			e.preventDefault();
+			var f1,f2;
+			f1 = $("#f1").val();
+			f2 = $("#f2").val();
+			if(f1=="" || f1==null){
+				var d1 = new Date();
+				var f2 = d1.getFullYear() + "-" + (d1.getMonth()+1) + "-" + d1.getDate();
+			}
+			if(f2=="" || f2==null){
+				var d = new Date();
+				var f2 = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+			}
+			
+			var url = "imprimir-todas/" + f1 + "/" + f2;
+
+			window.open(url,'facturas');
+		});
+	});
+	</script>
 	<!-- <script src="{% static 'assets/vendor/bootstrap/js/bootstrap-datetimepicker.min.js'%}"></script>-->
 	{% block control_modal%}
 		<script>

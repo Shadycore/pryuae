@@ -1,0 +1,62 @@
+{% extends 'mnt/base_list.html' %}
+
+{% block mensaje %}
+<h2 class="h3 mb-2 text-success">Informe de Compras</h2>
+{% endblock %}
+
+{% block btnnuevo %}
+{% endblock  %}
+
+{% block header_list %}
+<tr>
+  <th>id</th>
+  <th>Insumo</th>
+  <th>Cultivo</th>
+  <th>Fecha de Compra</th>
+  <th>Precio</th>
+  <th>Fecha Ingreso</th>
+  <th>Requerimiento</th>
+  <!--<th>Estado</th> -->
+  <th class="all">Acciones</th>
+</tr>
+{% endblock %}
+
+{% block footer_list %}
+{% endblock footer_list %}
+
+{% block body_list %}
+  {% for item in obj %}
+  <tr>
+      <td>{{ item.id }} </td>
+      <td width="240px">{{ item.insumo }}</td>
+      <td width="240px">{{ item.cultivo }}</td>
+      <td width="240px">{{ item.fechaCompra | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.precio }}</td>
+      <td width="240px">{{ item.fechaIngreso | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.requerimiento }}</td>
+      <!--<td> {% if item.estado %}
+              Activo
+            {% else %} 
+              Inactivo
+            {% endif %}
+            </td> -->
+      <td width="240px"> 
+        <a href="{% url 'mnt:registroinsumo_edit' item.id %}" 
+            class="btn btn-warning btn-circle" data-tooltip="Editar"
+            role="button">
+            <i class="far fa-edit"></i>
+        </a>
+      </td>
+  </tr>
+  {% endfor %}
+{% endblock %}
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+{% endblock %}
