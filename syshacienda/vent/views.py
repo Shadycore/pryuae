@@ -143,13 +143,13 @@ def borrar_detalle_factura(request, id):
 
     if request.method == "POST":
         if det:
-            det.id = None
             det.cantidad = (-1 * det.cantidad)
             #det.total = (-1 * det.sub_total)
             #det.descuento = (-1 * det.descuento)
             det.total = (-1 * det.total)
-            prod=Produccion.objects.filter(pk=det.produccion).first()
+            prod=Produccion.objects.filter(pk=det.produccion.id).first()
             mcantidad = det.cantidad
+            det.id = None
             det.save()
         
             if prod:

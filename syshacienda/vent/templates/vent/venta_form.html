@@ -435,35 +435,32 @@
             theme:"modern",
             icon:"fab fa-keycdn",
             type:'red',
-            title: "Confirmación Requerida",
-            //content: '#',//'url:/fac/facturas/borrar-detalle/' + id,
-            //onContentReady: function () {
-            //    var self = this;
-            //    this.$content.find('#usuario').val('{{ user.username }}');
-            //    this.$content.find('#usuario').select();
-            //    this.$content.find('#usuario').focus();
-            //},
+            title: "Seguro de eliminar el registro",
+            content: '/vent/Venta/borrar-detalle/' + id, 
             buttons:{
                 borrar:{
                     text:"Borrar",
                     btnClass:"btn btn-danger",
                     action: function(){
+                        var data = {"usuario":"","pass":""};
+	                    console.log(data);
                         var token = '{{csrf_token}}';
                         $.ajax({
                             headers: { "X-CSRFToken": token },
                             type:"POST",
                             data:data,
-                            url: '#',//'/fac/facturas/borrar-detalle/' + id,
+                            url: '/vent/Venta/borrar-detalle/' + id,
                             success: function(r){
                                 console.log(r);
                                 if(r==="ok"){
                                     location.reload(true);
                                 }else{
+                                    console.log("Error: " + r);
                                     mensaje(r,'red');
                                 }
                             },
                             error: function(a,b,c){
-                                mensaje(c);
+                                mensaje("Error(c): " + c);
                             }
                         });
                     }

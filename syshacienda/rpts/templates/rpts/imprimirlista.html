@@ -55,12 +55,13 @@
             {% block cuerpo %}
             {% if opt == 1 %}
                 {% for item in detalle %}
-                <tr>
-                    <td align="center">{{item.produccion.id}}</td>
-                    <td align="center">{{item.cultivo.nombre}}</td>
-                    <td align="left">{{item.cantidad}}</td>
-                    <td align="left">{{item.precio}}</td>
-                    <td align="left">{{item.total}}</td>
+                <tr
+                    <td align="center">{{item.id}}</td>
+                    <td align="center">{{item.apellido}}</td>
+                    <td align="left">{{item.nombre}}</td>
+                    <td align="left">{{item.email}}</td>
+                    <td align="left">{{item.telefono}}</td>
+                    <td align="left">{{item.ciudad}}</td>
                 </tr>
                 {% endfor %}
             {% endif %}
@@ -93,7 +94,6 @@
         <small class="pie">
             <br><br>
             <center>
-                Facturado por:  {{venta.uc}} - Fecha:  {{venta.fc}}
                 <br>
                 <i>&copy; &reg; <b></b><br> </i> 
             </center>

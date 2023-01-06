@@ -1,5 +1,5 @@
 from django.urls import path, include
-from vent.views import VentaView, ventasView, ProduccionView 
+from vent.views import VentaView, ventasView, ProduccionView, borrar_detalle_factura
 from vent.reportes import imprimir_venta_list, imprimir_venta_recibo
 urlpatterns = [
     #Ventas
@@ -7,6 +7,8 @@ urlpatterns = [
     path('Venta/new', ventasView, name='venta_new'),
     path('Venta/edit/<int:id>', ventasView, name='venta_edit'),
     path('Venta/busca_produccion',ProduccionView.as_view(), name="busca_produccion"),
+    path('Venta/borrar-detalle/<int:id>',borrar_detalle_factura, name="borrar_detalle"),
+
     path('Venta/imprimir/<int:id>',imprimir_venta_recibo, name="venta_imprimir"),
     path('Ventas/imprimir-todas/<str:f1>/<str:f2>',imprimir_venta_list, name="venta_imprimir_all"),
 

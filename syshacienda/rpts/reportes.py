@@ -15,7 +15,7 @@ def imprimirLista(request,id,f1=None,f2=None):
         context={
             'opt'   : "1",
             'titulo':"Informe de cliente",
-            'cabecera': {"id", "Apellido", "Nombre", "Email", "Teléfono", "Ciudad" },
+            'cabecera': { "id", "Apellido", "Nombre", "Email", "Teléfono", "Ciudad" },
             'detalle': cliente
         }
 
