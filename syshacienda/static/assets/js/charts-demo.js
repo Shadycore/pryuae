@@ -20,7 +20,7 @@ var lineChartConfig = {
 	type: 'line',
 
 	data: {
-		labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+		labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
 		
 		datasets: [{
 			label: 'Dataset',
@@ -110,7 +110,7 @@ var barChartConfig = {
 	type: 'bar',
 
 	data: {
-		labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+		labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
 		datasets: [{
 			label: 'Dataset 1',
 			backgroundColor: "rgba(117,193,129,0.8)", 

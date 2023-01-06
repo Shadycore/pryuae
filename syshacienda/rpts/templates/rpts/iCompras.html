@@ -33,6 +33,13 @@
                 <span class="text">Imprimir</span>
             </a>
           </div>
+
+          <div class="col-md-2">
+            <a href="{% url 'rpts:imprimirclientes' %}" 
+                  class="btn btn-primary btn-icon-split">
+                <span class="text">Consultar</span>
+            </a>
+          </div>
       </div>
       <br /> <br />
 <div class="row g-4 mb-4">
@@ -43,7 +50,7 @@
         </div><!--//app-card-header-->
         <div class="app-card-body p-4">					   
           <div class="chart-container">
-                  <canvas id="chart-line" ></canvas>
+                  <canvas id="graficoLinea" ></canvas>
           </div>
         </div><!--//app-card-body-->
       </div><!--//app-card-->
@@ -55,7 +62,7 @@
         </div><!--//app-card-header-->
         <div class="app-card-body p-4">					   
           <div class="chart-container">
-                  <canvas id="chart-bar" ></canvas>
+                  <canvas id="graficoBarra" ></canvas>
           </div>
         </div><!--//app-card-body-->
       </div><!--//app-card-->
@@ -64,12 +71,13 @@
 {% endblock fechas %}
 {% block header_list %}
   <tr>
-    <th>id</th>
-    <th>Nombre</th>
-    <th>Tipo</th>
-    <th>Uso</th>
-    <th>Precio</th>
-    <th>Estado</th>
+  <th>id</th>
+  <th>Insumo</th>
+  <th>Cultivo</th>
+  <th>Fecha de Compra</th>
+  <th>Precio</th>
+  <th>Fecha Ingreso</th>
+  <th>Requerimiento</th>
   </tr>
 {% endblock %}
 
@@ -79,16 +87,72 @@
 {% block body_list %}
   {% for item in obj %}
     <tr>
-      <td>{{ item.id }}</td>
-      <td width="240px">{{ item.nombre }}</td>
-      <td width="240px">{{ item.tipo }}</td>
-      <td width="240px">{{ item.uso  }}</td>
-      <td width="240px">{{ item.precio  }}</td>
-      <td width="240px">{{ item.estado | yesno:"Activo, Inactivo" }} </td>
+      <td>{{ item.id }} </td>
+      <td width="240px">{{ item.insumo }}</td>
+      <td width="240px">{{ item.cultivo }}</td>
+      <td width="240px">{{ item.fechaCompra | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.precio }}</td>
+      <td width="240px">{{ item.fechaIngreso | date:"d/m/Y" }}</td>
+      <td width="240px">{{ item.requerimiento }}</td>
     </tr>
   {% endfor %}
 {% endblock %}
-
+	{% block js_graficos %}
+	<script>
+	var ctx = document.getElementById('graficoBarra').getContext('2d');
+	var chart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			datasets: [{
+				label: {{ ianio }}
+				backgroundColor: '#42a5f5',
+				borderColor: 'gray',
+				data: [{%for data in datoLineal %}{{data.total}},{%endfor%}]
+			},{
+				label: 'Gastos',
+				backgroundColor: '#ffab91',
+				borderColor: 'yellow',
+				data: [{%for data in datoComprativo %}{{data.total}},{%endfor%}]
+			}		
+			]},
+		options: {responsive: true}
+	});
+	var ctx1 = document.getElementById('graficoLinea').getContext('2d');
+	var chart = new Chart(ctx1, {
+		type: 'line',
+		data: {
+			labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			datasets: [{
+				label: 'Ganancias',
+				backgroundColor: '#42a5f5',
+				borderColor: 'gray',
+				data: [{%for data in datoLineal %}{{data.total}},{%endfor%}],
+			}		
+			]},
+		options: {}
+	});
+	var ctx2 = document.getElementById('graficoDona').getContext('2d');
+	var chart = new Chart(ctx2, {
+		type: 'doughnut',
+		data: 	
+		{
+					datasets: [{
+						data: [60,18,10, 8, 4],
+						backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
+						label: 'Comparacion de navegadores'
+					}],
+					labels: [
+						'Google Chrome',
+						'Safari',
+						'Edge',
+						'Firefox',
+						'Opera'
+					]},
+		options: {}
+	});
+	</script>
+	{% endblock js_graficos%}
 {% block js_page %}
 <script>
   var jq = jQuery.noConflict(true);
@@ -98,8 +162,8 @@
   });
 </script>
 <!-- Charts JS -->
-<script src="{% static 'assets/plugins/chart.js/chart.min.js'%}"></script> 
-<script src="{% static 'assets/js/charts-demo.js'%}"></script> 
+<script src="{% static 'assets/js/chart.js/chart.min.js'%}"></script> 
+<script src="{% static 'assets/js/index-charts.js'%}"></script> 
 {% endblock %}
 <script>
 $(function() {
