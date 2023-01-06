@@ -1,5 +1,5 @@
-.tabla {
-    border: 1px solid black;
+.table {
+    border: 2px solid black;
 }
 
 .table td .numero{
@@ -7,16 +7,16 @@
 }
 
 
-.tabla tr td:nth-child(2n) {
-    background-color: gray;
+.table tr td:nth-child(2n) {
+    background-color: white;
     color: black;
     text-align: left;
     font-size: 10px;
     font-family: Arial;
 }
 
-.tabla tr td:nth-child(2n+1) {
-    background-color: white;
+.table tr td:nth-child(2n+1) {
+    background-color: gray;
     color: black;
     text-align: left;
     font-size: 10px;

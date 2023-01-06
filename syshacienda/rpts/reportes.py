@@ -7,37 +7,38 @@ from vent.models import Venta, DetalleVenta
 from mnt.models import Cliente, Cultivo, Produccion, Empleado, Asignacion, Proveedor
 
 
-def imprimirLista(request,id,f1=None,f2=None):
-    template_name="rpts/imprimirlista.html"
-    #Clientes
-    if id == 1:
-        cliente = Cliente.objects.all().order_by('-id')
-        context={
-            'opt'   : "1",
-            'titulo':"Informe de cliente",
-            'cabecera': { "id", "Apellido", "Nombre", "Email", "Teléfono", "Ciudad" },
-            'detalle': cliente
-        }
+def imprimirClientes(request):
+    template_name="rpts/impClientes.html"
 
-    #Proveedores
-    if id ==2:
-        vent = Venta.objects.get(id=id)
-        det = DetalleVenta.objects.filter(venta=id)
+    cliente = Cliente.objects.all().order_by('-id')
+    context={
+        'titulo':"Informe de cliente",
+        'cabecera': { },
+        'detalle': cliente
+    }
 
-        context={
-            'request':request,
-            'venta':vent,
-            'detalle':det
-        }
+    return render(request,template_name,context)
+
+def imprimirProveedores(request):
+    template_name="rpts/impProveedores.html"
+    proveedor = Proveedor.objects.all().order_by('-id')
+
+    context={
+        'titulo':"Informe de Proveedores",
+        'cabecera': { },
+        'detalle': proveedor
+    }
     
-    #compras
-    if id == 3:
-        vent = Venta.objects.get(id=id)
-        det = DetalleVenta.objects.filter(venta=id)
-        context={
-            'request':request,
-            'venta':vent,
-            'detalle':det
-        }
+    return render(request,template_name,context)
+
+def imprimirCompras(request,id,f1=None,f2=None):
+    template_name="rpts/impCompras.html"
+    vent = Venta.objects.get(id=id)
+    det = DetalleVenta.objects.filter(venta=id)
+    context={
+        'request':request,
+        'venta':vent,
+        'detalle':det
+    }
 
     return render(request,template_name,context)

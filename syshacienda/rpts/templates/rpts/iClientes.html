@@ -4,12 +4,12 @@
 <h2 class="h3 mb-2 text-success">Informe de Clientes</h2>
 {% endblock %}
 
-{% block btnimprimir %}
-  <a href="{% url 'rpts:imprimelista' 1 %}" 
+{% block btnnuevo %}
+  <a href="{% url 'rpts:imprimirclientes' %}" 
     class="btn btn-primary btn-icon-split">
     <span class="text">Imprimir</span>
   </a>
-{% endblock  btnimprimir %}
+{% endblock btnnuevo %}
 
 {% block header_list %}
     <tr>
@@ -19,31 +19,19 @@
       <th>Celular</th>
       <th>Email</th>
       <th>Ciudad</th>
-      <th>Estado</th>
-      <th class="all">Acciones</th>
     </tr>
-    {% endblock %}
-    {% block footer_list %}
-      {% endblock %}
+ {% endblock %}
+ {% block footer_list %}
+ {% endblock %}
  {% block body_list %}  
       {% for item in obj %}
             <tr>
               <td>{{ item.id }}</td>
               <td width="240px">{{ item.nombre }} {{ item.apellido }}</td>
-              <!-- <td>{{ item.apellido }}</td> -->
               <td width="240px">{{ item.identificacion }}</td>
-              <!--<td>{{ item.telefono }}</td>-->
               <td width="240px">{{ item.celular }}</td>
               <td width="240px">{{ item.email }}</td>
               <td width="240px">{{ item.ciudad }} </td>
-              <!--<td>{{ item.ciudad }}</td>-->
-              <td width="240px">{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-              <td width="240px">
-                <a href="{% url 'mnt:cliente_edit' item.id %}" 
-                class="btn btn-warning btn-circle" 
-                role="button">
-                <i class="far fa-edit"></i></a> 
-              </td>
             </tr>
     {% endfor %}
 {% endblock %} 

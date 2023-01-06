@@ -4,26 +4,23 @@
 <h2 class="h3 mb-2 text-success">Informe de Proveedores</h2>
 {% endblock %}
 
-{% block btnimprimir %}
-  <a href="{% url 'rpts:imprimelista' 2 %}" 
+{% block btnnuevo %}
+  <a href="{% url 'rpts:imprimirproveedores' %}" 
     class="btn btn-primary btn-icon-split">
     <span class="text">Imprimir</span>
   </a>
-{% endblock btnimprimir %}
+{% endblock btnnuevo %}
 
 {% block header_list %}
     <tr>
       <th>id</th>
-      <th>Nombre</th>
-      <!--<th>Razón Social</th>-->
+      <th>Razón Social</th>
       <th>RUC</th>
       <th>Teléfono</th>
       <th>Celular</th>
       <th>Email</th>
       <th>Dirección</th>
       <th>Ciudad</th>
-      <th>Estado</th>
-      <th class="all">Acciones</th>
     </tr>
     {% endblock %}
     {% block footer_list %}
@@ -39,13 +36,6 @@
               <td width="240px">{{ item.email }}</td>
               <td width="240px">{{ item.direccion }}</td>
               <td width="240px">{{ item.ciudad }}</td>
-              <td width="240px">{{ item.estado | yesno:"Activo, Inactivo" }} </td>
-              <td width="240px">
-                <a href="{% url 'mnt:proveedor_edit' item.id %}" 
-                class="btn btn-warning btn-circle" 
-                role="button">
-                <i class="far fa-edit"></i></a> 
-              </td>
             </tr>
     {% endfor %}
 {% endblock %} 

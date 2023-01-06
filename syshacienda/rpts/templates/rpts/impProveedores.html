@@ -20,11 +20,11 @@
     <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
         <center>
             <small>
-                <div class="app-auth-branding mb-4"> 
+                <!--<div class="app-auth-branding mb-4"> 
                     <a class="app-logo" href="#">
-                        <img class="logo-icon me-2 " width: "100px" height: "100px" src="{% static 'assets/images/logohacienda.png' %}" >
+                        <img class="logo-icon me-2 " width: "10px" height: "10px" src="{% static 'assets/images/logohacienda.png' %}" >
                     </a>
-                </div>
+                </div>-->
             </small><br>
             <small></small><br>
             <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b><br> 
@@ -43,30 +43,26 @@
             <br><br>
         </small>
 
-        <table class="table table-condensed table-sm" width="80%">
+        <table class="table border-top " stylesheet="{% static 'assets/css/reportes.css' %}" width="80%">
             <thead>
-            {% block cabecera %}
-                {% for tit in cabecera%}
-                    <th align='right'> {{% tit %}}</th>
-                {% endfor %}
-            {% endblock cabecera %}
+                <th>id</th>
+                <th>RUC</th>
+                <th>Razón Social</th>
+                <th>Ciudad</th>
+                <th>Telefono</th>
+                <th>Email</th>
             </thead>
             <tbody>
-            {% block cuerpo %}
-            {% if opt == 1 %}
                 {% for item in detalle %}
-                <tr
+                <tr>
                     <td align="center">{{item.id}}</td>
-                    <td align="center">{{item.apellido}}</td>
-                    <td align="left">{{item.nombre}}</td>
-                    <td align="left">{{item.email}}</td>
-                    <td align="left">{{item.telefono}}</td>
-                    <td align="left">{{item.ciudad}}</td>
+                    <td align="center">{{item.nombre}}</td>
+                    <td align="center">{{item.identificacion}}</td>
+                    <td align="center">{{item.ciudad}}</td>
+                    <td align="center">{{item.telefono}}</td>
+                    <td align="center">{{item.email}}</td>
                 </tr>
                 {% endfor %}
-            {% endif %}
-            </tbody>
-            {% endblock cuerpo %}
             </tbody>
         </table>
         <div class="col-xs-1"></div>
