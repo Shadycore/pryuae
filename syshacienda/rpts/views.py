@@ -16,7 +16,7 @@ from mnt.views import ClienteView, CultivoView, ProduccionView, \
                             ProveedorNew, RegistroInsumoNew
 from mnt.models import Cliente, Cultivo, Produccion, \
                         Hacienda, Empleado, Asignacion, \
-                        Proveedor, RegistroInsumo
+                        Proveedor, RegistroInsumo, Insumo
 from vent.views import ventasView, VentaView
 # Create your views here.
 
@@ -29,12 +29,22 @@ class iProveedoresView(LoginRequiredMixin, generic.ListView):
 
 class iClientesView(LoginRequiredMixin, generic.ListView):
     model = Cliente
-    template_name="rpt/iClientes.html"
+    template_name="rpts/iClientes.html"
     context_object_name = "obj"
     login_url = "baseapp:login"
 
-class iComprasView(LoginRequiredMixin, generic.ListView):
-    model = RegistroInsumo
+class iComprasView_(LoginRequiredMixin, generic.ListView):
+    model = Insumo
     template_name="rpt/iCompras.html"
     context_object_name = "obj"
     login_url = "baseapp:login"
+
+@login_required(login_url='/login/')
+def iComprasView(request,f1=None,f2=None):    
+    template_name="rpts/iCompras.html"
+    obj = Insumo.objects.all().order_by('-id')
+    return render(request,template_name,obj)
+    #if request.method == "GET":
+    #    return (request)
+    #if request.method == "POST":
+    #    return (request)

@@ -54,6 +54,8 @@
                     </div>
                 {% else %}
                     <div class="card-body">
+                        {% block fechas %}
+                        {% endblock fechas %}                        
                         <table class="table table-responsive table-bordered" 
                                id="dataTable" width="100%" cellspacing="0">
                           <thead>

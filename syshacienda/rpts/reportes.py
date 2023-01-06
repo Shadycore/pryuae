@@ -4,7 +4,7 @@ from datetime import timedelta
 
 from django.db import models
 from vent.models import Venta, DetalleVenta
-from mnt.models import Cliente, Cultivo, Produccion, Empleado, Asignacion, Proveedor
+from mnt.models import Cliente, Cultivo, Produccion, Empleado, Asignacion, Proveedor, RegistroInsumo, Insumo
 
 
 def imprimirClientes(request):
@@ -33,12 +33,11 @@ def imprimirProveedores(request):
 
 def imprimirCompras(request,id,f1=None,f2=None):
     template_name="rpts/impCompras.html"
-    vent = Venta.objects.get(id=id)
-    det = DetalleVenta.objects.filter(venta=id)
+    insumo = Insumo.objects.all().order_by('-id')
     context={
-        'request':request,
-        'venta':vent,
-        'detalle':det
+        'titulo':"Informe de Compras",
+        'cabecera': { },
+        'detalle': insumo
     }
 
     return render(request,template_name,context)
