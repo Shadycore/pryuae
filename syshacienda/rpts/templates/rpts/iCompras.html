@@ -97,62 +97,66 @@
     </tr>
   {% endfor %}
 {% endblock %}
-	{% block js_graficos %}
+{% block js_graficos %}
 	<script>
-	var ctx = document.getElementById('graficoBarra').getContext('2d');
-	var chart = new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			datasets: [{
-				label: {{ ianio }}
-				backgroundColor: '#42a5f5',
-				borderColor: 'gray',
-				data: [{%for data in datoLineal %}{{data.total}},{%endfor%}]
-			},{
-				label: 'Gastos',
-				backgroundColor: '#ffab91',
-				borderColor: 'yellow',
-				data: [{%for data in datoComprativo %}{{data.total}},{%endfor%}]
-			}		
-			]},
-		options: {responsive: true}
-	});
-	var ctx1 = document.getElementById('graficoLinea').getContext('2d');
-	var chart = new Chart(ctx1, {
-		type: 'line',
-		data: {
-			labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			datasets: [{
-				label: 'Ganancias',
-				backgroundColor: '#42a5f5',
-				borderColor: 'gray',
-				data: [{%for data in datoLineal %}{{data.total}},{%endfor%}],
-			}		
-			]},
-		options: {}
-	});
-	var ctx2 = document.getElementById('graficoDona').getContext('2d');
-	var chart = new Chart(ctx2, {
-		type: 'doughnut',
-		data: 	
-		{
-					datasets: [{
-						data: [60,18,10, 8, 4],
-						backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
-						label: 'Comparacion de navegadores'
-					}],
-					labels: [
-						'Google Chrome',
-						'Safari',
-						'Edge',
-						'Firefox',
-						'Opera'
-					]},
-		options: {}
-	});
+   $(function () {    
+    console.log('graficos');
+
+        var ctx = document.getElementById('graficoBarra').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            datasets: [{
+              label: {{ ianio }}
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [{%for data in datoLineal %}{{data.total}},{%endfor%}]
+            },{
+              label: 'Gastos',
+              backgroundColor: '#ffab91',
+              borderColor: 'yellow',
+              data: [{%for data in datoComprativo %}{{data.total}},{%endfor%}]
+            }		
+            ]},
+          options: {responsive: true}
+        });
+        var ctx1 = document.getElementById('graficoLinea').getContext('2d');
+        var chart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            datasets: [{
+              label: 'Ganancias',
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [{%for data in datoLineal %}{{data.total}},{%endfor%}],
+            }		
+            ]},
+          options: {}
+        });
+        var ctx2 = document.getElementById('graficoDona').getContext('2d');
+        var chart = new Chart(ctx2, {
+          type: 'doughnut',
+          data: 	
+          {
+                datasets: [{
+                  data: [60,18,10, 8, 4],
+                  backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
+                  label: 'Comparacion de navegadores'
+                }],
+                labels: [
+                  'Google Chrome',
+                  'Safari',
+                  'Edge',
+                  'Firefox',
+                  'Opera'
+                ]},
+          options: {}
+        });
+   });
 	</script>
-	{% endblock js_graficos%}
+{% endblock js_graficos%}
 {% block js_page %}
 <script>
   var jq = jQuery.noConflict(true);
@@ -162,7 +166,8 @@
   });
 </script>
 <!-- Charts JS -->
-<script src="{% static 'assets/js/chart.js/chart.min.js'%}"></script> 
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
 <script src="{% static 'assets/js/index-charts.js'%}"></script> 
 {% endblock %}
 <script>

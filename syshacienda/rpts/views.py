@@ -5,7 +5,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-
+from django.db.models import Sum, F, DateTimeField, Count
+from datetime import datetime, timezone
+from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear
 
 from django.http import HttpResponse
 from datetime import datetime
@@ -43,41 +45,34 @@ class iComprasView_(LoginRequiredMixin, generic.ListView):
 @login_required(login_url='/login/')
 def iComprasView(request,f1=None,f2=None):    
     template_name="rpts/iCompras.html"
-    dFecha = datetime.datetime.now()
+    dFecha = datetime.today()
 
     if request.method == 'POST':
         if f1 is not None and f2 is not None:
             dFecha = parse_date(f1)
     
-    ianio = dFecha.year()
+    
+    ianio = dFecha.year
     ianio_anterior = ianio-1
     obj = RegistroInsumo.objects.all().order_by('-id')
-    ##get('total',0.00) 
-    datoLineal = RegistroInsumo.objects.filter('fechaCompra__year = ' + ianio) \
-                    .annotate('fechaCompra__month') \
-                    .aggregate(total=sum(precio),
-                            output_field=models.FloatField()) \
-                    .order_by('fechaCompra__month')
 
- 
-    datoLineal2 = RegistroInsumo.objects\
-                    .filter('fechaCompra__year = ' + ianio) \
-                    .values('fechaCompra__month') \
-                    .annotate(total=sum(precio),
-                                output_field=models.FloatField()) \
-                    .order_by('fechaCompra__month')
+    datoLineal = RegistroInsumo.objects \
+                                .filter(fechaCompra__year=2020) \
+                                .annotate(month=ExtractMonth('fechaCompra')) \
+                                .values('month') \
+                                .annotate(total=Sum('precio')) \
+                                .order_by('month')
 
-    datoComprativo = RegistroInsumo.objects\
-                    .filter('fechaCompra__year = ' + ianio_anterior) \
-                    .values('fechaCompra__month') \
-                    .annotate(total=sum(precio)) \
-                    .order_by('fechaCompra__month')
-
+    datoComprativo = RegistroInsumo.objects \
+                                .filter(fechaCompra__year=2020) \
+                                .annotate(month=ExtractMonth('fechaCompra')) \
+                                .values('month') \
+                                .annotate(total=Sum('precio')) \
+                                .order_by('month')
+    context = {'obj': obj, 'datoLineal': datoLineal, 
+            'datoComparativo': datoComprativo, 'dFecha': dFecha, 
+            'ianio': ianio}
+    
     return render(request,
                     template_name,
-                    obj,
-                    datoLineal,
-                    datoLineal2,
-                    datoComprativo,
-                    dFecha,
-                    ianio)
+                    context)
