@@ -1,37 +1,84 @@
-{% extends 'rpts/baserpts.html' %}
 {% load static %}
 
-{% block mensaje %}
-<h2 class="h3 mb-2 text-success">Informe de Compras</h2>
-{% endblock %}
-{% block btnnuevo %}
-{% endblock %}
-{% block fechas %}
-      <div class="row">
-          <div class="col-lg-1">Año</div>
-          <div class="col-md-2">
-              <select name="id_anios" id="id_anios" class="form-control">
-                  {% for i  in anios %} 
-                      <option value="{{i}}">{{i}} </option>
-                  {% endfor %}
-              </select>
-          </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ titulo }}</title>
+	  <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
 
-          <div class="col-md-2">
-            <button type="submit" class="btn btn-info" id="btnGuardar"> 
-                <i class="far fa-chart-bar"></i> 
-            </button>
+    <link rel="stylesheet" href="{% static 'assets/css/reportes.css' %}">
+    <style type="text/css">
+        @page {
+             width: 210mm; 
+            size: auto;   
+            margin: 10mm;
+            }
+    </style>
+    	<!-- FontAwesome JS-->
 
-          </div>
-          <div class="col-md-2">
-            <a href="{% url 'rpts:imprimircompras' ianio  %}" 
-                  class="btn btn-primary btn-icon-split">
-                <span class="text">Imprimir</span>
-            </a>
-          </div>
+</head>
+<!--<body onload="window.print();window.close()" class="receipt">-->
+<body onload="window.print()" class="receipt">
+    <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
+        <center>
+            <small>
+                <!--<div class="app-auth-branding mb-4"> 
+                    <a class="app-logo" href="#">
+                        <img class="logo-icon me-2 " width: "10px" height: "10px" src="{% static 'assets/images/logohacienda.png' %}" >
+                    </a>
+                </div>-->
+            </small><br>
+            <small></small><br>
+            <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b><br> 
+        </center>
+        <small>
+            <br>
+            <b>Fecha impresión:</b>&nbsp;&nbsp;  <script type="text/javascript">
+                                                    var  today = new Date();
+                                                    var m = today.getMonth() + 1;
+                                                    var mes = (m < 10) ? "0" + m : m;
+                                                    var d = today.getDate();
+                                                    var dia = (d < 10) ? "0" + d : d;
+                                                    document.write(" "+today.getFullYear(),"/" +mes,"/"+dia);
+                                                </script>
+    &nbsp;&nbsp; <br>
+            <br><br>
+            <b>Año información:</b>&nbsp;&nbsp;  <script type="text/javascript">
+                                                    {{ ianio }}
+                                                </script>
+    &nbsp;&nbsp; <br>
+            <br><br>
 
-      </div>
-      <br /> <br />
+        </small>
+
+        <table class="table border-top " stylesheet="{% static 'assets/css/reportes.css' %}" width="80%">
+            <thead>
+            <th>id</th>
+            <th>Insumo</th>
+            <th>Cultivo</th>
+            <th>Fecha de Compra</th>
+            <th>Precio</th>
+            <th>Fecha Ingreso</th>
+            <th>Requerimiento</th>
+            </thead>
+            <tbody>
+                {% for item in obj %}
+                <tr>
+                    <td align="center">{{item.id}}</td>
+                    <td align="center">{{item.insumo}}</td>
+                    <td align="center">{{item.cultivo}}</td>
+                    <td align="center">{{item.fechaCompra | date:"d/m/Y"}}</td>
+                    <td align="center">{{item.precio}}</td>
+                    <td align="center">{{item..fechaIngreso | date:"d/m/Y"}}</td>
+                    <td align="center">{{item.requerimiento}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="col-xs-1"></div>
 <div class="row g-4 mb-4">
     <div class="col-12 col-lg-6">
     <div class="app-card app-card-chart h-100 shadow-sm">
@@ -58,39 +105,20 @@
       </div><!--//app-card-->
       </div><!--//col-->
 </div>
-{% endblock fechas %}
-{% block header_list %}
-  <tr>
-  <th>id</th>
-  <th>Insumo</th>
-  <th>Cultivo</th>
-  <th>Fecha de Compra</th>
-  <th>Precio</th>
-  <th>Fecha Ingreso</th>
-  <th>Requerimiento</th>
-  </tr>
-{% endblock %}
+        <div class="row">
+        <small class="pie">
+            <br><br>
+            <center>
+                <br>
+                <i>&copy; &reg; <b></b><br> </i> 
+            </center>
+        </small>
+        </div>
+    </div>
+  <!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
 
-{% block footer_list %}
-{% endblock footer_list %}
-
-{% block body_list %}
-  {% for item in obj %}
-    <tr>
-      <td>{{ item.id }} </td>
-      <td width="240px">{{ item.insumo }}</td>
-      <td width="240px">{{ item.cultivo }}</td>
-      <td width="240px">{{ item.fechaCompra | date:"d/m/Y" }}</td>
-      <td width="240px">{{ item.precio }}</td>
-      <td width="240px">{{ item.fechaIngreso | date:"d/m/Y" }}</td>
-      <td width="240px">{{ item.requerimiento }}</td>
-    </tr>
-  {% endfor %}
-{% endblock %}
-
-
-
-{% block js_graficos %}
 	<script>
    $(function () {    
     //console.log( {{ datoComprativo }});
@@ -145,7 +173,6 @@
    
    });
 	</script>
-{% endblock js_graficos%}
 <script>
       // Generate charts on load
       window.addEventListener('load', function(){
@@ -166,29 +193,5 @@
       });	
 </script>
 
-{% block js_page %}
-<script>
-  var jq = jQuery.noConflict(true);
-  // Call the dataTables jQuery plugin
-  $(document).ready(function() {
-    $('.table').DataTable();
-  });
-</script>
-<!-- Charts JS -->
-<script src="{% static 'assets/js/chart.js'%}"></script>
-<script src="{% static 'assets/js/chart.min.js'%}"></script>  
-<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
-{% endblock %}
-<script>
-$(function() {
-    var  today = new Date();
-    var m = today.getMonth() + 1;
-    var mes = (m < 10) ? "0" + m : m;
-    var d = today.getDate();
-    var dia = (d < 10) ? "0" + d : d;
-    $("#id_anios").val({{ ianio }});
-
-})
-
-</script>
-
+</body>
+</html>

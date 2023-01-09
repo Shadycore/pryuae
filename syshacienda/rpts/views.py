@@ -44,20 +44,39 @@ class iComprasView_(LoginRequiredMixin, generic.ListView):
     login_url = "baseapp:login"
 
 @login_required(login_url='/login/')
-def iComprasView(request,f1=None):    
+def iComprasView(request,f1=None):
     template_name="rpts/iCompras.html"
+    
     dFecha = datetime.now().year
+    
+    if f1:
+        if request.method == 'POST':
+            f1 = int(request.POST.get("id_anios"))
+        dFecha = f1
+        template_name="rpts/impCompras.html"
+    else:
+        if request.method == 'POST':
+            f1 = int(request.POST.get("id_anios"))
+        dFecha = f1
+
+    
+    #if request.method == 'GET':
+    #    if f1 is not None:
+    #        dFecha = f1
+
+    #if request.method == 'POST':
+    #    f1 = int(request.POST.get("id_anios"))
+    #    if f1 is not None:
+    #        dFecha = f1
+    
     anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
                             .values_list('valorParametro', flat=True) \
                             .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
                             .get())
-    if request.method == 'POST':
-        if f1 is not None:
-            dFecha = f1
     
     ianio = dFecha
     ianio_anterior = ianio-1
-    obj = RegistroInsumo.objects.all().order_by('-id')
+    obj = RegistroInsumo.objects.filter(fechaCompra__year=ianio).order_by('-id')
     oanios = [i for i in range(ianio,(ianio - anios),-1)]
     
     dato1 = {'01': 0, '02': 0, '03': 0, '04': 0,
@@ -141,10 +160,6 @@ def iComprasView(request,f1=None):
             'datoComparativo': salida2, 'dFecha': dFecha, 
             'ianio': ianio, 'ianio_anterior':ianio_anterior,
             'anios': oanios}
-
-    #context = {'obj': obj, 'datoLineal': dato1, 
-    #        'datoComparativo': dato2, 'dFecha': dFecha, 
-    #        'ianio': ianio, 'ianio_anterior':ianio_anterior}
 
     return render(request,
                     template_name,

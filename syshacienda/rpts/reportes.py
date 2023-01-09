@@ -31,7 +31,7 @@ def imprimirProveedores(request):
     
     return render(request,template_name,context)
 
-def imprimirCompras(request,id,f1=None,f2=None):
+def imprimirCompras(request,f1=None):
     template_name="rpts/impCompras.html"
     insumo = Insumo.objects.all().order_by('-id')
     context={
