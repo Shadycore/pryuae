@@ -8,23 +8,14 @@
 {% endblock %}
 {% block fechas %}
       <div class="row">
-          <div class="col-lg-1"> Fecha Inicio</div>
+          <div class="col-lg-1">Año</div>
           <div class="col-md-2">
-            <input type="text" 
-                  class="form-class" 
-                  name="f1" 
-                  id="f1" 
-                  size="10"
-                  readonly>
-          </div>
-          <div class="col-lg-1"> Fecha Fin</div>
-          <div class="col-md-2">
-            <input type="text" 
-                  class="form-class" 
-                  name="f2" 
-                  id="f2" 
-                  size="10"
-                  readonly>
+              <select name="id_anios" id="id_anios" class="form-control">
+                  <option value="0">Seleccione año</option>
+                  {% for i  in anios %}
+                      <option value="{{i}}">{{i}} </option>
+                  {% endfor %}
+              </select>
           </div>
 
           <div class="col-md-2">
@@ -35,7 +26,7 @@
           </div>
 
           <div class="col-md-2">
-            <a href="{% url 'rpts:imprimirclientes' %}" 
+            <a href="{% url 'rpts:icomprasf1' 2023 %}" 
                   class="btn btn-primary btn-icon-split">
                 <span class="text">Consultar</span>
             </a>
@@ -97,26 +88,29 @@
     </tr>
   {% endfor %}
 {% endblock %}
+
+
+
 {% block js_graficos %}
 	<script>
    $(function () {    
-    console.log('graficos');
-
+    //console.log( {{ datoComprativo }});
+    //console.log({{ datoLineal }} );
         var ctx = document.getElementById('graficoBarra').getContext('2d');
         var chart = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             datasets: [{
-              label: {{ ianio }}
+              label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [{%for data in datoLineal %}{{data.total}},{%endfor%}]
+              data: [ {% for data in datoLineal %} {{ data }}, {% endfor %} ],
             },{
-              label: 'Gastos',
+              label: {{ ianio_anterior }},
               backgroundColor: '#ffab91',
               borderColor: 'yellow',
-              data: [{%for data in datoComprativo %}{{data.total}},{%endfor%}]
+              data: [{% for data in datoComparativo %} {{ data }},  {% endfor %} ],
             }		
             ]},
           options: {responsive: true}
@@ -127,10 +121,10 @@
           data: {
             labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             datasets: [{
-              label: 'Ganancias',
+              label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [{%for data in datoLineal %}{{data.total}},{%endfor%}],
+              data: [{% for data in datoLineal %} {{ data }}, {% endfor %}  ],
             }		
             ]},
           options: {}
@@ -145,18 +139,34 @@
                   backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
                   label: 'Comparacion de navegadores'
                 }],
-                labels: [
-                  'Google Chrome',
-                  'Safari',
-                  'Edge',
-                  'Firefox',
-                  'Opera'
-                ]},
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+          },
           options: {}
-        });
+        });      
+   
    });
 	</script>
 {% endblock js_graficos%}
+<script>
+      // Generate charts on load
+      window.addEventListener('load', function(){
+        
+        var lineChart = document.getElementById('graficoLinea').getContext('2d');
+        window.myLine = new Chart(lineChart, lineChartConfig);
+        
+        var barChart = document.getElementById('graficoBarra').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+        
+        var pieChart = document.getElementById('chart-pie').getContext('2d');
+        window.myPie = new Chart(pieChart, pieChartConfig);
+        
+        var doughnutChart = document.getElementById('chart-doughnut').getContext('2d');
+        window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
+        
+
+      });	
+</script>
+
 {% block js_page %}
 <script>
   var jq = jQuery.noConflict(true);
@@ -168,7 +178,7 @@
 <!-- Charts JS -->
 <script src="{% static 'assets/js/chart.js'%}"></script>
 <script src="{% static 'assets/js/chart.min.js'%}"></script>  
-<script src="{% static 'assets/js/index-charts.js'%}"></script> 
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 {% endblock %}
 <script>
 $(function() {
@@ -179,6 +189,78 @@ $(function() {
     var dia = (d < 10) ? "0" + d : d;
     $('#f1').val(today.getFullYear(),"/" +mes,"/"+dia);
     $('#f2').val(today.getFullYear(),"/" +mes,"/"+dia);
+    $("#id_anios").val({{ ianio }});
+
+    $("#id_anios").change(function(e){
+            e.preventDefault();
+            buscarInfo();
+    });
+
+        function buscarProducto()
+    {
+        if ($("#id_cliente_detalle").val()==="0" || $("#id_cliente_detalle").val()===null){
+            mensaje("Cliente No Seleccionado",'red');
+            $("#id_produccion_detalle").val("").click(); ///------
+            return false;
+        }
+        var id_produccion = $("#id_produccion_detalle").val();
+        if(id_produccion==="" || id_produccion=="0"){
+            mensaje("Producto No Seleccionado",'red');
+            return false;
+        }
+
+        var path = '#';
+        $.ajax({
+            type:"GET",
+            url: path,
+            success: function(r){
+                var  cantidadDisponible = (r.cantidadCosecha - r.cantidadVentaCosecha);
+                console.log(r);
+                console.log("cantidadCosecha: " + r.cantidadCosecha);
+                console.log("cantidadVentaCosecha: " + r.cantidadVentaCosecha);
+                console.log(r.cantidadCosecha - r.cantidadVentaCosecha);
+                console.log(r.estado);
+
+                if(r.cantidadDisponible<=0 || !r.estado){
+                    mensaje("Producto No Tiene cantidadDisponible o está inactivo",'orange')
+                    $("#id_produccion_detalle").val("");
+                    $("#cod_cultivo").val("");
+                    $("#cod_produccion").val("");
+                    $("#id_precio").val("0.00");
+                    $("#id_produccion_detalle").focus();
+                    return false;
+                }
+
+                $("#id_produccion_detalle").val(id_produccion_detalle);
+                $("#cod_produccion").val(r.id);
+                $("#cod_cultivo").val(r.cultivo);
+                $("#id_precio").val(r.precio);
+                $("#cantidadDisponible").val(cantidadDisponible) ;
+                $("#id_cantidad").focus();
+
+            },
+            error: function(a,b,c){
+                mensaje("err",'orange')
+                console.log(a);
+                // console.log(b);
+                // console.log(c);
+                // console.log(a.status)
+                // console.log(a.responseText.detail);
+                // a.responseText["detail"]
+                // mensaje(c,'red');
+                if(a.status==404){
+                    mensaje("Producto -" + id_produccion + "- No Encontrado o No Existe",'red');
+                    $("#id_produccion_detalle").val("");
+                    $("#cod_cultivo").val("");
+                    $("#cod_produccion").val("");
+                    $("#id_precio").val("0.00");
+                    $("#id_produccion_detalle").focus();
+                }
+
+            }
+
+        });
+    }
 
 })
 

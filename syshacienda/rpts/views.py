@@ -5,10 +5,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-from django.db.models import Sum, F, DateTimeField, Count
+from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField
 from datetime import datetime, timezone
-from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear
-
+from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast
+import json
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages
@@ -19,7 +19,8 @@ from mnt.views import ClienteView, CultivoView, ProduccionView, \
                             ProveedorNew, RegistroInsumoNew
 from mnt.models import Cliente, Cultivo, Produccion, \
                         Hacienda, Empleado, Asignacion, \
-                        Proveedor, RegistroInsumo, Insumo
+                        Proveedor, RegistroInsumo, Insumo, \
+                        Parametro
 from vent.views import ventasView, VentaView
 # Create your views here.
 
@@ -43,36 +44,108 @@ class iComprasView_(LoginRequiredMixin, generic.ListView):
     login_url = "baseapp:login"
 
 @login_required(login_url='/login/')
-def iComprasView(request,f1=None,f2=None):    
+def iComprasView(request,f1=None):    
     template_name="rpts/iCompras.html"
-    dFecha = datetime.today()
-
+    dFecha = datetime.now().year
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
     if request.method == 'POST':
-        if f1 is not None and f2 is not None:
-            dFecha = parse_date(f1)
+        if f1 is not None:
+            dFecha = f1
     
-    
-    ianio = dFecha.year
+    ianio = dFecha
     ianio_anterior = ianio-1
     obj = RegistroInsumo.objects.all().order_by('-id')
-
-    datoLineal = RegistroInsumo.objects \
-                                .filter(fechaCompra__year=2020) \
-                                .annotate(month=ExtractMonth('fechaCompra')) \
-                                .values('month') \
-                                .annotate(total=Sum('precio')) \
-                                .order_by('month')
-
-    datoComprativo = RegistroInsumo.objects \
-                                .filter(fechaCompra__year=2020) \
-                                .annotate(month=ExtractMonth('fechaCompra')) \
-                                .values('month') \
-                                .annotate(total=Sum('precio')) \
-                                .order_by('month')
-    context = {'obj': obj, 'datoLineal': datoLineal, 
-            'datoComparativo': datoComprativo, 'dFecha': dFecha, 
-            'ianio': ianio}
+    oanios = [i for i in range(ianio,(ianio - anios),-1)]
     
+    dato1 = {'01': 0, '02': 0, '03': 0, '04': 0,
+             '05': 0, '06': 0, '07': 0, '08': 0, 
+             '09': 0, '10': 0, '11': 0, '12': 0}
+    dato2 = {'01': 0, '02': 0, '03': 0, '04': 0,
+             '05': 0, '06': 0, '07': 0, '08': 0, 
+             '09': 0, '10': 0, '11': 0, '12': 0}
+    
+    datoLineal = RegistroInsumo.objects \
+                                .filter(fechaCompra__year=ianio) \
+                                .annotate(month=ExtractMonth('fechaCompra'), year=ExtractYear('fechaCompra')) \
+                                .values('month', 'year') \
+                                .annotate(total=Cast(Sum('precio'), IntegerField()))  \
+                                .annotate(total_int=Cast(Sum('precio'), IntegerField())) \
+                                .order_by('month')
+                                
+    datoComprativo = RegistroInsumo.objects \
+                                .filter(fechaCompra__year=ianio_anterior) \
+                                .annotate(month=ExtractMonth('fechaCompra'), year=ExtractYear('fechaCompra')) \
+                                .values('month', 'year') \
+                                .annotate(total=Cast(Sum('precio'), IntegerField())) \
+                                .order_by('month')
+    
+    for item in datoLineal:
+        if item.get('month') == 1:
+            dato1['01'] = item.get('total')
+        if item.get('month') == 2:
+            dato1['02'] = item.get('total')
+        if item.get('month') == 3:
+            dato1['03'] = item.get('total')
+        if item.get('month') == 4:
+            dato1['04'] = item.get('total')
+        if item.get('month') == 5:
+            dato1['05'] = item.get('total')
+        if item.get('month') == 6:
+            dato1['06'] = item.get('total')
+        if item.get('month') == 7:
+            dato1['07'] = item.get('total')
+        if item.get('month') == 8:
+            dato1['08'] = item.get('total')
+        if item.get('month') == 9:
+            dato1['09'] = item.get('total')
+        if item.get('month') == 10:
+            dato1['10'] = item.get('total')
+        if item.get('month') == 11:
+            dato1['11'] = item.get('total')
+        if item.get('month') == 12:
+            dato1['12'] = item.get('total')
+
+    for item in datoComprativo:
+        if item.get('month') == 1:
+            dato2['01'] = item.get('total')
+        if item.get('month') == 2:
+            dato2['02'] = item.get('total')
+        if item.get('month') == 3:
+            dato2['03'] = item.get('total')
+        if item.get('month') == 4:
+            dato2['04'] = item.get('total')
+        if item.get('month') == 5:
+            dato2['05'] = item.get('total')
+        if item.get('month') == 6:
+            dato2['06'] = item.get('total')
+        if item.get('month') == 7:
+            dato2['07'] = item.get('total')
+        if item.get('month') == 8:
+            dato2['08'] = item.get('total')
+        if item.get('month') == 9:
+            dato2['09'] = item.get('total')
+        if item.get('month') == 10:
+            dato2['10'] = item.get('total')
+        if item.get('month') == 11:
+            dato2['11'] = item.get('total')
+        if item.get('month') == 12:
+            dato2['12'] = item.get('total')
+    
+    salida1 = [dato1[key] for key in dato1]
+    salida2 = [dato2[key] for key in dato2]
+
+    context = {'obj': obj, 'datoLineal':  salida1, 
+            'datoComparativo': salida2, 'dFecha': dFecha, 
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    #context = {'obj': obj, 'datoLineal': dato1, 
+    #        'datoComparativo': dato2, 'dFecha': dFecha, 
+    #        'ianio': ianio, 'ianio_anterior':ianio_anterior}
+
     return render(request,
                     template_name,
                     context)

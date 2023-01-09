@@ -300,9 +300,9 @@
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js'%}"></script>  
 
 	<!-- Charts JS -->
-	<script src="{% static 'assets/js/chart.js'%}"></script>
-	<script src="{% static 'assets/js/chart.min.js'%}"></script>  
-	<script src="{% static 'assets/js/index-charts.js'%}"></script> 
+	<!-- <script src="{% static 'assets/js/chart.js'%}"></script> -->
+	<script src="{% static 'assets/plugins/chart.js/chart.min.js'%}"></script>  
+	<!-- <script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 
     <!-- Page Specific JS -->
     <script src="{% static 'assets/js/app.js'%}"></script> 
@@ -439,7 +439,7 @@
 	{% endblock %}
 
 	{% block js_graficos %}
-	<script>
+	<!--<script>
 	var ctx = document.getElementById('graficoBarra').getContext('2d');
 	var chart = new Chart(ctx, {
 		type: 'bar',
@@ -492,7 +492,7 @@
 					]},
 		options: {}
 	});
-	</script>
+	</script> -->
 	{% endblock js_graficos%}
 
 </body>
