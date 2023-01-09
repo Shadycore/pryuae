@@ -1,13 +1,24 @@
 {% extends 'rpts/baserpts.html' %}
 {% load static %}
-
+<!--<style media="print">
+  #imprimir { display: block;}   
+</style> -->
+<style media="print">
+.seccion {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+</style>
 {% block mensaje %}
 <h2 class="h3 mb-2 text-success">Informe de Compras</h2>
 {% endblock %}
 {% block btnnuevo %}
 {% endblock %}
 {% block fechas %}
-      <div class="row">
+      <div class="imprimir row">
           <div class="col-lg-1">Año</div>
           <div class="col-md-2">
               <select name="id_anios" id="id_anios" class="form-control">
@@ -29,7 +40,7 @@
                 <span class="text">Imprimir</span>
             </a>
           </div>
-
+            <!--<input type="button" value="Imprimir" onclick="window.print()"> -->
       </div>
       <br /> <br />
 <div class="row g-4 mb-4">
@@ -61,13 +72,10 @@
 {% endblock fechas %}
 {% block header_list %}
   <tr>
-  <th>id</th>
+  <th>Año</th>
+  <th>Mes Compra</th>
   <th>Insumo</th>
-  <th>Cultivo</th>
-  <th>Fecha de Compra</th>
-  <th>Precio</th>
-  <th>Fecha Ingreso</th>
-  <th>Requerimiento</th>
+  <th>Total</th>
   </tr>
 {% endblock %}
 
@@ -77,13 +85,10 @@
 {% block body_list %}
   {% for item in obj %}
     <tr>
-      <td>{{ item.id }} </td>
-      <td width="240px">{{ item.insumo }}</td>
-      <td width="240px">{{ item.cultivo }}</td>
-      <td width="240px">{{ item.fechaCompra | date:"d/m/Y" }}</td>
-      <td width="240px">{{ item.precio }}</td>
-      <td width="240px">{{ item.fechaIngreso | date:"d/m/Y" }}</td>
-      <td width="240px">{{ item.requerimiento }}</td>
+      <td width="240px">{{ item.anio }}</td>
+      <td width="240px">{{ item.month }}</td>
+      <td width="240px">{{ item.insumo_name  }}</td>
+      <td width="240px">{{ item.total_compras }}</td>
     </tr>
   {% endfor %}
 {% endblock %}
@@ -142,7 +147,7 @@
           },
           options: {}
         });      
-   
+     $("#id_anios").val("{{ ianio }}");
    });
 	</script>
 {% endblock js_graficos%}
@@ -179,16 +184,4 @@
 <script src="{% static 'assets/js/chart.min.js'%}"></script>  
 <!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 {% endblock %}
-<script>
-$(function() {
-    var  today = new Date();
-    var m = today.getMonth() + 1;
-    var mes = (m < 10) ? "0" + m : m;
-    var d = today.getDate();
-    var dia = (d < 10) ? "0" + d : d;
-    $("#id_anios").val({{ ianio }});
-
-})
-
-</script>
 

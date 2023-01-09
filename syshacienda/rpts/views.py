@@ -17,7 +17,7 @@ from django.contrib.auth import authenticate
 from mnt.views import ClienteView, CultivoView, ProduccionView, \
                             HaciendaView, EmpleadoNew, AsignacionView, \
                             ProveedorNew, RegistroInsumoNew
-from mnt.models import Cliente, Cultivo, Produccion, \
+from mnt.models import Cliente, Cultivo, Produccion, DescripcionLote, \
                         Hacienda, Empleado, Asignacion, \
                         Proveedor, RegistroInsumo, Insumo, \
                         Parametro
@@ -44,20 +44,13 @@ class iComprasView_(LoginRequiredMixin, generic.ListView):
     login_url = "baseapp:login"
 
 @login_required(login_url='/login/')
-def iComprasView(request,f1=None):
+def iComprasView(request):
     template_name="rpts/iCompras.html"
-    
+    anioactual = datetime.now().year
     dFecha = datetime.now().year
     
-    if f1:
-        if request.method == 'POST':
-            f1 = int(request.POST.get("id_anios"))
-        dFecha = f1
-        template_name="rpts/impCompras.html"
-    else:
-        if request.method == 'POST':
-            f1 = int(request.POST.get("id_anios"))
-        dFecha = f1
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
 
     
     #if request.method == 'GET':
@@ -76,8 +69,17 @@ def iComprasView(request,f1=None):
     
     ianio = dFecha
     ianio_anterior = ianio-1
-    obj = RegistroInsumo.objects.filter(fechaCompra__year=ianio).order_by('-id')
-    oanios = [i for i in range(ianio,(ianio - anios),-1)]
+
+    obj = RegistroInsumo.objects \
+                        .filter(fechaCompra__year=ianio) \
+                        .annotate(anio=F('fechaCompra__year'),
+                                    month=F('fechaCompra__month'),
+                                    insumo_name=F('insumo__nombre')) \
+                        .values('anio','month', 'insumo_name') \
+                        .annotate(total_compras=Sum('precio')) \
+                        .order_by('anio','month')
+                        
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
     
     dato1 = {'01': 0, '02': 0, '03': 0, '04': 0,
              '05': 0, '06': 0, '07': 0, '08': 0, 
@@ -158,6 +160,65 @@ def iComprasView(request,f1=None):
 
     context = {'obj': obj, 'datoLineal':  salida1, 
             'datoComparativo': salida2, 'dFecha': dFecha, 
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+
+@login_required(login_url='/login/')
+def oProduccionView(request):
+    template_name="rpts/oProduccionPorHALote.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+    
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    
+    #if request.method == 'GET':
+    #    if f1 is not None:
+    #        dFecha = f1
+
+    #if request.method == 'POST':
+    #    f1 = int(request.POST.get("id_anios"))
+    #    if f1 is not None:
+    #        dFecha = f1
+    
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+    
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Produccion.objects.filter(fecha__year=ianio) \
+                            .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
+                            .values('mes', 'anio', 'cultivo__nombre', 'descripcionlote__area', 'descripcionlote__etapa') \
+                            .annotate(total_cosecha=Sum('cantidadCosecha'),total_venta_cosecha=Sum('cantidadVentaCosecha')) \
+                            .order_by('anio', 'mes')
+                        
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+        
+    datoLineal = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+                                
+    datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+    
+   
+    #salida1 = [dato1[key] for key in dato1]
+    #salida2 = [dato2[key] for key in dato2]
+
+    context = {'obj': obj, 'datoLineal':  datoLineal, 
+            'datoComparativo': datoComprativo, 'dFecha': dFecha, 
             'ianio': ianio, 'ianio_anterior':ianio_anterior,
             'anios': oanios}
 

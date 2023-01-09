@@ -255,7 +255,7 @@
 						        <ul class="submenu-list list-unstyled">
 								
 							        <li class="submenu-item"><a class="submenu-link" href="#">Ventas por cultivo</a></li>
-							        <li class="submenu-item"><a class="submenu-link" href="#">Producción por ha o lote</a></li>
+							        <li class="submenu-item"><a class="submenu-link" href=" {% url 'rpts:iproduccion' %} ">Producción por ha o lote</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href="#">Ganancias</a></li>
 							        <li class="submenu-item"><a class="submenu-link" href="#">Productos más vendidos</a></li>
 									<li><hr class="dropdown-divider"></li>
@@ -439,60 +439,6 @@
 	{% endblock %}
 
 	{% block js_graficos %}
-	<!--<script>
-	var ctx = document.getElementById('graficoBarra').getContext('2d');
-	var chart = new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			datasets: [{
-				label: 'Ingresos',
-				backgroundColor: '#42a5f5',
-				borderColor: 'gray',
-				data: [7, 8, 5, 2, 8, 10, 7,-7,4,9,-8,5]
-			},{
-				label: 'Gastos',
-				backgroundColor: '#ffab91',
-				borderColor: 'yellow',
-				data: [5, -8, 10, 3,-7,6,8,-2,-6,9,-7,2]
-			}		
-			]},
-		options: {responsive: true}
-	});
-	var ctx1 = document.getElementById('graficoLinea').getContext('2d');
-	var chart = new Chart(ctx1, {
-		type: 'line',
-		data: {
-			labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			datasets: [{
-				label: 'Ganancias',
-				backgroundColor: '#42a5f5',
-				borderColor: 'gray',
-				data: [7, 8, 5, 2, 8, 10, 7,-7,4,9,-8,5]
-			}		
-			]},
-		options: {}
-	});
-	var ctx2 = document.getElementById('graficoDona').getContext('2d');
-	var chart = new Chart(ctx2, {
-		type: 'doughnut',
-		data: 	
-		{
-					datasets: [{
-						data: [60,18,10, 8, 4],
-						backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
-						label: 'Comparacion de navegadores'
-					}],
-					labels: [
-						'Google Chrome',
-						'Safari',
-						'Edge',
-						'Firefox',
-						'Opera'
-					]},
-		options: {}
-	});
-	</script> -->
 	{% endblock js_graficos%}
 
 </body>
