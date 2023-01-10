@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField
+from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField, Prefetch
 from datetime import datetime, timezone
 from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast
 import json
@@ -22,6 +22,7 @@ from mnt.models import Cliente, Cultivo, Produccion, DescripcionLote, \
                         Proveedor, RegistroInsumo, Insumo, \
                         Parametro
 from vent.views import ventasView, VentaView
+from vent.models import Venta, DetalleVenta
 # Create your views here.
 
 
@@ -203,6 +204,104 @@ def oProduccionView(request):
                             .values('cultivo__nombre') \
                             .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
                             .order_by('cultivo__nombre')
+    
+   
+    context = {'obj': obj, 'datoLineal':  datoLineal, 
+            'datoComparativo': datoComprativo, 'dFecha': dFecha, 
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+@login_required(login_url='/login/')
+def oProductosMasVendidosView(request):
+    template_name="rpts/oProductosMasVendidos.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+    
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+   
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+    
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Venta.objects.filter(fechaVenta__year=ianio) \
+                        .values('fechaVenta__year') \
+                        .prefetch_related(Prefetch('detalleventa_set', queryset=DetalleVenta.objects \
+                                                                                            .values('cultivo__nombre') \
+                                                                                            .annotate(cantidad=Sum('cantidad'), total=Sum('total'))\
+                                                                                            .order_by('-cantidad','-total')))
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+        
+    datoLineal = Venta.objects.filter(fechaVenta__year=ianio) \
+                            .prefetch_related(Prefetch('detalleventa_set', queryset=DetalleVenta.objects \
+                                                                                                .values('cultivo__nombre') \
+                                                                                                .annotate(cantidad=Cast(Sum('cantidad'), IntegerField()), total=Cast(Sum('total'),IntegerField()))\
+                                                                                                .order_by('-cantidad','-total')[:20]))
+                                
+    cultivos = [item.cultivo.nombre for item in datoLineal]
+
+    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior, detalleventa__cultivo__nombre__in=cultivos) \
+                                .prefetch_related(Prefetch('detalleventa_set', queryset=DetalleVenta.objects \
+                                                                                                    .values('cultivo__nombre') \
+                                                                                                    .annotate(cantidad=Cast(Sum('cantidad'), IntegerField()), total=Cast(Sum('total'),IntegerField()))\
+                                                                                                    .order_by('-cantidad', '-total')[:20]))
+    
+    context = {'obj': obj, 'datoLineal':  datoLineal, 
+            'datoComparativo': datoComprativo, 'dFecha': dFecha, 
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+@login_required(login_url='/login/')
+def oVentasPorCultivoView(request):
+    template_name="rpts/oVentasPorCultivo.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+    
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+   
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+    
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =   Venta.objects.filter(fechaVenta__year=ianio).annotate(
+    nombre_cultivo=F('detalleventa__cultivo__nombre'),cantidad_ventas=Count('detalleventa'),
+    suma_cantidad=Sum('detalleventa__cantidad'),suma_total=Sum('detalleventa__total')) \
+        .values('fechaVenta__year', 'nombre_cultivo', 'cantidad_ventas', 'suma_cantidad', 'suma_total') \
+        .order_by('fechaVenta__year','-cantidad_ventas')
+                        
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+    
+    datoLineal = Venta.objects.filter(fechaVenta__year=ianio).annotate(
+    nombre_cultivo=F('detalleventa__cultivo__nombre'),cantidad_ventas=Count('detalleventa'),
+    suma_cantidad=Sum('detalleventa__cantidad'),suma_total=Sum('detalleventa__total')) \
+        .values('fechaVenta__year', 'nombre_cultivo', 'cantidad_ventas', 'suma_cantidad', 'suma_total') \
+        .order_by('fechaVenta__year','-cantidad_ventas')
+    
+    cultivos =[item.cultivo.nombre for item in datoLineal ]
+
+    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior, detalleventa_cultivo_nombre_in=cultivos).annotate(
+    nombre_cultivo=F('detalleventa__cultivo__nombre'),cantidad_ventas=Count('detalleventa'),
+    suma_cantidad=Sum('detalleventa__cantidad'),suma_total=Sum('detalleventa__total')) \
+        .values('fechaVenta__year', 'nombre_cultivo', 'cantidad_ventas', 'suma_cantidad', 'suma_total') \
+        .order_by('fechaVenta__year','-cantidad_ventas')
     
    
     context = {'obj': obj, 'datoLineal':  datoLineal, 

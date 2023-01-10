@@ -1,0 +1,309 @@
+{% extends 'base/home.html' %}
+{% load static %}
+
+{% block csstables %}
+<style media="print">
+imprimir { display: block;}
+.seccion {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+</style>
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'assets/vendor/css/sb-admin-2.min.css'%}" rel="stylesheet">
+
+  
+   <!-- Custom styles for this page -->
+   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+     <!-- jQuery Confirm -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
+
+  <!-- XDSoft DateTimePicker -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" 
+            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />  
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+
+{% endblock csstables %}
+
+{% block page_content %}  
+<form method="post" id="frmReportes">
+    {% csrf_token %}
+<div class="imprimir seccion container-fluid">
+      
+    <div class="app-card-body p-1 p-lg-1">
+    </div>
+
+<!-- Begin Page Content -->
+        <div class="imprimir seccion container-fluid">
+          <!-- DataTales Example -->         
+          <div class="card shadow mb-4" ><br/>
+                <div class="app-card-body p-1 p-lg-1">
+                    <div class="row gx-5 gy-3">
+                      <div class="col-12 col-lg-9">
+                            {% block mensaje %}
+                            <h2 class="h3 mb-2 text-success">Informe de Productos Más Vendidos </h2>
+                            {% endblock %}
+                      </div>
+                      <div class="col-12 col-lg-3">
+                            {% block btnnuevo %}
+                            {% endblock  %}
+                      </div><!--//col-->
+                    </div><!--//row-->
+                </div>
+                {% if not obj %}
+                    <div class="card-header py-2">
+                      <h2 class="alert alert-info">No hay información para generar reporte</h2>
+                    </div>
+                 {% endif %}
+                    <div class="card-body">
+                        {% block fechas %}
+                            <div class="imprimir row">
+                                <div class="col-lg-1">Año</div>
+                                <div class="col-md-2">
+                                    <select name="id_anios" id="id_anios" class="form-control">
+                                        {% for i  in anios %} 
+                                            <option value="{{i}}">{{i}} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-info" id="btnConsultar" title="Buscar"> 
+                                        <i class="far fa-chart-bar"></i> 
+                                    </button>
+
+                                </div>
+                                <!--<div class="col-md-2">
+                                    <a href="{% url 'rpts:imprimircompras' ianio  %}" 
+                                        class="btn btn-primary btn-icon-split">
+                                        <span class="text">Imprimir</span>
+                                    </a>
+                                </div> -->
+                                    <!--<input type="button" value="Imprimir" onclick="window.print()"> -->
+                            </div>
+                            <br /> <br />
+                            <h2 class="h3 mb-2 text-bg-dark ">Fecha reporte : {{ ianio }}</h2>
+                            <br />
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-lg-6">
+                            <div class="app-card app-card-chart h-100 shadow-sm">
+                                <div class="app-card-header p-3 border-0">
+                                <h4 class="app-card-title">Productos Más Vendidos </h4>
+                                </div><!--//app-card-header-->
+                                <div class="app-card-body p-4">					   
+                                <div class="chart-container">
+                                        <canvas id="graficoBarra" ></canvas>
+                                </div>
+                                </div><!--//app-card-body-->
+                            </div><!--//app-card-->
+                            </div><!--//col-->
+                            <div class="col-12 col-lg-6">		        
+                            <div class="app-card app-card-chart h-100 shadow-sm">
+                                <div class="app-card-header p-3 border-0">
+                                <h4 class="app-card-title">Comparativa Totales Productos Más Vendidos</h4>
+                                </div><!--//app-card-header-->
+                                <div class="app-card-body p-4">					   
+                                <div class="chart-container">
+                                        <canvas id="graficoLinea" ></canvas>
+                                </div>
+                                </div><!--//app-card-body-->
+                            </div><!--//app-card-->
+                            </div><!--//col-->
+                        </div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-lg-6">		        
+                            <div class="app-card app-card-chart h-100 shadow-sm">
+                                <div class="app-card-header p-3 border-0">
+                                <h4 class="app-card-title">Comparativa Cantidades Productos Más Vendido</h4>
+                                </div><!--//app-card-header-->
+                                <div class="app-card-body p-4">					   
+                                <div class="chart-container">
+                                        <canvas id="graficoLinea2" ></canvas>
+                                </div>
+                                </div><!--//app-card-body-->
+                            </div><!--//app-card-->
+                            </div><!--//col-->
+                        </div>
+                        {% endblock fechas %}                        
+                        <table class="table table-responsive table-bordered" 
+                               id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                                <tr>
+                                <th>Año Cosecha</th>
+                                <th>Cultivo</th>
+                                <th>Total Venta</th>
+                                <th>Cantidad Vendida</th>
+                                </tr>
+                          </thead>
+                          <tfoot>
+                                {% block footer_list %}
+                                {% endblock %}
+                          </tfoot>
+                          <tbody>
+                                {% for item in obj %}
+                                    <tr>
+                                    <td width="240px">{{ item.fechaVenta__year }}</td>
+                                    <td width="240px">{{ item.mes }}</td>
+                                    <td width="240px">{{ item.cultivo__nombre  }}</td>
+                                    <td width="240px">{{ item.total }}</td>
+                                    <td width="240px">{{ item.cantidad  }}</td>
+                                    </tr>
+                                {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+               
+        </div>
+        <!-- /.container-fluid -->
+</form>
+{% endblock page_content %}
+{% block js_tablas %}
+	<!-- Page level plugins -->
+	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
+{% endblock js_tablas %}
+
+{% block js_graficos %}
+	<script>
+   $(function () {    
+    //console.log( {{ datoComprativo }});
+    //console.log({{ datoLineal }} );
+        var ctx = document.getElementById('graficoLinea').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
+            datasets: [{
+              label: {{ ianio }},,
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [ {% for data in datoLineal %} {{ data.total }}, {% endfor %} ],
+            },{
+              label: {{ ianio_anterior }},
+              backgroundColor: '#ffab91',
+              borderColor: 'yellow',
+              data: [ {% for data in datoComparativo %} {{ data.total }}, {% endfor %} ],
+            }		
+            ]},
+          options: { {responsive: true}, scales: { y: { beginAtZero: true } }
+          }
+        });
+        var ctx_2 = document.getElementById('graficoLinea2').getContext('2d');
+        var chart_2 = new Chart(ctx_2, {
+          type: 'line',
+          data: {
+            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
+            datasets: [{
+              label: {{ ianio }},,
+              //backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
+            },{
+              label: {{ ianio_anterior }},
+              //backgroundColor: '#ffab91',
+              borderColor: 'yellow',
+              data: [ {% for data in datoComparativo %} {{ data.cantidad }}, {% endfor %} ],
+            }		
+            ]},
+          options: { {responsive: true}, scales: { y: { beginAtZero: true } }
+          }
+        });
+
+        var ctx1 = document.getElementById('graficoBarra2').getContext('2d');
+        var chart = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: ['', {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [{% for data in datoLineal %} {{ data.total }}, {% endfor %}  ],
+            },
+            ]},
+         options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }],},
+         }
+        });
+        var ctx2 = document.getElementById('graficoDona').getContext('2d');
+        var chart = new Chart(ctx2, {
+          type: 'doughnut',
+          data: 	
+          {
+                datasets: [{
+                  data: [60,18,10, 8, 4],
+                  backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
+                  label: 'Comparacion de navegadores'
+                }],
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+          },
+          options: {}
+        });      
+     $("#id_anios").val("{{ ianio }}");
+   });
+	</script>
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
+{% endblock js_graficos%}
+<script>
+      // Generate charts on load
+      window.addEventListener('load', function(){
+        
+        var lineChart = document.getElementById('graficoLinea').getContext('2d');
+        window.myLine = new Chart(lineChart, lineChartConfig);
+
+        var lineChart = document.getElementById('graficoLinea2').getContext('2d');
+        window.myLine = new Chart(lineChart, lineChartConfig);
+
+
+        var barChart = document.getElementById('graficoBarra').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+        
+        var barChart = document.getElementById('graficoBarra2').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
+        var pieChart = document.getElementById('chart-pie').getContext('2d');
+        window.myPie = new Chart(pieChart, pieChartConfig);
+        
+        var doughnutChart = document.getElementById('graficoDona').getContext('2d');
+        window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
+        
+
+      });	
+</script>
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
+{% endblock %}
+

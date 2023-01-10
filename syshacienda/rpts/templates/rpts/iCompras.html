@@ -29,17 +29,16 @@
           </div>
 
           <div class="col-md-2">
-            <button type="submit" class="btn btn-info" id="btnGuardar"> 
+            <button type="submit" class="btn btn-info" id="btnConsultar" title="Buscar"> 
                 <i class="far fa-chart-bar"></i> 
             </button>
-
           </div>
-          <div class="col-md-2">
+          <!-- <div class="col-md-2">
             <a href="{% url 'rpts:imprimircompras' ianio  %}" 
                   class="btn btn-primary btn-icon-split">
                 <span class="text">Imprimir</span>
             </a>
-          </div>
+          </div> -->
             <!--<input type="button" value="Imprimir" onclick="window.print()"> -->
       </div>
       <br /> <br />
@@ -120,7 +119,9 @@
               data: [{% for data in datoComparativo %} {{ data }},  {% endfor %} ],
             }		
             ]},
-          options: {responsive: true}
+          options: {{responsive: true}, 
+                    scales: { y: { beginAtZero: true } }
+          }
         });
         var ctx1 = document.getElementById('graficoLinea').getContext('2d');
         var chart = new Chart(ctx1, {
@@ -134,7 +135,8 @@
               data: [{% for data in datoLineal %} {{ data }}, {% endfor %}  ],
             }		
             ]},
-          options: {}
+          options: {scales: { yAxes: [{ ticks: { beginAtZero: true } }],},
+          }
         });
         var ctx2 = document.getElementById('graficoDona').getContext('2d');
         var chart = new Chart(ctx2, {
