@@ -1,7 +1,8 @@
 from django.urls import path, include
 from rpts.views import iProveedoresView, iClientesView, \
                         iComprasView, iComprasView_, \
-                        oProduccionView, oProductosMasVendidosView
+                        oProduccionView, oProductosMasVendidosView, \
+                        oVentasPorCultivoView
 from rpts.reportes import imprimirClientes, imprimirProveedores, imprimirCompras
 
 urlpatterns = [
@@ -12,8 +13,8 @@ urlpatterns = [
     path('informe/compras', iComprasView, name='icompras'),
     path('informe/produccion', oProduccionView, name='iproduccion'),
     path('informe/productosmasvendidos', oProductosMasVendidosView, name='iproductosmasvendidos'),
-     path('informe/ventasporcultivo', oProductosMasVendidosView, name='iventasporcultivo'),
-    #path('informe/compras/<int:f1>', iComprasView, name='icomprasf1'),
+    path('informe/ventasporcultivo', oVentasPorCultivoView, name='iventasporcultivo'),
+    path('informe/ganancias', oVentasPorCultivoView, name='iganancias'),
 
     #Impresión
     path('informe/imprimir/clientes', imprimirClientes, name="imprimirclientes"),

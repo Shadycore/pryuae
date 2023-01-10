@@ -312,3 +312,59 @@ def oVentasPorCultivoView(request):
     return render(request,
                     template_name,
                     context)
+
+@login_required(login_url='/login/')
+def oGananciasView(request):
+    template_name="rpts/oGanancias.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+    
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+   
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+    
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =   Venta.objects.filter(fechaVenta__year=2020).annotate(
+    añoVenta=F('fechaVenta'),
+    nombreCultivo=F('detalleventa__cultivo__nombreCultivo'),
+    cantidad=Sum('detalleventa__cantidad'),
+    totalVenta=Sum('detalleventa__total'),
+    fechaCompra=F('registroinsumo__fechaCompra')
+).values(
+    'añoVenta',
+    'nombreCultivo',
+    'cantidad',
+    'totalVenta',
+    'fechaCompra'
+).order_by('nombreCultivo')
+                        
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+    
+    datoLineal =  RegistroInsumo.objects.filter(cultivo__in=queryset).annotate(
+    nombreCultivo=F('cultivo__nombreCultivo'),
+    sumaPrecio=Sum('precio')
+).values('nombreCultivo', 'sumaPrecio')
+    
+    cultivos =[item.cultivo.nombre for item in datoLineal ]
+
+    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior, detalleventa_cultivo_nombre_in=cultivos).annotate(
+    nombre_cultivo=F('detalleventa__cultivo__nombre'),cantidad_ventas=Count('detalleventa'),
+    suma_cantidad=Sum('detalleventa__cantidad'),suma_total=Sum('detalleventa__total')) \
+        .values('fechaVenta__year', 'nombre_cultivo', 'cantidad_ventas', 'suma_cantidad', 'suma_total') \
+        .order_by('fechaVenta__year','-cantidad_ventas')
+    
+   
+    context = {'obj': obj, 'datoLineal':  datoLineal, 
+            'datoComparativo': datoComprativo, 'dFecha': dFecha, 
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
