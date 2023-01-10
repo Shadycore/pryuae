@@ -181,17 +181,17 @@ imprimir { display: block;}
         var chart = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data }}, {% endfor %} ],
+              data: [ {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %} ],
             },{
               label: {{ ianio_anterior }},
               backgroundColor: '#ffab91',
               borderColor: 'yellow',
-              data: [{% for data in datoComparativo %} {{ data }},  {% endfor %} ],
+              data: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
             }		
             ]},
           options: {responsive: true}
@@ -200,12 +200,12 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'line',
           data: {
-            labels: [{% for data in datoLineal %} {{ data.cultivo__nombre }}, {% endfor %} ],
+            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %}  ],
+              data: [ {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %}  ],
             }		
             ]},
           options: {}
@@ -227,6 +227,10 @@ imprimir { display: block;}
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 {% endblock js_graficos%}
 <script>
       // Generate charts on load
@@ -241,7 +245,7 @@ imprimir { display: block;}
         var pieChart = document.getElementById('chart-pie').getContext('2d');
         window.myPie = new Chart(pieChart, pieChartConfig);
         
-        var doughnutChart = document.getElementById('chart-doughnut').getContext('2d');
+        var doughnutChart = document.getElementById('graficoDona').getContext('2d');
         window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
         
 

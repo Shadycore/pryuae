@@ -176,17 +176,7 @@ def oProduccionView(request):
     
     if request.method == 'POST':
         dFecha = int(request.POST.get("id_anios"))
-
-    
-    #if request.method == 'GET':
-    #    if f1 is not None:
-    #        dFecha = f1
-
-    #if request.method == 'POST':
-    #    f1 = int(request.POST.get("id_anios"))
-    #    if f1 is not None:
-    #        dFecha = f1
-    
+   
     anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
                             .values_list('valorParametro', flat=True) \
                             .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
@@ -214,9 +204,6 @@ def oProduccionView(request):
                             .order_by('cultivo__nombre')
     
    
-    #salida1 = [dato1[key] for key in dato1]
-    #salida2 = [dato2[key] for key in dato2]
-
     context = {'obj': obj, 'datoLineal':  datoLineal, 
             'datoComparativo': datoComprativo, 'dFecha': dFecha, 
             'ianio': ianio, 'ianio_anterior':ianio_anterior,
