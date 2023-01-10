@@ -195,7 +195,8 @@ def oProduccionView(request):
         
     datoLineal = Produccion.objects.filter(fecha__year=ianio) \
                             .values('cultivo__nombre') \
-                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
+                                        total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
                             .order_by('cultivo__nombre')
                                 
     datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
