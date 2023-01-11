@@ -119,7 +119,7 @@
               data: [{% for data in datoComparativo %} {{ data }},  {% endfor %} ],
             }		
             ]},
-          options: {{responsive: true}, 
+          options: {responsive: true, 
                     scales: { y: { beginAtZero: true } }
           }
         });
@@ -135,45 +135,25 @@
               data: [{% for data in datoLineal %} {{ data }}, {% endfor %}  ],
             }		
             ]},
-          options: {scales: { yAxes: [{ ticks: { beginAtZero: true } }],},
+          options: {scales: { yAxes: [{ ticks: { beginAtZero: true } }], },
           }
         });
-        var ctx2 = document.getElementById('graficoDona').getContext('2d');
-        var chart = new Chart(ctx2, {
-          type: 'doughnut',
-          data: 	
-          {
-                datasets: [{
-                  data: [60,18,10, 8, 4],
-                  backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
-                  label: 'Comparacion de navegadores'
-                }],
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-          },
-          options: {}
-        });      
+        
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
 {% endblock js_graficos%}
 <script>
-      // Generate charts on load
-      window.addEventListener('load', function(){
-        
-        var lineChart = document.getElementById('graficoLinea').getContext('2d');
-        window.myLine = new Chart(lineChart, lineChartConfig);
-        
-        var barChart = document.getElementById('graficoBarra').getContext('2d');
-        window.myBar = new Chart(barChart, barChartConfig);
-        
-        var pieChart = document.getElementById('chart-pie').getContext('2d');
-        window.myPie = new Chart(pieChart, pieChartConfig);
-        
-        var doughnutChart = document.getElementById('chart-doughnut').getContext('2d');
-        window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
-        
+  // Generate charts on load
+  window.addEventListener('load', function(){
+    
+    var lineChart = document.getElementById('graficoLinea').getContext('2d');
+    window.myLine = new Chart(lineChart, lineChartConfig);
+    
+    var barChart = document.getElementById('graficoBarra').getContext('2d');
+    window.myBar = new Chart(barChart, barChartConfig);    
 
-      });	
+  });	
 </script>
 
 {% block js_page %}

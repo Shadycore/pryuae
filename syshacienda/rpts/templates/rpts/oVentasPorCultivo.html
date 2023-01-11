@@ -113,7 +113,7 @@ imprimir { display: block;}
                                 </div><!--//app-card-header-->
                                 <div class="app-card-body p-4">					   
                                 <div class="chart-container">
-                                        <canvas id="graficoLinea" ></canvas>
+                                        <canvas id="graficoBarra2" ></canvas>
                                 </div>
                                 </div><!--//app-card-body-->
                             </div><!--//app-card-->
@@ -175,13 +175,13 @@ imprimir { display: block;}
    $(function () {    
     //console.log( {{ datoComprativo }});
     //console.log({{ datoLineal }} );
-        var ctx = document.getElementById('graficoLinea').getContext('2d');
+        var ctx = document.getElementById('graficoBarra').getContext('2d');
         var chart = new Chart(ctx, {
-          type: 'line',
+          type: 'bar',
           data: {
-            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
+            labels: [ {% for data in datoLineal %} '{{ data.nombre_cultivo }}', {% endfor %} ],
             datasets: [{
-              label: {{ ianio }},,
+              label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
               data: [ {% for data in datoLineal %} {{ data.cantidad_ventas }}, {% endfor %} ],
@@ -192,35 +192,14 @@ imprimir { display: block;}
               data: [ {% for data in datoComparativo %} {{ data.cantidad_ventas }}, {% endfor %} ],
             }		
             ]},
-          options: { {responsive: true}, scales: { y: { beginAtZero: true } }
+          options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }],  }
           }
         });
-        var ctx_2 = document.getElementById('graficoLinea2').getContext('2d');
-        var chart_2 = new Chart(ctx_2, {
-          type: 'line',
-          data: {
-            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
-            datasets: [{
-              label: {{ ianio }},,
-              //backgroundColor: '#42a5f5',
-              borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
-            },{
-              label: {{ ianio_anterior }},
-              //backgroundColor: '#ffab91',
-              borderColor: 'yellow',
-              data: [ {% for data in datoComparativo %} {{ data.cantidad }}, {% endfor %} ],
-            }		
-            ]},
-          options: { {responsive: true}, scales: { y: { beginAtZero: true } }
-          }
-        });
-
-        var ctx1 = document.getElementById('graficoBarra').getContext('2d');
+        var ctx1 = document.getElementById('graficoBarra2').getContext('2d');
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: ['', {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
+            labels: ['', {% for data in datoLineal %} '{{ data.nombre_cultivo }}', {% endfor %}],
             datasets: [{
               label: 'Ventas',
               backgroundColor: '#42a5f5',
@@ -238,23 +217,10 @@ imprimir { display: block;}
               data: [{% for data in datoLineal %} {{ data.suma_total }}, {% endfor %}  ],
             },
             ]},
-         options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }],},
+         options: { responsive: true, 
+                    scales: { y: { beginAtZero: true } }
          }
-        });
-        var ctx2 = document.getElementById('graficoDona').getContext('2d');
-        var chart = new Chart(ctx2, {
-          type: 'doughnut',
-          data: 	
-          {
-                datasets: [{
-                  data: [60,18,10, 8, 4],
-                  backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
-                  label: 'Comparacion de navegadores'
-                }],
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-          },
-          options: {}
-        });      
+        });     
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
@@ -266,26 +232,12 @@ imprimir { display: block;}
 <script>
       // Generate charts on load
       window.addEventListener('load', function(){
-        
-        var lineChart = document.getElementById('graficoLinea').getContext('2d');
-        window.myLine = new Chart(lineChart, lineChartConfig);
-
-        var lineChart = document.getElementById('graficoLinea2').getContext('2d');
-        window.myLine = new Chart(lineChart, lineChartConfig);
-
-
+      
         var barChart = document.getElementById('graficoBarra').getContext('2d');
         window.myBar = new Chart(barChart, barChartConfig);
         
         var barChart = document.getElementById('graficoBarra2').getContext('2d');
         window.myBar = new Chart(barChart, barChartConfig);
-
-        var pieChart = document.getElementById('chart-pie').getContext('2d');
-        window.myPie = new Chart(pieChart, pieChartConfig);
-        
-        var doughnutChart = document.getElementById('graficoDona').getContext('2d');
-        window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
-        
 
       });	
 </script>

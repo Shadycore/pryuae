@@ -233,27 +233,29 @@ def oProductosMasVendidosView(request):
     ianio_anterior = ianio-1
 
     obj =  Venta.objects.filter(fechaVenta__year=ianio) \
-                        .values('fechaVenta__year') \
+                        .values('fechaVenta__year','detalleventa__cultivo__nombre') \
                         .prefetch_related(Prefetch('detalleventa_set', queryset=DetalleVenta.objects \
-                                                                                            .values('cultivo__nombre') \
-                                                                                            .annotate(cantidad=Sum('cantidad'), total=Sum('total'))\
-                                                                                            .order_by('-cantidad','-total')))
+                                                                                            #.values('cultivo__nombre') \
+                                                                                            .annotate(det_cantidad=Sum('cantidad'), det_total=Sum('total'))\
+                                                                                            .order_by('-det_cantidad','-det_total')))
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
         
     datoLineal = Venta.objects.filter(fechaVenta__year=ianio) \
+                            .values('fechaVenta__year','detalleventa__cultivo__nombre') \
                             .prefetch_related(Prefetch('detalleventa_set', queryset=DetalleVenta.objects \
-                                                                                                .values('cultivo__nombre') \
-                                                                                                .annotate(cantidad=Cast(Sum('cantidad'), IntegerField()), total=Cast(Sum('total'),IntegerField()))\
-                                                                                                .order_by('-cantidad','-total')[:20]))
+                                                                                                #.values('cultivo__nombre') \
+                                                                                                .annotate(det_cantidad=Cast(Sum('cantidad'), IntegerField()), det_total=Cast(Sum('total'),IntegerField()))\
+                                                                                                .order_by('-det_cantidad','-det_total')[:20]))
                                 
-    cultivos = [item.cultivo.nombre for item in datoLineal]
-
-    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior, detalleventa__cultivo__nombre__in=cultivos) \
+    cultivos = [item['detalleventa__cultivo__nombre'] for item in datoLineal]
+#, detalleventa__cultivo__nombre__in=cultivos)
+    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior) \
+                               .values('fechaVenta__year','detalleventa__cultivo__nombre') \
                                 .prefetch_related(Prefetch('detalleventa_set', queryset=DetalleVenta.objects \
-                                                                                                    .values('cultivo__nombre') \
-                                                                                                    .annotate(cantidad=Cast(Sum('cantidad'), IntegerField()), total=Cast(Sum('total'),IntegerField()))\
-                                                                                                    .order_by('-cantidad', '-total')[:20]))
+                                                                                                    #.values('cultivo__nombre') \
+                                                                                                    .annotate(det_cantidad=Cast(Sum('cantidad'), IntegerField()), det_total=Cast(Sum('total'),IntegerField()))\
+                                                                                                    .order_by('-det_cantidad', '-det_total')[:20]))
     
     context = {'obj': obj, 'datoLineal':  datoLineal, 
             'datoComparativo': datoComprativo, 'dFecha': dFecha, 
@@ -291,15 +293,15 @@ def oVentasPorCultivoView(request):
     
     datoLineal = Venta.objects.filter(fechaVenta__year=ianio).annotate(
     nombre_cultivo=F('detalleventa__cultivo__nombre'),cantidad_ventas=Count('detalleventa'),
-    suma_cantidad=Sum('detalleventa__cantidad'),suma_total=Sum('detalleventa__total')) \
+    suma_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField()),suma_total=Cast(Sum('detalleventa__total'),IntegerField())) \
         .values('fechaVenta__year', 'nombre_cultivo', 'cantidad_ventas', 'suma_cantidad', 'suma_total') \
         .order_by('fechaVenta__year','-cantidad_ventas')
     
-    cultivos =[item.cultivo.nombre for item in datoLineal ]
+    cultivos = [item['nombre_cultivo'] for item in datoLineal ]
 
-    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior, detalleventa_cultivo_nombre_in=cultivos).annotate(
+    datoComprativo = Venta.objects.filter(fechaVenta__year=ianio_anterior, detalleventa__cultivo__nombre__in=cultivos).annotate(
     nombre_cultivo=F('detalleventa__cultivo__nombre'),cantidad_ventas=Count('detalleventa'),
-    suma_cantidad=Sum('detalleventa__cantidad'),suma_total=Sum('detalleventa__total')) \
+    suma_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField()),suma_total=Cast(Sum('detalleventa__total'),IntegerField())) \
         .values('fechaVenta__year', 'nombre_cultivo', 'cantidad_ventas', 'suma_cantidad', 'suma_total') \
         .order_by('fechaVenta__year','-cantidad_ventas')
     
