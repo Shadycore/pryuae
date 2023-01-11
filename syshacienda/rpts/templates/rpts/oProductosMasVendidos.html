@@ -113,7 +113,7 @@ imprimir { display: block;}
                                 </div><!--//app-card-header-->
                                 <div class="app-card-body p-4">					   
                                 <div class="chart-container">
-                                        <canvas id="graficoLinea" ></canvas>
+                                        <canvas id="graficoBarra2" ></canvas>
                                 </div>
                                 </div><!--//app-card-body-->
                             </div><!--//app-card-->
@@ -127,7 +127,7 @@ imprimir { display: block;}
                                 </div><!--//app-card-header-->
                                 <div class="app-card-body p-4">					   
                                 <div class="chart-container">
-                                        <canvas id="graficoLinea2" ></canvas>
+                                        <canvas id="graficoBarra3" ></canvas>
                                 </div>
                                 </div><!--//app-card-body-->
                             </div><!--//app-card-->
@@ -140,6 +140,7 @@ imprimir { display: block;}
                                 <tr>
                                 <th>Año Cosecha</th>
                                 <th>Cultivo</th>
+                                <th>Ventas</th>
                                 <th>Total Venta</th>
                                 <th>Cantidad Vendida</th>
                                 </tr>
@@ -153,6 +154,7 @@ imprimir { display: block;}
                                     <tr>
                                     <td width="240px">{{ item.fechaVenta__year }}</td>
                                     <td width="240px">{{ item.detalleventa__cultivo__nombre  }}</td>
+                                    <td width="240px">{{ item.cantidad }}</td>
                                     <td width="240px">{{ item.det_total }}</td>
                                     <td width="240px">{{ item.det_cantidad  }}</td>
                                     </tr>
@@ -196,6 +198,23 @@ imprimir { display: block;}
               label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
+              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
+            }
+            ]},
+          options: { responsive: true, 
+                    scales: { y: { beginAtZero: true }  }
+          }
+        });
+      
+        var ctx_2 = document.getElementById('graficoBarra2').getContext('2d');
+        var chart_2 = new Chart(ctx_2, {
+          type: 'bar',
+          data: {
+            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
               data: [ {% for data in datoLineal %} {{ data.det_total }}, {% endfor %} ],
             },{
               label: {{ ianio_anterior }},
@@ -208,17 +227,17 @@ imprimir { display: block;}
                     scales: { y: { beginAtZero: true } }
           }
         });
-      
-        var ctx_2 = document.getElementById('graficoLinea2').getContext('2d');
-        var chart_2 = new Chart(ctx_2, {
-          type: 'line',
+  
+        var ctx1 = document.getElementById('graficoBarra3').getContext('2d');
+        var chart = new Chart(ctx1, {
+          type: 'bar',
           data: {
-            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
+            labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %} ],
+              data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
             },{
               label: {{ ianio_anterior }},
               backgroundColor: '#ffab91',
@@ -226,23 +245,8 @@ imprimir { display: block;}
               data: [ {% for data in datoComparativo %} {{ data.det_cantidad }}, {% endfor %} ],
             }		
             ]},
-          options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }], },
-          }
-        });
-  
-        var ctx1 = document.getElementById('graficoLinea').getContext('2d');
-        var chart = new Chart(ctx1, {
-          type: 'line',
-          data: {
-            labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
-            datasets: [{
-              label: {{ ianio }},
-              backgroundColor: '#42a5f5',
-              borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data.det_total }}, {% endfor %}  ],
-            },
-            ]},
-         options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }], },
+         options: { responsive: true, 
+                    scales: { y: { beginAtZero: true } }
          }
         });
      $("#id_anios").val("{{ ianio }}");
@@ -258,6 +262,13 @@ imprimir { display: block;}
       window.addEventListener('load', function(){
         var barChart = document.getElementById('graficoBarra').getContext('2d');
         window.myBar = new Chart(barChart, barChartConfig);
+
+        var barChart = document.getElementById('graficoBarra2').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
+        var barChart = document.getElementById('graficoBarra3').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
 
         var lineChart = document.getElementById('graficoLinea2').getContext('2d');
         window.myLine = new Chart(lineChart, lineChartConfig);

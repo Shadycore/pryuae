@@ -139,10 +139,10 @@ imprimir { display: block;}
                                 {% for item in obj %}
                                     <tr>
                                     <td width="240px">{{ item.fechaVenta__year }}</td>
-                                    <td width="240px">{{ item.nombre_cultivo }}</td>
-                                    <td width="240px">{{ item.cantidad_ventas  }}</td>
-                                    <td width="240px">{{ item.suma_cantidad }}</td>
-                                    <td width="240px">{{ item.suma_total  }}</td>
+                                    <td width="240px">{{ item.detalleventa__cultivo__nombre }}</td>
+                                    <td width="240px">{{ item.cantidad  }}</td>
+                                    <td width="240px">{{ item.det_cantidad }}</td>
+                                    <td width="240px">{{ item.det_total  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
@@ -179,17 +179,17 @@ imprimir { display: block;}
         var chart = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: [ {% for data in datoLineal %} '{{ data.nombre_cultivo }}', {% endfor %} ],
+            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.cantidad_ventas }}, {% endfor %} ],
+              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
             },{
               label: {{ ianio_anterior }},
               backgroundColor: '#ffab91',
               borderColor: 'yellow',
-              data: [ {% for data in datoComparativo %} {{ data.cantidad_ventas }}, {% endfor %} ],
+              data: [ {% for data in datoComparativo %} {{ data.cantidad }}, {% endfor %} ],
             }		
             ]},
           options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }],  }
@@ -199,22 +199,22 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: ['', {% for data in datoLineal %} '{{ data.nombre_cultivo }}', {% endfor %}],
+            labels: ['', {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: 'Ventas',
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data.cantidad_ventas }}, {% endfor %}  ],
+              data: [{% for data in datoLineal %} {{ data.cantidad }}, {% endfor %}  ],
             },{
               label: 'Cantidad',
               backgroundColor: '#ffab91',
               borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data.suma_cantidad }}, {% endfor %}  ],
+              data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
             },{
               label: 'Total',
               backgroundColor: '#71b793',
               borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data.suma_total }}, {% endfor %}  ],
+              data: [{% for data in datoLineal %} {{ data.det_total }}, {% endfor %}  ],
             },
             ]},
          options: { responsive: true, 

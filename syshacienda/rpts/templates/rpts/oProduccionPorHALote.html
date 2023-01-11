@@ -203,12 +203,12 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: ['', {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
+            labels: [{% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: '#42a5f5',
               borderColor: 'gray',
-              data: [ 0, {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %}  ],
+              data: [ {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %}  ],
             },
             ]},
          options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }], },
