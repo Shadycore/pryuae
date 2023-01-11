@@ -125,12 +125,8 @@ imprimir { display: block;}
                           <thead>
                                 <tr>
                                 <th>Año Cosecha</th>
-                                <th>Mes Cosecha</th>
                                 <th>Cultivo</th>
-                                <th>Area</th>
-                                <th>Etapa</th>
                                 <th>Total Cosecha</th>
-                                <th>Total Vendido</th>
                                 </tr>
                           </thead>
                           <tfoot>
@@ -140,13 +136,9 @@ imprimir { display: block;}
                           <tbody>
                                 {% for item in obj %}
                                     <tr>
-                                    <td width="240px">{{ item.anio }}</td>
-                                    <td width="240px">{{ item.mes }}</td>
+                                    <td width="240px">{{ item.fecha__year }}</td>
                                     <td width="240px">{{ item.cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.descripcionlote__area }}</td>
-                                    <td width="240px">{{ item.descripcionlote__etapa  }}</td>
-                                    <td width="240px">{{ item.total_cosecha }}</td>
-                                    <td width="240px">{{ item.total_venta_cosecha  }}</td>
+                                    <td width="240px">{{ item.sum_cantidadCosecha }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
