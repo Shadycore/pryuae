@@ -70,9 +70,9 @@
         <div id="app-sidepanel" class="app-sidepanel"> 
 	        <div id="sidepanel-drop" class="sidepanel-drop"></div>
 	        <div class="sidepanel-inner d-flex flex-column">
-		        <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
+		        <a href=" {% url 'baseapp:home' %} " id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
 		        <div class="app-branding">
-		            <a class="app-logo" href="#">
+		            <a class="app-logo" href=" {% url 'baseapp:home' %} ">
 						<img class="logo-icon me-2" src="{% static 'assets/images/logohacienda.png' %}" alt="logo">
 						<span class="logo-text">Admin. Haciendas</span></a>
 		        </div><!--//app-branding-->  
@@ -280,6 +280,9 @@
     </header>
 
     <div class="app-wrapper">
+		{% block dashboard %}
+		{% endblock dashboard %}
+		
 	    {% block page_content %} 
 		{% endblock %}
 		<!--//app-header

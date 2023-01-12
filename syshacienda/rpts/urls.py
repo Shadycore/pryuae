@@ -2,7 +2,7 @@ from django.urls import path, include
 from rpts.views import iProveedoresView, iClientesView, \
                         iComprasView, iComprasView_, \
                         oProduccionView, oProductosMasVendidosView, \
-                        oVentasPorCultivoView
+                        oVentasPorCultivoView, oGananciasView
 from rpts.reportes import imprimirClientes, imprimirProveedores, imprimirCompras
 
 urlpatterns = [
