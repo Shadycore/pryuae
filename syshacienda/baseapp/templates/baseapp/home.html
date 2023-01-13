@@ -14,11 +14,9 @@
                   <div class="col-auto">
                     <h3>Ventas de la semana</h3>
                   </div>
-                  <!--<div class="col-8 col-sm-4"><select class="form-select form-select-sm mt-2" id="select-gross-revenue-month">
-                      <option>Mar 1 - 31, 2022</option>
-                      <option>April 1 - 30, 2022</option>
-                      <option>May 1 - 31, 2022</option>
-                    </select></div>-->
+                  <div class="chart-container">
+                    <canvas id="graficoBarra3" ></canvas>
+                  </div>
                 </div> 
                 <div class="echart-total-sales-chart" style="min-height:320px;width:100%" data-echart-responsive="data-echart-responsive"></div>
               </div>
@@ -32,10 +30,9 @@
                             <h5 class="mb-1">Total Vendido Año<span class="badge badge-phoenix badge-phoenix-warning rounded-pill fs--1 ms-2"><span class="badge-label">-6.8%</span></span></h5>
                             <h6 class="text-700"></h6>
                           </div>
-                          <h4>16,247</h4>
                         </div>
-                        <div class="d-flex justify-content-center px-4 py-6">
-                          <div class="echart-total-orders" style="height:85px;width:115px"></div>
+                        <div class="chart-container">
+                          <canvas id="graficoBarra3" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -48,10 +45,9 @@
                             <h5 class="mb-1">Producción vs Ventas<span class="badge badge-phoenix badge-phoenix-warning rounded-pill fs--1 ms-2"> <span class="badge-label">+26.5%</span></span></h5>
                             <h6 class="text-700"></h6>
                           </div>
-                          <h4>356</h4>
                         </div>
-                        <div class="pb-0 pt-4">
-                          <div class="echarts-new-customers" style="height:180px;width:100%;" data-echart-responsive="true"></div>
+                        <div class="chart-container">
+                          <canvas id="graficoBarra3" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -65,8 +61,8 @@
                             <h6 class="text-700"></h6>
                           </div>
                         </div>
-                        <div class="pb-4 pt-3">
-                          <div class="echart-top-coupons" style="height:115px;width:100%;"></div>
+                        <div class="chart-container">
+                          <canvas id="graficoBarra3" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -80,8 +76,8 @@
                             <h6 class="text-700"></h6>
                           </div>
                         </div>
-                        <div class="d-flex justify-content-center pt-3">
-                          <div style="height:145px;width:140px"><canvas id="payingCustomerChart"></canvas></div>
+                        <div class="chart-container">
+                          <canvas id="graficoBarra3" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -90,4 +86,104 @@
               </div>
             </div>
           </div>
-		{% endblock dashboard%}
+
+	<script>
+   $(function () {    
+    //console.log( {{ datoComprativo }});
+    //console.log({{ datoLineal }} );
+        var ctx = document.getElementById('graficoBarra').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
+            }
+            ]},
+          options: { responsive: true, 
+                    scales: { y: { beginAtZero: true }  }
+          }
+        });
+      
+        var ctx_2 = document.getElementById('graficoBarra2').getContext('2d');
+        var chart_2 = new Chart(ctx_2, {
+          type: 'bar',
+          data: {
+            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [ {% for data in datoLineal %} {{ data.det_total }}, {% endfor %} ],
+            },{
+              label: {{ ianio_anterior }},
+              backgroundColor: '#ffab91',
+              borderColor: 'yellow',
+              data: [ {% for data in datoComparativo %} {{ data.det_total }}, {% endfor %} ],
+            }		
+            ]},
+          options: { responsive: true, 
+                    scales: { y: { beginAtZero: true } }
+          }
+        });
+  
+        var ctx1 = document.getElementById('graficoBarra3').getContext('2d');
+        var chart = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: '#42a5f5',
+              borderColor: 'gray',
+              data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
+            },{
+              label: {{ ianio_anterior }},
+              backgroundColor: '#ffab91',
+              borderColor: 'yellow',
+              data: [ {% for data in datoComparativo %} {{ data.det_cantidad }}, {% endfor %} ],
+            }		
+            ]},
+         options: { responsive: true, 
+                    scales: { y: { beginAtZero: true } }
+         }
+        });
+     $("#id_anios").val("{{ ianio }}");
+   });
+	</script>
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
+
+<script>
+      // Generate charts on load
+      window.addEventListener('load', function(){
+        var barChart = document.getElementById('graficoBarra').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
+        var barChart = document.getElementById('graficoBarra2').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
+        var barChart = document.getElementById('graficoBarra3').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
+
+        var lineChart = document.getElementById('graficoLinea2').getContext('2d');
+        window.myLine = new Chart(lineChart, lineChartConfig);
+
+
+        var lineChart = document.getElementById('graficoLinea').getContext('2d');
+        window.myLine = new Chart(lineChart, lineChartConfig);
+
+      });	
+</script>
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
+
+{% endblock dashboard%}

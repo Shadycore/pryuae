@@ -233,19 +233,19 @@ def oProductosMasVendidosView(request):
     ianio_anterior = ianio-1
     ventas = Venta.objects.filter(fechaVenta__year=ianio)
     obj =  ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(cantidad=Coalesce(Count('detalleventa__cultivo'), 0), det_total=Coalesce(Sum('detalleventa__total'), 0), det_cantidad=Coalesce(Sum('detalleventa__cantidad'), 0)) \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Sum('detalleventa__total'), det_cantidad=Sum('detalleventa__cantidad')) \
                 .order_by('-cantidad')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
         
     datoLineal = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(cantidad=Coalesce(Count('detalleventa__cultivo'), 0), det_total=Coalesce(Sum('detalleventa__total'), 0), det_cantidad=Coalesce(Sum('detalleventa__cantidad'), 0)) \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Sum('detalleventa__total'), det_cantidad=Sum('detalleventa__cantidad')) \
                 .order_by('-cantidad')
 
     cultivos = [item['detalleventa__cultivo__nombre'] for item in datoLineal]
     ventas_com = Venta.objects.filter(fechaVenta__year=ianio_anterior)
     datoComprativo = ventas_com.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(cantidad=Coalesce(Count('detalleventa__cultivo'), 0), det_total=Coalesce(Sum('detalleventa__total'), 0), det_cantidad=Coalesce(Sum('detalleventa__cantidad'), 0)) \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Sum('detalleventa__total'), det_cantidad=Sum('detalleventa__cantidad')) \
                 .order_by('-cantidad')
         
     context = {'obj': obj, 'datoLineal':  datoLineal, 
@@ -276,19 +276,19 @@ def oVentasPorCultivoView(request):
 
     ventas = Venta.objects.filter(fechaVenta__year=ianio)
     obj =  ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(cantidad=Coalesce(Count('detalleventa__cultivo'), 0), det_total=Coalesce(Cast(Sum('detalleventa__total'),IntegerField()), 0), det_cantidad=Coalesce(Cast(Sum('detalleventa__cantidad'),IntegerField()), 0)) \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Cast(Sum('detalleventa__total'),IntegerField()), det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField())) \
                 .order_by('-cantidad')
                         
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
     
     datoLineal = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(cantidad=Coalesce(Count('detalleventa__cultivo'), 0), det_total=Coalesce(Cast(Sum('detalleventa__total'),IntegerField()), 0), det_cantidad=Coalesce(Cast(Sum('detalleventa__cantidad'),IntegerField()), 0)) \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Cast(Sum('detalleventa__total'),IntegerField()), det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField())) \
                 .order_by('-cantidad')
     
     cultivos = [item['detalleventa__cultivo__nombre'] for item in datoLineal ]
     ventas_com = Venta.objects.filter(fechaVenta__year=ianio_anterior)
     datoComprativo = ventas_com.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(cantidad=Coalesce(Count('detalleventa__cultivo'), 0), det_total=Coalesce(Cast(Sum('detalleventa__total'),IntegerField()), 0), det_cantidad=Coalesce(Cast(Sum('detalleventa__cantidad'),IntegerField()), 0)) \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Cast(Sum('detalleventa__total'),IntegerField()), det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField())) \
                 .order_by('-cantidad')
    
     context = {'obj': obj, 'datoLineal':  datoLineal, 
