@@ -319,27 +319,30 @@ def oGananciasView(request):
 
     obj = Produccion.objects.filter(fecha__year=ianio) \
                             .values('cultivo__nombre', 'fecha__year') \
-                            .annotate(sum_cantidadCosecha=Sum('cantidadCosecha'))
+                            .annotate(sum_cantidadCosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
     
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
     
     datoLineal =  DetalleVenta.objects.filter(venta__fechaVenta__year=ianio, cultivo__nombre__in=obj.values('cultivo__nombre')) \
-                                        .values('venta__fechaVenta__year') \
-                                        .annotate(sum_total=Cast(Sum('total'),IntegerField()), sum_cantidad=Cast(Sum('cantidad'),IntegerField()))
+                                        .values('cultivo__nombre','venta__fechaVenta__year') \
+                                        .annotate(sum_total=Cast(Sum('total'),IntegerField()), sum_cantidad=Cast(Sum('cantidad'),IntegerField())) \
+                                        .order_by('cultivo__nombre')
     
-    cultivos =[item['detalleventa__cultivo__nombre'] for item in datoLineal ]
+    cultivos =[item['cultivo__nombre'] for item in datoLineal ]
 
     datoComprativo = RegistroInsumo.objects.filter(cultivo__nombre__in=cultivos) \
-                                            .values('fechaCompra__year', 'insumo__nombre') \
-                                            .annotate(precio=Cast(Sum('precio'),IntegerField()))
+                                            .values('cultivo__nombre','fechaCompra__year') \
+                                            .annotate(precio=Cast(Sum('precio'),IntegerField())) \
+                                            .order_by('cultivo__nombre')
     
     #resultado = obj.annotate(
     #precio_insumo=Sum(Case(
-    #               When(cultivo__nombre=datoComprativo.values('cultivo__nombre'), then='datoComprativo__precio')
+    #               When(cultivo__nombre=F('datoComprativo__cultivo__nombre'), then='datoComprativo__precio')
     #                )),
     #total_ventas=Sum(Case(
-    #                When(cultivo__nombre=datoLineal.values('cultivo__nombre'), then='datoLineal__sum_total')
+    #                When(cultivo__nombre=F('datoLineal__cultivo__nombre'), then='datoLineal__sum_total')
     #                ))).values('cultivo__nombre', 'fecha__year', 'cantidadCosecha', 'precio_insumo', 'total_ventas')
 
     context = {'obj': obj, 'datoLineal':  datoLineal, 

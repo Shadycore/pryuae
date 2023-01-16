@@ -1,11 +1,12 @@
 {% extends 'base/home.html' %}
+{% load static %}
 {% block dashboard %}
 		<div class="content">
           <div class="pb-5">
             <div class="row g-4">
-              <div class="col-12 col-xxl-6">
+              <div class="col-10 col-xxl-6">
                 <div class="mb-8">
-                  <h2 class="mb-2">Dashboard</h2>
+                  <h2 class="mb-2">       Dashboard  {{ anioactual }}</h2>
                 </div>
                 <div class="row align-items-center g-4">
                 </div>
@@ -15,24 +16,26 @@
                     <h3>Ventas de la semana</h3>
                   </div>
                   <div class="chart-container">
-                    <canvas id="graficoBarra3" ></canvas>
+                    <canvas id="tVentasAnio2" >
+                    </canvas>
                   </div>
                 </div> 
-                <div class="echart-total-sales-chart" style="min-height:320px;width:100%" data-echart-responsive="data-echart-responsive"></div>
+                <div style="min-height:320px;width:100%"></div>
               </div>
               <div class="col-12 col-xxl-6">
                 <div class="row g-3">
                   <div class="col-12 col-md-6">
                     <div class="card h-100">
-                      <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                      <div class="card-body">   
+
+                        <div class="row flex-between-center mb-4 g-3">
                           <div>
-                            <h5 class="mb-1">Total Vendido Año<span class="badge badge-phoenix badge-phoenix-warning rounded-pill fs--1 ms-2"><span class="badge-label">-6.8%</span></span></h5>
+                            <h5 class="mb-1">Total Ventas Año<span class="badge badge-phoenix badge-phoenix-warning rounded-pill fs--1 ms-2"><span class="badge-label"></span></span></h5>
                             <h6 class="text-700"></h6>
                           </div>
                         </div>
                         <div class="chart-container">
-                          <canvas id="graficoBarra3" ></canvas>
+                          <canvas id="tVentasAnio" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -42,12 +45,12 @@
                       <div class="card-body">
                         <div class="d-flex justify-content-between">
                           <div>
-                            <h5 class="mb-1">Producción vs Ventas<span class="badge badge-phoenix badge-phoenix-warning rounded-pill fs--1 ms-2"> <span class="badge-label">+26.5%</span></span></h5>
+                            <h5 class="mb-1">Producción vs Ventas<span class="badge badge-phoenix badge-phoenix-warning rounded-pill fs--1 ms-2"> <span class="badge-label"></span></span></h5>
                             <h6 class="text-700"></h6>
                           </div>
                         </div>
                         <div class="chart-container">
-                          <canvas id="graficoBarra3" ></canvas>
+                          <canvas id="prod_ventas" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -62,7 +65,7 @@
                           </div>
                         </div>
                         <div class="chart-container">
-                          <canvas id="graficoBarra3" ></canvas>
+                          <canvas id="tcomprasanual" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -77,7 +80,7 @@
                           </div>
                         </div>
                         <div class="chart-container">
-                          <canvas id="graficoBarra3" ></canvas>
+                          <canvas id="topVentas" ></canvas>
                         </div>
                       </div>
                     </div>
@@ -86,21 +89,31 @@
               </div>
             </div>
           </div>
+{% endblock dashboard%}
 
-	<script>
+{% block js_graficos %}
+<script>
    $(function () {    
     //console.log( {{ datoComprativo }});
     //console.log({{ datoLineal }} );
-        var ctx = document.getElementById('graficoBarra').getContext('2d');
-        var chart = new Chart(ctx, {
+        var bkprimario = "rgba(117,193,129,0.8)";
+        var bksecundario = "rgba(91,153,234,0.8)";
+
+        var ctxVA = document.getElementById('tVentasAnio').getContext('2d');
+        var chart = new Chart(ctxVA, {
           type: 'bar',
           data: {
-            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
+            labels: [ 'Ventas' ],
             datasets: [{
-              label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              label: {{ anioactual }},
+              backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
+              data: [ {{ tventasanio }} ],
+            },{
+              label: {{ anioanterior }},
+              backgroundColor: bksecundario,
+              borderColor: 'yellow',
+              data: [ {{ tventasanioanterior }} ],
             }
             ]},
           options: { responsive: true, 
@@ -108,68 +121,125 @@
           }
         });
       
-        var ctx_2 = document.getElementById('graficoBarra2').getContext('2d');
-        var chart_2 = new Chart(ctx_2, {
-          type: 'bar',
+        var ctxPV = document.getElementById('prod_ventas').getContext('2d');
+        var chart = new Chart(ctxPV, {
+          type: 'doughnut',
           data: {
-            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
+            labels: [ 'Producción', 'Ventas'],
             datasets: [{
-              label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              label: 'Producción',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.det_total }}, {% endfor %} ],
+              data: [ {{ sumCosecha }} ],
             },{
-              label: {{ ianio_anterior }},
-              backgroundColor: '#ffab91',
+              label: 'Ventas',
+              backgroundColor: bksecundario,
               borderColor: 'yellow',
-              data: [ {% for data in datoComparativo %} {{ data.det_total }}, {% endfor %} ],
+              data: [ {{ sumVentas }} ],
             }		
             ]},
-          options: { responsive: true, 
-                    scales: { y: { beginAtZero: true } }
+          options: { 		responsive: true,
+                        legend: {
+                          display: true,
+                          position: 'bottom',
+                          align: 'center',
+                        },/*
+                        tooltips: {
+                          titleMarginBottom: 10,
+                          bodySpacing: 10,
+                          xPadding: 16,
+                          yPadding: 16,
+                          borderColor: window.chartColors.border,
+                          borderWidth: 1,
+                          backgroundColor: '#fff',
+                          bodyFontColor: window.chartColors.text,
+                          titleFontColor: window.chartColors.text,
+                          
+                          animation: {
+                            animateScale: true,
+                            animateRotate: true
+                          },
+                          
+                          callbacks: {
+                                    label: function(tooltipItem, data) {
+                              //get the concerned dataset
+                              var dataset = data.datasets[tooltipItem.datasetIndex];
+                              //calculate the total of this data set
+                              var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                              return previousValue + currentValue;
+                              });
+                              //get the current items value
+                              var currentValue = dataset.data[tooltipItem.index];
+                              //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
+                              var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+                              
+                              return percentage + "%";
+                              },
+                                },
+                          
+
+                        },*/
           }
         });
   
-        var ctx1 = document.getElementById('graficoBarra3').getContext('2d');
-        var chart = new Chart(ctx1, {
+        var ctxCA = document.getElementById('tcomprasanual').getContext('2d');
+        var chart = new Chart(ctxCA, {
           type: 'bar',
           data: {
-            labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
+            labels: ['Compras'],
             datasets: [{
-              label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              label: {{ anioactual }},
+              backgroundColor:bkprimario,
               borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
+              data: [ {{ tcompras }}],
             },{
-              label: {{ ianio_anterior }},
-              backgroundColor: '#ffab91',
+              label: {{ anioanterior }},
+              backgroundColor: bksecundario,
               borderColor: 'yellow',
-              data: [ {% for data in datoComparativo %} {{ data.det_cantidad }}, {% endfor %} ],
+              data: [ {{ tcompras_ant }} ],
             }		
             ]},
          options: { responsive: true, 
                     scales: { y: { beginAtZero: true } }
          }
         });
+
+
+        var ctxTop = document.getElementById('topVentas').getContext('2d');
+        var chart = new Chart(ctxTop, {
+          type: 'bar',
+          data: {
+            labels: [ {% for data in topventas %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}  ],
+            datasets: [{
+              label: {{ anioactual }},
+              backgroundColor: bkprimario,
+              borderColor: 'gray',
+              data: [ {% for data in topventas %} {{ data.det_cantidad }}, {% endfor %} ],
+            },
+            ]},
+          options: { responsive: true, 
+                    scales: { y: { beginAtZero: true }  }
+          }
+        });
+
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
-<!-- Charts JS -->
-<script src="{% static 'assets/js/chart.js'%}"></script>
-<script src="{% static 'assets/js/chart.min.js'%}"></script>  
-<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 
 <script>
       // Generate charts on load
       window.addEventListener('load', function(){
-        var barChart = document.getElementById('graficoBarra').getContext('2d');
-        window.myBar = new Chart(barChart, barChartConfig);
+        var barCharttVentasAnio = document.getElementById('tVentasAnio').getContext('2d');
+        window.myBar = new Chart(barCharttVentasAnio, barChartConfig);
 
-        var barChart = document.getElementById('graficoBarra2').getContext('2d');
-        window.myBar = new Chart(barChart, barChartConfig);
+        var doughnutChartprod_ventas = document.getElementById('prod_ventas').getContext('2d');
+        window.myDoughnut = new Chart(doughnutChartprod_ventas, doughnutChartConfig);
 
-        var barChart = document.getElementById('graficoBarra3').getContext('2d');
-        window.myBar = new Chart(barChart, barChartConfig);
+        var barCharttcomprasanual = document.getElementById('tcomprasanual').getContext('2d');
+        window.myBar = new Chart(barCharttcomprasanual, barChartConfig);
+
+        var barCharttopVentas = document.getElementById('topVentas').getContext('2d');
+        window.myBar = new Chart(barCharttopVentas, barChartConfig);
 
 
         var lineChart = document.getElementById('graficoLinea2').getContext('2d');
@@ -179,6 +249,13 @@
         var lineChart = document.getElementById('graficoLinea').getContext('2d');
         window.myLine = new Chart(lineChart, lineChartConfig);
 
+
+        var pieChart = document.getElementById('chart-pie').getContext('2d');
+	      window.myPie = new Chart(pieChart, pieChartConfig);
+	
+        var doughnutChart = document.getElementById('chart-doughnut').getContext('2d');
+        window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
+
       });	
 </script>
 <!-- Charts JS -->
@@ -186,4 +263,4 @@
 <script src="{% static 'assets/js/chart.min.js'%}"></script>  
 <!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 
-{% endblock dashboard%}
+{% endblock js_graficos%}

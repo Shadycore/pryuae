@@ -14,7 +14,7 @@ urlpatterns = [
     path('informe/produccion', oProduccionView, name='iproduccion'),
     path('informe/productosmasvendidos', oProductosMasVendidosView, name='iproductosmasvendidos'),
     path('informe/ventasporcultivo', oVentasPorCultivoView, name='iventasporcultivo'),
-    path('informe/ganancias', oVentasPorCultivoView, name='iganancias'),
+    path('informe/ganancias', oGananciasView, name='iganancias'),
 
     #Impresión
     path('informe/imprimir/clientes', imprimirClientes, name="imprimirclientes"),
