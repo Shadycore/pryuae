@@ -189,6 +189,13 @@ imprimir { display: block;}
    $(function () {    
     //console.log( {{ datoComprativo }});
     //console.log({{ datoLineal }} );
+        window.chartColors = {
+          green: '#75c181', // rgba(117,193,129, 1)
+          blue: '#5b99ea', // rgba(91,153,234, 1)
+          gray: '#a9b5c9',
+          text: '#252930',
+          border: '#e7e9ed'
+        };
         var bkprimario = "rgba(117,193,129,0.8)";
         var bksecundario = "rgba(91,153,234,0.8)";
         var ctx = document.getElementById('graficoBarra').getContext('2d');
@@ -203,9 +210,54 @@ imprimir { display: block;}
               data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
             }
             ]},
-          options: { responsive: true, 
-                    scales: { y: { beginAtZero: true }  }
-          }
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+                align: 'end',
+              },
+
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                titleMarginBottom: 10,
+                bodySpacing: 10,
+                xPadding: 16,
+                yPadding: 16,
+                borderColor: window.chartColors.border,
+                borderWidth: 1,
+                backgroundColor: '#fff',
+                bodyFontColor: window.chartColors.text,
+                titleFontColor: window.chartColors.text,
+                callbacks: {
+                          label: function(tooltipItem, data) {	                 
+                            return tooltipItem.value + '%';   
+                          }
+                      },
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.border,
+                  },
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.borders,
+                  },
+                  ticks: {
+                          beginAtZero: true,
+                          userCallback: function(value, index, values) {
+                              return value + '%';  
+                          }
+                      },
+                }]
+              }
+            }
         });
       
         var ctx_2 = document.getElementById('graficoBarra2').getContext('2d');
@@ -225,9 +277,54 @@ imprimir { display: block;}
               data: [ {% for data in datoComparativo %} {{ data.det_total }}, {% endfor %} ],
             }		
             ]},
-          options: { responsive: true, 
-                    scales: { y: { beginAtZero: true } }
-          }
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+                align: 'end',
+              },
+
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                titleMarginBottom: 10,
+                bodySpacing: 10,
+                xPadding: 16,
+                yPadding: 16,
+                borderColor: window.chartColors.border,
+                borderWidth: 1,
+                backgroundColor: '#fff',
+                bodyFontColor: window.chartColors.text,
+                titleFontColor: window.chartColors.text,
+                callbacks: {
+                          label: function(tooltipItem, data) {	                 
+                            return tooltipItem.value + '%';   
+                          }
+                      },
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.border,
+                  },
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.borders,
+                  },
+                  ticks: {
+                          beginAtZero: true,
+                          userCallback: function(value, index, values) {
+                              return value + '%';  
+                          }
+                      },
+                }]
+              }
+            }
         });
   
         var ctx1 = document.getElementById('graficoBarra3').getContext('2d');
@@ -247,9 +344,54 @@ imprimir { display: block;}
               data: [ {% for data in datoComparativo %} {{ data.det_cantidad }}, {% endfor %} ],
             }		
             ]},
-         options: { responsive: true, 
-                    scales: { y: { beginAtZero: true } }
-         }
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+                align: 'end',
+              },
+
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                titleMarginBottom: 10,
+                bodySpacing: 10,
+                xPadding: 16,
+                yPadding: 16,
+                borderColor: window.chartColors.border,
+                borderWidth: 1,
+                backgroundColor: '#fff',
+                bodyFontColor: window.chartColors.text,
+                titleFontColor: window.chartColors.text,
+                callbacks: {
+                          label: function(tooltipItem, data) {	                 
+                            return tooltipItem.value + '%';   
+                          }
+                      },
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.border,
+                  },
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.borders,
+                  },
+                  ticks: {
+                          beginAtZero: true,
+                          userCallback: function(value, index, values) {
+                              return value + '%';  
+                          }
+                      },
+                }]
+              }
+            }
         });
      $("#id_anios").val("{{ ianio }}");
    });

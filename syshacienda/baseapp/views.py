@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField, Prefetch, Case, When
-from datetime import datetime, timezone, timedelta 
+from datetime import datetime, timezone, timedelta, date
 from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast, Coalesce, TruncDay
 from django.utils.dateparse import parse_date
 import json
@@ -97,61 +97,36 @@ def Home(request):
 
     fecha_actual = datetime.now()
     fecha_inicio = fecha_actual - timedelta(days=8)
-    #ventas_ultimos_8dias = Venta.objects.filter(fechaVenta__range=(fecha_inicio, fecha_actual)).aggregate(total=Sum('totalVenta'))
-    matriz_ultimos_8dias = [fecha.strftime('%Y-%m-%d') for fecha in (fecha_actual - timedelta(days=i) for i in range(8))]
-    
-    matriz_ventas_ultimos_8dias = []
-    for fecha in matriz_ultimos_8dias:
-        ventas_en_fecha = Venta.objects.filter(fechaVenta__date=fecha).order_by('fechaVenta').aggregate(total=Sum('totalVenta'))
-        matriz_ventas_ultimos_8dias.append({'fecha': fecha, 'total': ventas_en_fecha['total'] or 0})
+
+    ventas_semana = Venta.objects.filter(fechaVenta__month=date.today().month, fechaVenta__year=date.today().year) \
+                                .annotate(total_venta=Sum('totalVenta'), fecha_venta=TruncDay('fechaVenta')) \
+                                .order_by('-fechaVenta')[:8]
     
     fecha_inicio = datetime.now() - timedelta(days=180) 
-    fecha_fin = datetime.now()
+    fecha_fin = fecha_actual - timedelta(days=8)
 
-    ventas_pry = Venta.objects.filter(fechaVenta__gte=fecha_inicio, fechaVenta__lte=fecha_fin) 
-    # Crear un DataFrame con los datos 
-    datos_ventas = pd.DataFrame(list(ventas_pry.values('cliente', 'fechaVenta','subTotal', 'totalVenta', 'porcIva', 'totalIva'))) 
-    #datos_ventas = pd.DataFrame(list(ventas_pry))
-    datos_ventas['fechaVenta'] = datos_ventas['fechaVenta'].apply(lambda x: x.strftime('%Y%m%d'))
+    fecha_inicio = date.today() - timedelta(days=(180-8))
+    ventas_ultimos_180dias = Venta.objects.filter(fechaVenta__gte=fecha_inicio).annotate(total_venta=Sum('totalVenta'), fecha_venta=TruncDay('fechaVenta')).order_by('-fechaVenta')[:180]
 
-    #datos_ventas = pd.DataFrame(list(ventas_pry.values('fechaVenta', 'totalVenta'))) 
+    fechas_venta = ventas_ultimos_180dias.values_list('fecha_venta', flat=True)
+    totales_venta = ventas_ultimos_180dias.values_list('total_venta', flat=True)
 
-    # Preparar los datos para el entrenamiento 
-    X = datos_ventas.drop('totalVenta', axis=1) 
-    Y = datos_ventas['totalVenta'] 
+    # Crear una función de pronóstico
+    def pronostico_ventas(fechas, totales, dias_pronostico=8):
+        x = np.array(range(len(fechas)))
+        y = np.array(totales)
+        p4 = np.poly1d(np.polyfit(x, y, 4))
+        dias_futuros = np.array(range(len(fechas), len(fechas)+dias_pronostico))
+        pronosticos = p4(dias_futuros)
+        return pronosticos
 
-    # Dividir los datos en entrenamiento y validación 
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0) 
-
-    # Crear el modelo de regresión lineal 
-    regresion_lineal = LinearRegression()
-    regresion_lineal.fit(X_train, Y_train)
-
-    # Predecir los resultados de las últimas 8 ventas 
-    predicciones_ventas = regresion_lineal.predict(X_test)
-
-    # Crear el DataFrame de predicciones
-    predicciones_df = pd.DataFrame(predicciones_ventas, columns=['Prediccion'])
-
-    # Obtener la fecha para cada predicción
-    fechas_predicciones = X_test['fechaVenta'].tolist()
-    #fechas_predicciones = [datetime.strptime(fecha, '%Y/%m/%d') for fecha in fechas_predicciones]
-
-    # Obtener el nombre del día para cada predicción
-    #dias_predicciones = []
-    #for fecha in fechas_predicciones:
-    #    dias_predicciones.append(fecha.strftime("%A"))
-
-    # Agregar el nombre del día al DataFrame
-    #predicciones_df['Dia'] = dias_predicciones
-
-    # Agregar la columna con el total de ventas
-    #predicciones_df['Total de Ventas'] = predicciones_df.groupby('Dia')['Prediccion'].transform(Sum)
+    # Crear los pronósticos
+    predicciones_df = pronostico_ventas(fechas_venta, totales_venta)
 
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'tventasanioanterior': tventasanioanterior,
     'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 'tcompas': tcompras,
-    'tcompras_ant': tcompras_ant, 'topventas': topventas, 'ventas_semana': matriz_ventas_ultimos_8dias,
+    'tcompras_ant': tcompras_ant, 'topventas': topventas, 'ventas_semana': ventas_semana,
     'predicciones_df': predicciones_df
      }
 
