@@ -173,18 +173,20 @@ imprimir { display: block;}
     //console.log({{ datoLineal }} );
     //console.log({{ obj }} );
         var ctx = document.getElementById('graficoBarra').getContext('2d');
+        var bkprimario = "rgba(117,193,129,0.8)";
+        var bksecundario = "rgba(91,153,234,0.8)";
         var chart = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: 'Cosechado',
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [ {% for data in obj %} {{ data.sum_cantidadCosecha }}, {% endfor %} ],
             },{
               label:'Vendido',
-              backgroundColor: '#ffab91',
+              backgroundColor: bksecundario,
               borderColor: 'yellow',
               data: [ {% for data in datoLineal %} {{ data.sum_cantidad }}, {% endfor %} ],
             }		
@@ -200,7 +202,7 @@ imprimir { display: block;}
             labels: [{% for data in obj %} '{{ data.cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [ {% for data in obj %} {{ data.sum_cantidadCosecha }}, {% endfor %}  ],
             },

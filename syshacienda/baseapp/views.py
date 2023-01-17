@@ -88,35 +88,33 @@ def Home(request):
     else:
         tcompras_ant = tcompras_ant['sum_precio']
 
-    ventas = Venta.objects.filter(fechaVenta__year=anioactual)
+    ventas = Venta.objects.filter(fechaVenta__year=anioanterior)
     topventas =  ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
                 .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
                 .exclude(det_cantidad=None) \
                 .order_by('-det_cantidad')[:10]
 
-    ventas_semana = Venta.objects.filter(fechaVenta__gte=parse_date('8 days ago')) \
-                                .annotate(
-                                    dia_semana=Case(
-                                        When(fechaVenta__week_day=1, then=CharField('Lun')),
-                                        When(fechaVenta__week_day=2, then=CharField('Mar')),
-                                        When(fechaVenta__week_day=3, then=CharField('Mie')),
-                                        When(fechaVenta__week_day=4, then=CharField('Jue')),
-                                        When(fechaVenta__week_day=5, then=CharField('Vie')),
-                                        When(fechaVenta__week_day=6, then=CharField('Sab')),
-                                        When(fechaVenta__week_day=7, then=CharField('Dom')),
-                                        output_field=CharField()
-                                    )) \
-                                .annotate(total_dia=Sum('totalVenta')) \
-                                .values('dia_semana') \
-                                .annotate(total_dia=Sum('total_dia'))\
-                                .order_by('-fechaVenta')
+
+    fecha_actual = datetime.now()
+    fecha_inicio = fecha_actual - timedelta(days=8)
+    #ventas_ultimos_8dias = Venta.objects.filter(fechaVenta__range=(fecha_inicio, fecha_actual)).aggregate(total=Sum('totalVenta'))
+    matriz_ultimos_8dias = [fecha.strftime('%Y-%m-%d') for fecha in (fecha_actual - timedelta(days=i) for i in range(8))]
+    
+    matriz_ventas_ultimos_8dias = []
+    for fecha in matriz_ultimos_8dias:
+        ventas_en_fecha = Venta.objects.filter(fechaVenta__date=fecha).order_by('fechaVenta').aggregate(total=Sum('totalVenta'))
+        matriz_ventas_ultimos_8dias.append({'fecha': fecha, 'total': ventas_en_fecha['total'] or 0})
+    
     fecha_inicio = datetime.now() - timedelta(days=180) 
     fecha_fin = datetime.now()
 
-    ventas = Venta.objects.filter(fechaVenta__gte=fecha_inicio, fechaVenta__lte=fecha_fin) 
-
+    ventas_pry = Venta.objects.filter(fechaVenta__gte=fecha_inicio, fechaVenta__lte=fecha_fin) 
     # Crear un DataFrame con los datos 
-    datos_ventas = pd.DataFrame(list(ventas.values('cliente', 'fechaVenta', 'subTotal', 'totalVenta', 'porcIva', 'totalIva'))) 
+    datos_ventas = pd.DataFrame(list(ventas_pry.values('cliente', 'fechaVenta','subTotal', 'totalVenta', 'porcIva', 'totalIva'))) 
+    #datos_ventas = pd.DataFrame(list(ventas_pry))
+    datos_ventas['fechaVenta'] = datos_ventas['fechaVenta'].apply(lambda x: x.strftime('%Y%m%d'))
+
+    #datos_ventas = pd.DataFrame(list(ventas_pry.values('fechaVenta', 'totalVenta'))) 
 
     # Preparar los datos para el entrenamiento 
     X = datos_ventas.drop('totalVenta', axis=1) 
@@ -137,22 +135,23 @@ def Home(request):
 
     # Obtener la fecha para cada predicción
     fechas_predicciones = X_test['fechaVenta'].tolist()
+    #fechas_predicciones = [datetime.strptime(fecha, '%Y/%m/%d') for fecha in fechas_predicciones]
 
     # Obtener el nombre del día para cada predicción
-    dias_predicciones = []
-    for fecha in fechas_predicciones:
-        dias_predicciones.append(fecha.strftime("%A"))
+    #dias_predicciones = []
+    #for fecha in fechas_predicciones:
+    #    dias_predicciones.append(fecha.strftime("%A"))
 
     # Agregar el nombre del día al DataFrame
-    predicciones_df['Dia'] = dias_predicciones
+    #predicciones_df['Dia'] = dias_predicciones
 
     # Agregar la columna con el total de ventas
-    predicciones_df['Total de Ventas'] = predicciones_df.groupby('Dia')['Prediccion'].transform(Sum)
+    #predicciones_df['Total de Ventas'] = predicciones_df.groupby('Dia')['Prediccion'].transform(Sum)
 
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'tventasanioanterior': tventasanioanterior,
     'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 'tcompas': tcompras,
-    'tcompras_ant': tcompras_ant, 'topventas': topventas, 'ventas_semana': ventas_semana,
+    'tcompras_ant': tcompras_ant, 'topventas': topventas, 'ventas_semana': matriz_ventas_ultimos_8dias,
     'predicciones_df': predicciones_df
      }
 

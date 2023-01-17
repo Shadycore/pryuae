@@ -16,7 +16,7 @@
                     <h3>Ventas de la semana</h3>
                   </div>
                   <div class="chart-container">
-                    <canvas id="tVentasAnio2" >
+                    <canvas id="ventas_semana" >
                     </canvas>
                   </div>
                 </div> 
@@ -95,7 +95,15 @@
 <script>
    $(function () {    
     //console.log( {{ datoComprativo }});
-    //console.log({{ datoLineal }} );
+    //console.log({{ ventas_semana }} );
+        window.chartColors = {
+            green: '#75c181', // rgba(117,193,129, 1)
+            blue: '#5b99ea', // rgba(91,153,234, 1)
+            gray: '#a9b5c9',
+            text: '#252930',
+            border: '#e7e9ed'
+          };
+
         var bkprimario = "rgba(117,193,129,0.8)";
         var bksecundario = "rgba(91,153,234,0.8)";
 
@@ -128,33 +136,26 @@
             labels: [ 'Producción', 'Ventas'],
             datasets: [{
               label: 'Producción',
-              backgroundColor: bkprimario,
+              backgroundColor: [bkprimario, bksecundario],
               borderColor: 'gray',
-              data: [ {{ sumCosecha }} ],
-            },{
-              label: 'Ventas',
-              backgroundColor: bksecundario,
-              borderColor: 'yellow',
-              data: [ {{ sumVentas }} ],
-            }		
+              data: [ {{ sumCosecha }}, {{ sumVentas }} ],
+              hoverOffset: 4
+            }	
             ]},
           options: { 		responsive: true,
                         legend: {
                           display: true,
                           position: 'bottom',
                           align: 'center',
-                        },/*
+                        },
                         tooltips: {
-                          titleMarginBottom: 10,
-                          bodySpacing: 10,
-                          xPadding: 16,
-                          yPadding: 16,
+                          titleMarginBottom: 10, bodySpacing: 10,
+                          xPadding: 16, yPadding: 16,
                           borderColor: window.chartColors.border,
                           borderWidth: 1,
                           backgroundColor: '#fff',
                           bodyFontColor: window.chartColors.text,
                           titleFontColor: window.chartColors.text,
-                          
                           animation: {
                             animateScale: true,
                             animateRotate: true
@@ -178,7 +179,7 @@
                                 },
                           
 
-                        },*/
+                        },
           }
         });
   
@@ -222,6 +223,52 @@
           }
         });
 
+        var ctxVentS = document.getElementById('ventas_semana').getContext('2d');
+        var chart = new Chart(ctxVentS, {
+          type: 'line',
+          data: {
+            labels: [ {% for data in ventas_semana %} '{{ data.fecha }}', {% endfor %} ],
+            datasets: [{
+              label: 'Ventas Semana',
+			        backgroundColor: window.chartColors.green,
+			        borderColor: window.chartColors.green,
+              data: [  {% for data in ventas_semana %} {{ data.total }}, {% endfor %} ],
+              fill: true,
+            },{
+              label: 'Proyección Ventas',
+              backgroundColor: 'red',
+              borderColor: 'red',
+              data: [ {% for data in predicciones_df %} {{ data.Prediccion }} , {% endfor %}  ],
+              fill: false,
+            }		
+            ]},
+         options: { responsive: true, 
+                    scales: { y: { beginAtZero: true } },
+                    		tooltips: {
+                        mode: 'index', intersect: false,
+                        titleMarginBottom: 10, bodySpacing: 10,
+                        xPadding: 16, yPadding: 16,
+                        borderColor: window.chartColors.border,
+                        borderWidth: 1,
+                        backgroundColor: '#fff',
+                        bodyFontColor: window.chartColors.text,
+                        titleFontColor: window.chartColors.text,
+
+                              callbacks: {
+                                //Ref: https://stackoverflow.com/questions/38800226/chart-js-add-commas-to-tooltip-and-y-axis
+                                  label: function(tooltipItem, data) {
+                                    if (parseInt(tooltipItem.value) >= 1000) {
+                                          return "$" + tooltipItem.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                      } else {
+                                        return '$' + tooltipItem.value;
+                                      }
+                                  }
+                              },
+
+                      },
+         }
+        });
+
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
@@ -241,8 +288,7 @@
         var barCharttopVentas = document.getElementById('topVentas').getContext('2d');
         window.myBar = new Chart(barCharttopVentas, barChartConfig);
 
-
-        var lineChart = document.getElementById('graficoLinea2').getContext('2d');
+        var lineChart = document.getElementById('ventas_semana').getContext('2d');
         window.myLine = new Chart(lineChart, lineChartConfig);
 
 

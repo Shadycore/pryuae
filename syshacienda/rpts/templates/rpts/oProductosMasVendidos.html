@@ -189,6 +189,8 @@ imprimir { display: block;}
    $(function () {    
     //console.log( {{ datoComprativo }});
     //console.log({{ datoLineal }} );
+        var bkprimario = "rgba(117,193,129,0.8)";
+        var bksecundario = "rgba(91,153,234,0.8)";
         var ctx = document.getElementById('graficoBarra').getContext('2d');
         var chart = new Chart(ctx, {
           type: 'bar',
@@ -196,7 +198,7 @@ imprimir { display: block;}
             labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
             }
@@ -213,12 +215,12 @@ imprimir { display: block;}
             labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [ {% for data in datoLineal %} {{ data.det_total }}, {% endfor %} ],
             },{
               label: {{ ianio_anterior }},
-              backgroundColor: '#ffab91',
+              backgroundColor: bksecundario,
               borderColor: 'yellow',
               data: [ {% for data in datoComparativo %} {{ data.det_total }}, {% endfor %} ],
             }		
@@ -235,12 +237,12 @@ imprimir { display: block;}
             labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
             },{
               label: {{ ianio_anterior }},
-              backgroundColor: '#ffab91',
+              backgroundColor: bksecundario,
               borderColor: 'yellow',
               data: [ {% for data in datoComparativo %} {{ data.det_cantidad }}, {% endfor %} ],
             }		

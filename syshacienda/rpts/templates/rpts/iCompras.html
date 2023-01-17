@@ -102,6 +102,8 @@
    $(function () {    
     //console.log( {{ datoComprativo }});
     //console.log({{ datoLineal }} );
+        var bkprimario = "rgba(117,193,129,0.8)";
+        var bksecundario = "rgba(91,153,234,0.8)";
         var ctx = document.getElementById('graficoBarra').getContext('2d');
         var chart = new Chart(ctx, {
           type: 'bar',
@@ -109,12 +111,12 @@
             labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             datasets: [{
               label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [ {% for data in datoLineal %} {{ data }}, {% endfor %} ],
             },{
               label: {{ ianio_anterior }},
-              backgroundColor: '#ffab91',
+              backgroundColor: bksecundario,
               borderColor: 'yellow',
               data: [{% for data in datoComparativo %} {{ data }},  {% endfor %} ],
             }		
@@ -130,7 +132,7 @@
             labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             datasets: [{
               label: {{ ianio }},
-              backgroundColor: '#42a5f5',
+              backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [{% for data in datoLineal %} {{ data }}, {% endfor %}  ],
             }		

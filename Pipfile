@@ -12,6 +12,11 @@ pylint-django = "*"
 pylint-celery = "*"
 psycopg2 = "*"
 djangorestframework = "*"
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+scipy = "*"
+matplotlib = "*"
 
 [dev-packages]
 pylint = "*"
