@@ -6,7 +6,7 @@
             <div class="row g-4">
               <div class="col-10 col-xxl-6">
                 <div class="mb-8">
-                  <h2 class="mb-2">       Dashboard  {{ anioactual }}</h2>
+                  <h2 class="mb-2 align-content-center">       Dashboard  </h2>
                 </div>
                 <div class="row align-items-center g-4">
                 </div>
@@ -378,7 +378,6 @@
               fill: true,
             },{
               label: 'Proyección Ventas',
-              borderDash: [3, 5]
               backgroundColor: 'red',
               borderColor: 'red',
               data: [ {% for data in predicciones_df %} {{ data }}, {% endfor %}  ],
