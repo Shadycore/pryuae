@@ -256,7 +256,7 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: ['', {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
+            labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: 'Ventas',
               backgroundColor: bkprimario,
