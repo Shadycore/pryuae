@@ -105,29 +105,27 @@ def Home(request):
     fecha_inicio = datetime.now() - timedelta(days=180) 
     fecha_fin = fecha_actual - timedelta(days=8)
 
-    fecha_inicio = date.today() - timedelta(days=(180-8))
-    ventas_ultimos_180dias = Venta.objects.filter(fechaVenta__gte=fecha_inicio).annotate(total_venta=Sum('totalVenta'), fecha_venta=TruncDay('fechaVenta')).order_by('-fechaVenta')[:180]
+    # Obtenemos los datos de las ventas de los últimos 180 días
+    ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=188)).values('fechaVenta', 'totalVenta')
 
-    fechas_venta = ventas_ultimos_180dias.values_list('fecha_venta', flat=True)
-    totales_venta = ventas_ultimos_180dias.values_list('total_venta', flat=True)
+    # Creamos un DataFrame con los datos obtenidos
+    df = pd.DataFrame(ventas)
+    df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
+    df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta 
+    X = df[['dias']] # Definimos X como la columna dias del DataFrame 
+    y = df[['totalVenta']] # Definimos y como la columna totalVenta del DataFrame 
+    model = LinearRegression() # Creamos un modelo de regresión lineal 
+    model.fit(X, y) # Entrenamos el modelo con los datos obtenidos 
+    predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188]]) # Realizamos predicciones para los siguientes 8 días 
+    pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
 
-    # Crear una función de pronóstico
-    def pronostico_ventas(fechas, totales, dias_pronostico=8):
-        x = np.array(range(len(fechas)))
-        y = np.array(totales)
-        p4 = np.poly1d(np.polyfit(x, y, 4))
-        dias_futuros = np.array(range(len(fechas), len(fechas)+dias_pronostico))
-        pronosticos = p4(dias_futuros)
-        return pronosticos
-
-    # Crear los pronósticos
-    predicciones_df = pronostico_ventas(fechas_venta, totales_venta)
+    pred_formateada =  [numero[0] for numero in pred_formateada]
 
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'tventasanioanterior': tventasanioanterior,
     'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 'tcompas': tcompras,
     'tcompras_ant': tcompras_ant, 'topventas': topventas, 'ventas_semana': ventas_semana,
-    'predicciones_df': predicciones_df
+    'predicciones_df': pred_formateada
      }
 
     return render(request,

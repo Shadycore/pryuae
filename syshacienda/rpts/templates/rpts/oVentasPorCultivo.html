@@ -223,7 +223,7 @@ imprimir { display: block;}
                 titleFontColor: window.chartColors.text,
                 callbacks: {
                           label: function(tooltipItem, data) {	                 
-                            return tooltipItem.value + '%';   
+                            return tooltipItem.value + '';   
                           }
                       },
               },
@@ -244,7 +244,7 @@ imprimir { display: block;}
                   ticks: {
                           beginAtZero: true,
                           userCallback: function(value, index, values) {
-                              return value + '%';  
+                              return value + '';  
                           }
                       },
                 }]
@@ -269,7 +269,7 @@ imprimir { display: block;}
               data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
             },{
               label: 'Total',
-              backgroundColor: '#71b793',
+              backgroundColor: window.chartColors.gray,
               borderColor: 'gray',
               data: [{% for data in datoLineal %} {{ data.det_total }}, {% endfor %}  ],
             },
@@ -295,7 +295,7 @@ imprimir { display: block;}
                 titleFontColor: window.chartColors.text,
                 callbacks: {
                           label: function(tooltipItem, data) {	                 
-                            return tooltipItem.value + '%';   
+                            return tooltipItem.value + '';   
                           }
                       },
               },
@@ -316,7 +316,7 @@ imprimir { display: block;}
                   ticks: {
                           beginAtZero: true,
                           userCallback: function(value, index, values) {
-                              return value + '%';  
+                              return value + '';  
                           }
                       },
                 }]
