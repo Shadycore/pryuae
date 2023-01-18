@@ -364,7 +364,7 @@
         var chart = new Chart(ctxVentS, {
           type: 'line',
           data: {
-            labels: [ {% for data in ventas_semana %} '{{ data.fechaVenta }}', {% endfor %} ],
+            labels: [ {% for data in ventas_semana %} '{{ data.fecha_venta }}', {% endfor %}   ],
             datasets: [{
               label: 'Ventas Semana',
 			        backgroundColor: window.chartColors.green,

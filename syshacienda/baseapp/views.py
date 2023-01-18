@@ -39,7 +39,13 @@ def Home(request):
     template_name='baseapp/home.html'
     anioactual = datetime.now().year
     anioanterior = anioactual-1
-
+    tiempobi = int(Parametro.objects.filter(nombreParametro="TIEMPOBI") \
+                                .values_list('valorParametro', flat=True) \
+                                .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                                .get())
+    if tiempobi is None or not tiempobi:
+        tiempobi = 180
+    
     tventasanio = Venta.objects.filter(fechaVenta__year=anioactual)\
                                 .aggregate(sum_total=Cast(Sum('totalVenta'),IntegerField()))
     if tventasanio['sum_total'] is None:
@@ -88,7 +94,7 @@ def Home(request):
     else:
         tcompras_ant = tcompras_ant['sum_precio']
 
-    ventas = Venta.objects.filter(fechaVenta__year=anioanterior)
+    ventas = Venta.objects.filter(fechaVenta__year=anioactual,)
     topventas =  ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
                 .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
                 .exclude(det_cantidad=None) \
@@ -97,18 +103,22 @@ def Home(request):
 
     fecha_actual = datetime.now()
     fecha_inicio = fecha_actual - timedelta(days=8)
-
+    #Obtengo los últimos 8 días de ventas de la base.
     ventas_semana = Venta.objects.filter(fechaVenta__month=date.today().month, fechaVenta__year=date.today().year) \
                                 .annotate(total_venta=Sum('totalVenta'), fecha_venta=TruncDay('fechaVenta')) \
-                                .order_by('-fechaVenta')[:8]
+                                .order_by('fechaVenta')[:8]
     
-    fecha_inicio = datetime.now() - timedelta(days=180) 
-    fecha_fin = fecha_actual - timedelta(days=8)
+    if not ventas_semana:
+        ventas_semana = []
+        dia_ini = date.today()  - timedelta(days=8)
+        for i in range(8):
+            fecha_venta = dia_ini + timedelta(days=i)
+            fecha_venta = fecha_venta.strftime('%Y-%m-%d')
+            ventas_semana.append({'fecha_venta': fecha_venta, 'total_venta': 0})
 
-    # Obtenemos los datos de las ventas de los últimos 180 días
-    ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=188)).values('fechaVenta', 'totalVenta')
+    ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
 
-    # Creamos un DataFrame con los datos obtenidos
+    #realizamos la proyección basado en el parametro tiempobi: 180 días
     df = pd.DataFrame(ventas)
     df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
     df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta 
@@ -118,8 +128,7 @@ def Home(request):
     model.fit(X, y) # Entrenamos el modelo con los datos obtenidos 
     predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188]]) # Realizamos predicciones para los siguientes 8 días 
     pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
-
-    pred_formateada =  [numero[0] for numero in pred_formateada]
+    pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
 
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'tventasanioanterior': tventasanioanterior,

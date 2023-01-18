@@ -129,7 +129,7 @@ def iComprasView(request):
             dato1['11'] = item.get('total')
         if item.get('month') == 12:
             dato1['12'] = item.get('total')
-
+    
     for item in datoComprativo:
         if item.get('month') == 1:
             dato2['01'] = item.get('total')
