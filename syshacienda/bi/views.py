@@ -27,8 +27,8 @@ from vent.models import Venta, DetalleVenta
 # Create your views here.
 
 @login_required(login_url='/login/')
-def bi(request):
-    template_name = 'bi.html'
+def analiticaView(request):
+    template_name = 'analitica.html'
     if request.method == 'POST':
         pass
     context = {}

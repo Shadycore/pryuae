@@ -20,6 +20,7 @@ from baseapp import urls
 from mnt import urls
 from vent import urls
 from api import urls
+from bi import urls
 
 urlpatterns = [
     path('', include(('baseapp.urls','baseapp'), namespace="baseapp")),
@@ -27,6 +28,8 @@ urlpatterns = [
     path('vent/', include(('vent.urls','vent'), namespace="vent")),
     path('api/', include(('api.urls','api'), namespace="api")),
     path('rpts/', include(('rpts.urls','rpts'), namespace="rpts")),
+    path('bi/', include(('bi.urls','bi'), namespace="bi")),
+
     path('admin',admin.site.urls),
 
 ]

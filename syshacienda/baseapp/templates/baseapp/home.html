@@ -6,12 +6,12 @@
             <div class="row g-4">
               <div class="col-10 col-xxl-6">
                 <div class="mb-8">
-                  <h2 class="mb-2">       Dashboard  {{ anioactual }}</h2>
+                  <h2 class="mb-2">       Estado actual  {{ anioactual }}</h2>
                 </div>
                 <div class="row align-items-center g-4">
                 </div>
                 <hr class="bg-200 mb-6 mt-4" />
-                <div class="card h-90">
+                <!--<div class="card h-90">-->
                 <div class="card-body">
                     <div class="row flex-between-center mb-4 g-3">
                       <div class="col-auto">
@@ -23,7 +23,7 @@
                       </div>
                     </div>
                  </div>
-                 </div>
+                 <!--</div>-->
                 <div style="min-height:320px;width:100%"></div>
               </div>
               
@@ -378,7 +378,7 @@
               fill: true,
             },{
               label: 'Proyección Ventas',
-              borderDash: [3, 5]
+              borderDash: [3, 5],
               backgroundColor: 'red',
               borderColor: 'red',
               data: [ {% for data in predicciones_df %} {{ data }}, {% endfor %}  ],
