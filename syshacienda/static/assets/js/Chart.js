@@ -267,7 +267,7 @@ class Animations {
     }
     configure(config) {
         if (!isObject(config)) {
-            return;
+            retu
         }
         const animationOptions = Object.keys(defaults.animation);
         const animatedProps = this._properties;

@@ -132,7 +132,7 @@ def Home(request):
 
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'tventasanioanterior': tventasanioanterior,
-    'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 'tcompas': tcompras,
+    'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 'tcompras': tcompras,
     'tcompras_ant': tcompras_ant, 'topventas': topventas, 'ventas_semana': ventas_semana,
     'predicciones_df': pred_formateada
      }
