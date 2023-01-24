@@ -192,7 +192,7 @@ def analiticaView(request):
     
     ventas = Venta.objects.filter(fechaVenta__year=anioactual)
     prb = ventas['fechaVenta']
-    if not ventas or ventas[0] is None:
+    if not ventas or ventas[0] is None or ventas.count() == 0:
         pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
         topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
     else:
