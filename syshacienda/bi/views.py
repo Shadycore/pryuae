@@ -194,7 +194,7 @@ def analiticaView(request):
                 .order_by('-det_cantidad')[:10]
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
-    if ventas[det_cantidad] is None:
+    if not ventas:
         pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
     else:
         #realizamos la proyección basado en el parametro tiempobi: 180 días
