@@ -197,16 +197,16 @@ def analiticaView(request):
                 .order_by('-det_cantidad')[:10]
     
     if not topventas or topventas['det_cantidad'] is None:
-        topventas = [{'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                      {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                       {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                         {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
-                         {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0}]
+        topventas = [{'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                      {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                       {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                         {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                         {'fechaVenta': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0}]
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
     if not ventas or ventas['fechaVenta'] is None:
