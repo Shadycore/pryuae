@@ -191,26 +191,15 @@ def analiticaView(request):
         listaProduccion = {'':''}
     
     ventas = Venta.objects.filter(fechaVenta__year=anioactual,)
-    topventas = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
-                .exclude(det_cantidad=None) \
-                .order_by('-det_cantidad')[:10]
-
-    if not topventas or topventas[0]['fechaVenta__year'] is None:
-         topventas = [{'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0},
-                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': 'Cultivo 1','det_cantidad': 0}]
-
     if not ventas or ventas['fechaVenta'] is None:
         pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
+        topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
     else:
+        topventas = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
+                    .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
+                    .exclude(det_cantidad=None) \
+                    .order_by('-det_cantidad')[:10]
+
         ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
         #realizamos la proyección basado en el parametro tiempobi: 180 días
         df = pd.DataFrame(ventas)
