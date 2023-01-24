@@ -117,7 +117,7 @@ def Home(request):
             ventas_semana.append({'fecha_venta': fecha_venta, 'total_venta': 0})
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
-    if not ventas:
+    if not ventas or ventas['fechaVenta'] is None:
         pred_formateada =  [0,0,0,0,0,0,0,0] # formateamos la lsta
     else:
         #realizamos la proyección basado en el parametro tiempobi: 180 días 
