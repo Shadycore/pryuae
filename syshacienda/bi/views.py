@@ -196,24 +196,28 @@ def analiticaView(request):
         pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
         topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
     else:
-        topventas = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
-                    .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
-                    .exclude(det_cantidad=None) \
-                    .order_by('-det_cantidad')[:10]
+        try:
+            topventas = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
+                        .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
+                        .exclude(det_cantidad=None) \
+                        .order_by('-det_cantidad')[:10]
 
-        ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
-        #realizamos la proyección basado en el parametro tiempobi: 180 días
-        df = pd.DataFrame(ventas)
-        df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
-        df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta 
-        X = df[['dias']] # Definimos X como la columna dias del DataFrame 
-        y = df[['totalVenta']] # Definimos y como la columna totalVenta del DataFrame 
-        model = LinearRegression() # Creamos un modelo de regresión lineal 
-        model.fit(X, y) # Entrenamos el modelo con los datos obtenidos 
-        predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días 
-        pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
-        pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
-
+            ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
+            #realizamos la proyección basado en el parametro tiempobi: 180 días
+            df = pd.DataFrame(ventas)
+            df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
+            df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta 
+            X = df[['dias']] # Definimos X como la columna dias del DataFrame 
+            y = df[['totalVenta']] # Definimos y como la columna totalVenta del DataFrame 
+            model = LinearRegression() # Creamos un modelo de regresión lineal 
+            model.fit(X, y) # Entrenamos el modelo con los datos obtenidos 
+            predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días 
+            pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
+            pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
+        except:
+            pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
+            topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
+   
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 
     'tcompras': tcompras, 'tactividades': tactividades,
