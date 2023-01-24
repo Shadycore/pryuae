@@ -40,8 +40,8 @@ def analiticaView(request):
     idcultivo = 0
     if request.method == 'POST':
         dFecha = int(request.POST.get("id_anios"))
-        idcultivo = int(request.POST.get("id_cultivo"))
-        if idcultivo=='0':
+        idcultivo = 0 #int(request.POST.get("id_cultivo"))
+        if idcultivo==0:
             flag = False
     
     anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
