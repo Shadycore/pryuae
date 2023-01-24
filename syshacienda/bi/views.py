@@ -104,6 +104,9 @@ def analiticaView(request):
             '09': 0, '10': 0, '11': 0, '12': 0}
 
     for item in ventasmesanio:
+        if item.get('total') is None:
+             item['total'] = 0
+        
         if item.get('month') == 1:
             datoVentas['01'] = item.get('total')
         if item.get('month') == 2:
