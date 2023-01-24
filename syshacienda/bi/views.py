@@ -190,8 +190,9 @@ def analiticaView(request):
     if not listaProduccion or listaProduccion['id'] is None:
         listaProduccion = {'':''}
     
-    ventas = Venta.objects.filter(fechaVenta__year=anioactual,)
-    if not ventas or ventas['fechaVenta'] is None:
+    ventas = Venta.objects.filter(fechaVenta__year=anioactual)
+    prb = ventas['fechaVenta']
+    if not ventas or ventas[0] is None:
         pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
         topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
     else:
