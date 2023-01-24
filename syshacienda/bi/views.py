@@ -187,11 +187,16 @@ def analiticaView(request):
     else:
         tcompras_ant = tcompras_ant['sum_precio']
 
+    if not listaProduccion or listaProduccion['id'] is None:
+        listaProduccion = {'':''}
+    
     ventas = Venta.objects.filter(fechaVenta__year=anioactual,)
     topventas =  ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
                 .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
                 .exclude(det_cantidad=None) \
                 .order_by('-det_cantidad')[:10]
+    if not topventas or topventas['det_cantidad'] is None:
+        topventas = {}
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
     if not ventas or ventas['fechaVenta'] is None:
