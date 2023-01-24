@@ -194,7 +194,9 @@ def analiticaView(request):
                 .order_by('-det_cantidad')[:10]
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
-    if ventas:
+    if ventas[det_cantidad] is None:
+        pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
+    else:
         #realizamos la proyección basado en el parametro tiempobi: 180 días
         df = pd.DataFrame(ventas)
         df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
@@ -206,8 +208,7 @@ def analiticaView(request):
         predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días 
         pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
         pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
-    else:
-        pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
+
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 
     'tcompras': tcompras, 'tactividades': tactividades,
