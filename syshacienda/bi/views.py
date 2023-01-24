@@ -195,8 +195,18 @@ def analiticaView(request):
                 .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
                 .exclude(det_cantidad=None) \
                 .order_by('-det_cantidad')[:10]
+    
     if not topventas or topventas['det_cantidad'] is None:
-        topventas = {}
+        topventas = [{'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                      {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                       {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                        {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                         {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0},
+                         {'fechaVenta__year': '2020','detalleventa__cultivo__nombre': '', 'det_cantidad': 0}]
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
     if not ventas or ventas['fechaVenta'] is None:
