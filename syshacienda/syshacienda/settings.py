@@ -114,8 +114,8 @@ else:
             #},
             'USER': 'super',
             'PASSWORD': 'sa-uae-Syshaciend1',
-            'HOST': 'cesarorrala-2907.postgres.pythonanywhere-services.com',
-            'PORT': '12907',#'5432',
+            'HOST': 'haciendacanas-3001.postgres.pythonanywhere-services.com',
+            'PORT': '13001',
         },
     }
     
