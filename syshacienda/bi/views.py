@@ -189,14 +189,12 @@ def analiticaView(request):
 
     if not listaProduccion or listaProduccion['id'] is None:
         listaProduccion = {'':''}
-    
-    ventas = Venta.objects.filter(fechaVenta__year=anioactual)
-    prb = ventas['fechaVenta']
-    if not ventas or ventas[0] is None or ventas.count() == 0:
-        pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
-        topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
-    else:
-        try:
+    try:
+        ventas = Venta.objects.filter(fechaVenta__year=anioactual)
+        if not ventas or ventas[0] is None or ventas.count() == 0:
+            pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
+            topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
+        else:
             topventas = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
                         .annotate(det_cantidad=Cast(Sum('detalleventa__cantidad'), IntegerField()))\
                         .exclude(det_cantidad=None) \
@@ -214,10 +212,10 @@ def analiticaView(request):
             predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días 
             pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
             pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
-        except:
-            pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
-            topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
-   
+    except:
+        pred_formateada = [0,0,0,0,0,0,0,0] # formateamos la lsta
+        topventas = [{'fechaVenta__year': ianio,'detalleventa__cultivo__nombre': '','det_cantidad': 0}]
+
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
     'tventasanio': tventasanio, 'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 
     'tcompras': tcompras, 'tactividades': tactividades,
