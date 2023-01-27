@@ -13,6 +13,10 @@
             size: auto;   
             margin: 10mm;
             }
+        img {
+            width: 25px;
+            height: 25px;
+            }
     </style>
 </head>
 <!--<body onload="window.print();window.close()" class="receipt">-->
@@ -20,14 +24,15 @@
     <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
         <center>
             <small>
-                <!--<div class="app-auth-branding mb-4"> 
-                    <a class="app-logo" href="#">
-                        <img class="logo-icon me-2 " width: "10px" height: "10px" src="{% static 'assets/images/logohacienda.png' %}" >
-                    </a>
-                </div>-->
+		        <div class="app-branding">
+						<img class="logo-icon me-2" src="{% static 'assets/images/logohacienda.png' %}" alt="logo">
+						<span class="logo-text"></span></a>
+		        </div><!--//app-branding-->  
             </small><br>
             <small></small><br>
-            <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b><br> 
+            <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b><br /> 
+            <b class="text-center">HACIENDA CAÑAS</b><br /><br />
+            <b class="text-center">Listado de Proveedores</b><br /><br />
         </center>
         <small>
             <br>

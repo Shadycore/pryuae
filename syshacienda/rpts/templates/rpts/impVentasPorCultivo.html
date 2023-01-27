@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Informe de Compras</title>
+    <title>Informe de Ventas por Cultivo</title>
 	  <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'assets/css/reportes.css' %}">
@@ -37,8 +37,7 @@
             <small></small><br>
             <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b> <br/> 
             <b class="text-center">HACIENDA CAÑAS</b><br /><br />
-            <b class="text-center">Informe de Compras </b>
-            <b class="text-center">Fecha reporte : {{ ianio }} </b>
+            <b class="text-center">Informe de Ventas por Cultivo</b>
         </center>
         <small>
             <br>
@@ -57,52 +56,68 @@
                                                 </script>
     &nbsp;&nbsp; <br>
             <br><br>
-
-<div class="row g-4 mb-4">
-    <div class="col-12 col-lg-6">
-    <div class="app-card app-card-chart h-100 shadow-sm">
-        <div class="app-card-header p-3 border-0">
-          <h4 class="app-card-title">Compras mensuales</h4>
-        </div><!--//app-card-header-->
-        <div class="app-card-body p-4">					   
-          <div class="chart-container">
-                  <canvas id="graficoLinea" ></canvas>
-          </div>
-        </div><!--//app-card-body-->
-      </div><!--//app-card-->
-    </div><!--//col-->
-      <div class="col-12 col-lg-6">		        
-      <div class="app-card app-card-chart h-100 shadow-sm">
-        <div class="app-card-header p-3 border-0">
-          <h4 class="app-card-title">Comparativo anual</h4>
-        </div><!--//app-card-header-->
-        <div class="app-card-body p-4">					   
-          <div class="chart-container">
-                  <canvas id="graficoBarra" ></canvas>
-          </div>
-        </div><!--//app-card-body-->
-      </div><!--//app-card-->
-      </div><!--//col-->
-</div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-lg-6">
+                            <div class="app-card app-card-chart h-100 shadow-sm">
+                                <div class="app-card-header p-3 border-0">
+                                <h4 class="app-card-title">Ventas por Cultivo</h4>
+                                </div><!--//app-card-header-->
+                                <div class="app-card-body p-4">					   
+                                <div class="chart-container">
+                                        <canvas id="graficoBarra" ></canvas>
+                                </div>
+                                </div><!--//app-card-body-->
+                            </div><!--//app-card-->
+                            </div><!--//col-->
+                            <div class="col-12 col-lg-6">		        
+                            <div class="app-card app-card-chart h-100 shadow-sm">
+                                <div class="app-card-header p-3 border-0">
+                                <h4 class="app-card-title">Comparativa Ventas Por cultivo</h4>
+                                </div><!--//app-card-header-->
+                                <div class="app-card-body p-4">					   
+                                <div class="chart-container">
+                                        <canvas id="graficoBarra2" ></canvas>
+                                </div>
+                                </div><!--//app-card-body-->
+                            </div><!--//app-card-->
+                            </div><!--//col-->
+                        </div>
 
          <table class="table border-top " stylesheet="{% static 'assets/css/reportes.css' %}" width="80%">
             <thead>
-              <th>Año</th>
-              <th>Mes Compra</th>
-              <th>Insumo</th>
-              <th>Total</th>            
+                  <th>Año Venta</th>
+                  <th>Cultivo</th>
+                  <th>Número de  Ventas</th>
+                  <th>Cantidad Cultivo</th>
+                  <th>Total Vendido</th>      
             </thead>
             <tbody>
-                {% for item in obj %}
-                  <tr>
-                    <td width="240px">{{ item.anio }}</td>
-                    <td width="240px">{{ item.month }}</td>
-                    <td width="240px">{{ item.insumo_name  }}</td>
-                    <td width="240px">{{ item.total_compras }}</td>
-                  </tr>
-                {% endfor %}
+              {% for item in obj %}
+                      <tr>
+                      <td width="240px">{{ item.fechaVenta__year }}</td>
+                      <td width="240px">{{ item.detalleventa__cultivo__nombre }}</td>
+                      <td width="240px">{{ item.cantidad  }}</td>
+                      <td width="240px">{{ item.det_cantidad }}</td>
+                      <td width="240px">{{ item.det_total  }}</td>
+                      </tr>
+                  {% endfor %}
             </tbody>
         </table>
+
+	<!-- Page level plugins -->
+	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
+
 <script>
    $(function () {    
     //console.log( {{ datoComprativo }});
@@ -121,17 +136,17 @@
         var chart = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            labels: [ {% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data }}, {% endfor %} ],
+              data: [ {% for data in datoLineal %} {{ data.cantidad }}, {% endfor %} ],
             },{
               label: {{ ianio_anterior }},
               backgroundColor: bksecundario,
               borderColor: 'yellow',
-              data: [{% for data in datoComparativo %} {{ data }},  {% endfor %} ],
+              data: [ {% for data in datoComparativo %} {{ data.cantidad }}, {% endfor %} ],
             }		
             ]},
             options: {
@@ -184,23 +199,31 @@
               
             }
         });
-        var ctx1 = document.getElementById('graficoLinea').getContext('2d');
+        var ctx1 = document.getElementById('graficoBarra2').getContext('2d');
         var chart = new Chart(ctx1, {
-          type: 'line',
+          type: 'bar',
           data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            labels: [{% for data in datoLineal %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}],
             datasets: [{
-              label: {{ ianio }},
+              label: 'Ventas',
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [{% for data in datoLineal %} {{ data }}, {% endfor %}  ],
-            }		
+              data: [{% for data in datoLineal %} {{ data.cantidad }}, {% endfor %}  ],
+            },{
+              label: 'Cantidad',
+              backgroundColor: bksecundario,
+              borderColor: 'gray',
+              data: [{% for data in datoLineal %} {{ data.det_cantidad }}, {% endfor %}  ],
+            },{
+              label: 'Total',
+              backgroundColor: window.chartColors.gray,
+              borderColor: 'gray',
+              data: [{% for data in datoLineal %} {{ data.det_total }}, {% endfor %}  ],
+            },
             ]},
             options: {
-              responsive: true,		
-              
+              responsive: true,
               legend: {
-                display: true,
                 position: 'bottom',
                 align: 'end',
               },
@@ -217,17 +240,11 @@
                 backgroundColor: '#fff',
                 bodyFontColor: window.chartColors.text,
                 titleFontColor: window.chartColors.text,
-                      callbacks: {
+                callbacks: {
                           label: function(tooltipItem, data) {	                 
                             return tooltipItem.value + '';   
                           }
                       },
-                      
-
-              },
-              hover: {
-                mode: 'nearest',
-                intersect: true
               },
               scales: {
                 xAxes: [{
@@ -236,46 +253,45 @@
                     drawBorder: false,
                     color: window.chartColors.border,
                   },
-                  scaleLabel: {
-                    display: false,
-                  
-                  }
                 }],
                 yAxes: [{
                   display: true,
                   gridLines: {
                     drawBorder: false,
-                    color: window.chartColors.border,
-                  },
-                  scaleLabel: {
-                    display: false,
+                    color: window.chartColors.borders,
                   },
                   ticks: {
                           beginAtZero: true,
                           userCallback: function(value, index, values) {
-                              return value.toLocaleString() + '';  
+                              return value + '';  
                           }
                       },
                 }]
               }
+              
             }
-        });
-        
+        });     
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
-<script>
-  // Generate charts on load
-  window.addEventListener('load', function(){
-    
-    var lineChart = document.getElementById('graficoLinea').getContext('2d');
-    window.myLine = new Chart(lineChart, lineChartConfig);
-    
-    var barChart = document.getElementById('graficoBarra').getContext('2d');
-    window.myBar = new Chart(barChart, barChartConfig);    
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
 
-  });	
+<script>
+      // Generate charts on load
+      window.addEventListener('load', function(){
+      
+        var barChart = document.getElementById('graficoBarra').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+        
+        var barChart = document.getElementById('graficoBarra2').getContext('2d');
+        window.myBar = new Chart(barChart, barChartConfig);
+
+      });	
 </script>
+
 <script>
   var jq = jQuery.noConflict(true);
   // Call the dataTables jQuery plugin
@@ -287,7 +303,6 @@
 <script src="{% static 'assets/js/chart.js'%}"></script>
 <script src="{% static 'assets/js/chart.min.js'%}"></script>  
 <!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
-
 
 </body>
 </html>

@@ -1,98 +1,62 @@
-{% extends 'base/home.html' %}
 {% load static %}
 
-{% block csstables %}
-<style media="print">
-imprimir { display: block;}
-.seccion {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    padding: 10px;
-    background-color: #f2f2f2;
-}
-</style>
-  <!-- Custom fonts for this template -->
-  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Informe de Productos Más Vendidos </title>
+	  <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
 
-  <!-- Custom styles for this template -->
-  <link href="{% static 'assets/vendor/css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/reportes.css' %}">
+    <style type="text/css">
+        @page {
+             width: 210mm; 
+            size: auto;   
+            margin: 10mm;
+            }
+        img {
+            width: 25px;
+            height: 25px;
+            }
+    </style>
+    	<!-- FontAwesome JS-->
 
-  
-   <!-- Custom styles for this page -->
-   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
-     <!-- jQuery Confirm -->
-  <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
+</head>
+<!--<body onload="window.print();window.close()" class="receipt">-->
+<body onload="window.print()" class="receipt">
+    <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
+        <center>
+            <small>
+              <div class="app-branding">
+              <img class="logo-icon me-2" src="{% static 'assets/images/logohacienda.png' %}" alt="logo">
+              <span class="logo-text"></span></a>
+              </div>
+            </small><br>
+            <small></small><br>
+            <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b> <br/> 
+            <b class="text-center">HACIENDA CAÑAS</b><br /><br />
+            <b class="text-center">Informe de Productos Más Vendidos</b>
+        </center>
+        <small>
+            <br>
+            <b>Fecha impresión:</b>&nbsp;&nbsp;  <script type="text/javascript">
+                                                    var  today = new Date();
+                                                    var m = today.getMonth() + 1;
+                                                    var mes = (m < 10) ? "0" + m : m;
+                                                    var d = today.getDate();
+                                                    var dia = (d < 10) ? "0" + d : d;
+                                                    document.write(" "+today.getFullYear(),"/" +mes,"/"+dia);
+                                                </script>
+    &nbsp;&nbsp; <br>
+            <br><br>
+            <b>Año información:</b>&nbsp;&nbsp;  <script type="text/javascript">
+                                                    {{ ianio }}
+                                                </script>
+    &nbsp;&nbsp; <br>
+            <br><br>
 
-  <!-- XDSoft DateTimePicker -->  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" 
-            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />  
-
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
-
-{% endblock csstables %}
-
-{% block page_content %}  
-<form method="post" id="frmReportes">
-    {% csrf_token %}
-<div class="imprimir seccion container-fluid">
-      
-    <div class="app-card-body p-1 p-lg-1">
-    </div>
-
-<!-- Begin Page Content -->
-        <div class="imprimir seccion container-fluid">
-          <!-- DataTales Example -->         
-          <div class="card shadow mb-4" ><br/>
-                <div class="app-card-body p-1 p-lg-1">
-                    <div class="row gx-5 gy-3">
-                      <div class="col-12 col-lg-9">
-                            {% block mensaje %}
-                            <h2 class="h3 mb-2 text-success">Informe de Productos Más Vendidos </h2>
-                            {% endblock %}
-                      </div>
-                      <div class="col-12 col-lg-3">
-                            {% block btnnuevo %}
-                            {% endblock  %}
-                      </div><!--//col-->
-                    </div><!--//row-->
-                </div>
-                {% if not obj %}
-                    <div class="card-header py-2">
-                      <h2 class="alert alert-info">No hay información para generar reporte</h2>
-                    </div>
-                 {% endif %}
-                    <div class="card-body">
-                        {% block fechas %}
-                            <div class="imprimir row">
-                                <div class="col-lg-1">Año</div>
-                                <div class="col-md-2">
-                                    <select name="id_anios" id="id_anios" class="form-control">
-                                        {% for i  in anios %} 
-                                            <option value="{{i}}">{{i}} </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <button type="submit" class="btn btn-info" id="btnConsultar" title="Buscar"> 
-                                        <i class="far fa-chart-bar"></i> 
-                                    </button>
-
-                                </div>
-                                <div class="col-md-2">
-                                    <a href="{% url 'rpts:imprimirproductos' ianio  %}" 
-                                        class="btn btn-primary btn-icon-split">
-                                        <span class="text">Imprimir</span>
-                                    </a>
-                                </div>
-                                    <!--<input type="button" value="Imprimir" onclick="window.print()"> -->
-                            </div>
-                            <br /> <br />
-                            <h2 class="h3 mb-2 text-bg-dark ">Fecha reporte : {{ ianio }}</h2>
-                            <br />
                         <div class="row g-4 mb-4">
                             <div class="col-12 col-lg-6">
                             <div class="app-card app-card-chart h-100 shadow-sm">
@@ -133,43 +97,29 @@ imprimir { display: block;}
                             </div><!--//app-card-->
                             </div><!--//col-->
                         </div>
-                        {% endblock fechas %}                        
-                        <table class="table table-responsive table-bordered" 
-                               id="dataTable" width="100%" cellspacing="0">
-                          <thead>
-                                <tr>
-                                <th>Año Cosecha</th>
-                                <th>Cultivo</th>
-                                <th>Ventas</th>
-                                <th>Total Venta</th>
-                                <th>Cantidad Vendida</th>
-                                </tr>
-                          </thead>
-                          <tfoot>
-                                {% block footer_list %}
-                                {% endblock %}
-                          </tfoot>
-                          <tbody>
-                                {% for item in obj %}
-                                    <tr>
-                                    <td width="240px">{{ item.fechaVenta__year }}</td>
-                                    <td width="240px">{{ item.detalleventa__cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.cantidad }}</td>
-                                    <td width="240px">{{ item.det_total }}</td>
-                                    <td width="240px">{{ item.det_cantidad  }}</td>
-                                    </tr>
-                                {% endfor %}
-                          </tbody>
-                        </table>
-                    </div>
-                  </div>
-               
-        </div>
-        <!-- /.container-fluid -->
-</form>
-{% endblock page_content %}
-{% block js_tablas %}
-	<!-- Page level plugins -->
+
+         <table class="table border-top " stylesheet="{% static 'assets/css/reportes.css' %}" width="80%">
+            <thead>
+                  <th>Año Cosecha</th>
+                  <th>Cultivo</th>
+                  <th>Ventas</th>
+                  <th>Total Venta</th>
+                  <th>Cantidad Vendida</th>       
+            </thead>
+            <tbody>
+                {% for item in obj %}
+                    <tr>
+                    <td width="240px">{{ item.fechaVenta__year }}</td>
+                    <td width="240px">{{ item.detalleventa__cultivo__nombre  }}</td>
+                    <td width="240px">{{ item.cantidad }}</td>
+                    <td width="240px">{{ item.det_total }}</td>
+                    <td width="240px">{{ item.det_cantidad  }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+		<!-- Page level plugins -->
 	<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js'%}"></script>
 	<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
@@ -182,9 +132,7 @@ imprimir { display: block;}
 
 	<!-- Page level custom scripts -->
 	<script src="{% static 'assets/vendor/js/demo/datatables-demo.js'%}"></script>
-{% endblock js_tablas %}
 
-{% block js_graficos %}
 	<script>
    $(function () {    
     //console.log( {{ datoComprativo }});
@@ -400,7 +348,7 @@ imprimir { display: block;}
 <script src="{% static 'assets/js/chart.js'%}"></script>
 <script src="{% static 'assets/js/chart.min.js'%}"></script>  
 <!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
-{% endblock js_graficos%}
+
 <script>
       // Generate charts on load
       window.addEventListener('load', function(){
@@ -424,7 +372,7 @@ imprimir { display: block;}
       });	
 </script>
 
-{% block js_page %}
+
 <script>
   var jq = jQuery.noConflict(true);
   // Call the dataTables jQuery plugin
@@ -436,5 +384,6 @@ imprimir { display: block;}
 <script src="{% static 'assets/js/chart.js'%}"></script>
 <script src="{% static 'assets/js/chart.min.js'%}"></script>  
 <!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
-{% endblock %}
 
+</body>
+</html>
