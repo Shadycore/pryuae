@@ -19,7 +19,7 @@
                 <input type="text" name="nombre" maxlength="100" 
                         class="form-control" 
                         required id="id_nombre" placeholder="Nombre de Proveedor"
-                        pattern="[a-zA-Z ]{2,100}"
+                        pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
                 value="{% if obj %} {{ obj.nombre }} {% endif %}">
             </div>
         </div>
@@ -30,7 +30,7 @@
                 <input type="text" name="apellido" maxlength="100" 
                 class="form-control" 
                 required id="id_apellido" placeholder="Razon Social"
-                pattern="[a-zA-Z ]{2,100}"
+                pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
                 value="{% if obj %} {{ obj.apellido }} {% endif %}">
             </div>
         </div>
@@ -89,7 +89,7 @@
                 <input type="text" name="descripcion" maxlength="100" 
                 class="form-control" 
                 required id="id_descripcion" placeholder="Descripción"
-                pattern="[a-zA-Z ]{2,100}"
+                pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
                 value="{% if obj %} {{ obj.descripcion }} {% endif %}">
             </div>
         </div>
@@ -100,7 +100,7 @@
                 <input type="text" name="direccion" maxlength="100" 
                 class="form-control" 
                 required id="id_direccion" placeholder="Dirección"
-                pattern="[a-zA-Z ]{2,100}"
+                pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
                 value="{% if obj %} {{ obj.direccion }} {% endif %}">
             </div>
         </div>
@@ -111,7 +111,7 @@
                 <input type="text" name="ciudad" maxlength="100" 
                 class="form-control" 
                 required id="id_ciudad" placeholder="Ciudad"
-                pattern="[a-zA-Z ]{2,100}"
+                pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
                 value="{% if obj %} {{ obj.ciudad }} {% endif %}">
             </div>
         </div>

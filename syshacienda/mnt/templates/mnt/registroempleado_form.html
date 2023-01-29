@@ -44,7 +44,7 @@
             <input type="text" name="cargo" maxlength="30" 
                     class="form-control"
                     required id="id_cargo" placeholder="Ingrese el cargo"
-                    pattern="[a-zA-Z ]{2,100}"
+                    pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
             value="{% if obj %} {{ obj.cargo }} {% endif %}">
 
         </div>
