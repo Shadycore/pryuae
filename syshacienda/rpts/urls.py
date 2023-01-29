@@ -4,7 +4,7 @@ from rpts.views import iProveedoresView, iClientesView, \
                         oProduccionView, oProductosMasVendidosView, \
                         oVentasPorCultivoView, oGananciasView, \
                         impComprasView, impGananciasView, impProduccionView, \
-                        impProductosMasVendidosView
+                        impProductosMasVendidosView, impVentasPorCultivoView
                         
 from rpts.reportes import imprimirClientes, imprimirProveedores
 
@@ -25,6 +25,6 @@ urlpatterns = [
     path('informe/imprimir/ganancias/<int:f1>', impGananciasView , name="imprimirganancias"),
     path('informe/imprimir/produccion/<int:f1>', impProduccionView , name="imprimirproduccion"),
     path('informe/imprimir/productos/<int:f1>', impProductosMasVendidosView , name="imprimirproductos"),
-    path('informe/imprimir/ventas/<int:f1>', impProductosMasVendidosView , name="imprimirventas"),
+    path('informe/imprimir/ventas/<int:f1>', impVentasPorCultivoView , name="imprimirventas"),
     
 ]
