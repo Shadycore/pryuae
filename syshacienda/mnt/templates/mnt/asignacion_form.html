@@ -40,7 +40,7 @@
             <input type="text" name="descripcion" maxlength="100" 
                     class="form-control" 
                     required id="id_descripcion" placeholder="Nombre / Descripción de Actividad"
-                    pattern="[a-zA-Z ]{2,100}"
+                    pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
             value="{% if obj %} {{ obj.descripcion }} {% endif %}">
         </div>
     </div>

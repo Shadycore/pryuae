@@ -34,7 +34,7 @@
             <input type="text" name="encargado" maxlength="100" 
                     class="form-control" 
                     required id="id_encargado" placeholder="Nombre de Encargado"
-                    pattern="[a-zA-Z ]{2,100}"
+                    pattern="[a-zA-Z \u00f1\u00d1]{2,100}"
             value="{% if obj %} {{ obj.encargado }} {% endif %}">
         </div>
     </div>
