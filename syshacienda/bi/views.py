@@ -25,10 +25,10 @@ from mnt.models import Cliente, Cultivo, Produccion, DescripcionLote, \
 from vent.views import ventasView, VentaView
 from vent.models import Venta, DetalleVenta
 
-import numpy as np 
-import pandas as pd 
-from sklearn.model_selection import train_test_split 
-from sklearn.linear_model import LinearRegression 
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 
 @login_required(login_url='/login/')
@@ -41,9 +41,9 @@ def analiticaView(request):
     if request.method == 'POST':
         dFecha = int(request.POST.get("id_anios"))
         idcultivo = 0 #int(request.POST.get("id_cultivo"))
-        if idcultivo==0:
+        if idcultivo=='0':
             flag = False
-    
+
     anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
                         .values_list('valorParametro', flat=True) \
                         .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
@@ -62,10 +62,10 @@ def analiticaView(request):
 
     ## Ano actual [ ianio ]
     tactividades = Asignacion.objects.filter(fecha__year=anioactual)\
-                                .aggregate(actividades_realizadas=Count('actividad')) 
+                                .aggregate(actividades_realizadas=Count('actividad'))
 
     tactividades_ant = Asignacion.objects.filter(fecha__year=anioactual)\
-                                .aggregate(actividades_realizadas=Count('actividad')) 
+                                .aggregate(actividades_realizadas=Count('actividad'))
     #actividades = Asignacion.objects.filter(fecha__year=ianio, cultivo=idcultivo).annotate(actividades_realizadas=Count('actividad'))
 
     tventasanio = Venta.objects.filter(fechaVenta__year=anioactual)\
@@ -73,13 +73,13 @@ def analiticaView(request):
 
     tventasanioanterior = Venta.objects.filter(fechaVenta__year=anioanterior)\
                                 .aggregate(sum_total=Cast(Sum('totalVenta'),IntegerField()))
-    
+
     prod = Produccion.objects.filter(fecha__year=anioactual) \
                             .aggregate(sum_Cosecha=Cast(Sum('cantidadCosecha'),IntegerField()))
-    
+
     prod_ant = Produccion.objects.filter(fecha__year=anioanterior) \
                             .aggregate(sum_Cosecha=Cast(Sum('cantidadCosecha'),IntegerField()))
-    
+
     vent = Produccion.objects.filter(fecha__year=anioactual) \
                             .aggregate(sum_Venta=Cast(Sum('cantidadVentaCosecha'),IntegerField()))
 
@@ -98,7 +98,7 @@ def analiticaView(request):
                                     .values('month') \
                                     .annotate(total_venta=Sum('totalVenta', output_field=IntegerField()))\
                                     .order_by('month')
-    
+
     datoVentas = {'01': 0, '02': 0, '03': 0, '04': 0,
             '05': 0, '06': 0, '07': 0, '08': 0,
             '09': 0, '10': 0, '11': 0, '12': 0}
@@ -106,7 +106,7 @@ def analiticaView(request):
     for item in ventasmesanio:
         if item.get('total') is None:
              item['total'] = 0
-        
+
         if item.get('month') == 1:
             datoVentas['01'] = item.get('total')
         if item.get('month') == 2:
@@ -194,23 +194,24 @@ def analiticaView(request):
                 .order_by('-det_cantidad')[:10]
 
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
+
     #realizamos la proyección basado en el parametro tiempobi: 180 días
     df = pd.DataFrame(ventas)
     df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
-    df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta 
-    X = df[['dias']] # Definimos X como la columna dias del DataFrame 
-    y = df[['totalVenta']] # Definimos y como la columna totalVenta del DataFrame 
-    model = LinearRegression() # Creamos un modelo de regresión lineal 
-    model.fit(X, y) # Entrenamos el modelo con los datos obtenidos 
-    predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días 
-    pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales 
+    df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta
+    X = df[['dias']] # Definimos X como la columna dias del DataFrame
+    y = df[['totalVenta']] # Definimos y como la columna totalVenta del DataFrame
+    model = LinearRegression() # Creamos un modelo de regresión lineal
+    model.fit(X, y) # Entrenamos el modelo con los datos obtenidos
+    predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días
+    pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales
     pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
 
     context = {'anioactual': anioactual, 'anioanterior': anioanterior,
-    'tventasanio': tventasanio, 'sumCosecha': sumCosecha, 'sumVentas': sumVentas, 
+    'tventasanio': tventasanio, 'sumCosecha': sumCosecha, 'sumVentas': sumVentas,
     'tcompras': tcompras, 'tactividades': tactividades,
     'topventas': topventas, 'listaProduccion': listaProduccion,
-    'anios': oanios,'ianio': ianio, 'predicciones_df': pred_formateada, 
+    'anios': oanios,'ianio': ianio, 'predicciones_df': pred_formateada,
     'tventasanioanterior': tventasanioanterior, 'tcompras_ant': tcompras_ant, 'sumCosecha_ant': sumCosecha_ant,
     'sumVentas_ant': sumVentas_ant, 'tactividades_ant': tactividades_ant, 'ventasanio': salidaventasanio
      }
