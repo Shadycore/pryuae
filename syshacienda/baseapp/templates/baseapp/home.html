@@ -94,6 +94,7 @@
               </div>
             </div>
           </div>
+
 {% endblock dashboard%}
 
 {% block js_graficos %}
@@ -114,7 +115,7 @@
         var bksecundario = "rgba(91,153,234,0.8)";
 
         var ctxVA = document.getElementById('tVentasAnio').getContext('2d');
-        var chart = new Chart(ctxVA, {
+        var chart = new chart(ctxVA, {
           type: 'bar',
           data: {
             labels: [ 'Ventas' ],
@@ -182,7 +183,7 @@
         });
       
         var ctxPV = document.getElementById('prod_ventas').getContext('2d');
-        var chart = new Chart(ctxPV, {
+        var chart = new chart(ctxPV, {
           type: 'doughnut',
           data: {
             labels: [ 'Producción', 'Ventas'],
@@ -234,7 +235,7 @@
         });
   
         var ctxCA = document.getElementById('tcomprasanual').getContext('2d');
-        var chart = new Chart(ctxCA, {
+        var chart = new chart(ctxCA, {
           type: 'bar',
           data: {
             labels: ['Compras'],
@@ -303,7 +304,7 @@
 
 
         var ctxTop = document.getElementById('topVentas').getContext('2d');
-        var chart = new Chart(ctxTop, {
+        var chart = new chart(ctxTop, {
           type: 'bar',
           data: {
             labels: [ {% for data in topventas %} '{{ data.detalleventa__cultivo__nombre }}', {% endfor %}  ],
@@ -366,7 +367,7 @@
         });
 
         var ctxVentS = document.getElementById('ventas_semana').getContext('2d');
-        var chart = new Chart(ctxVentS, {
+        var chart = new chart(ctxVentS, {
           type: 'line',
           data: {
             labels: [ {% for data in ventas_semana %} '{{ data.fecha_venta }}', {% endfor %}   ],
@@ -458,30 +459,30 @@
       // Generate charts on load
       window.addEventListener('load', function(){
         var barCharttVentasAnio = document.getElementById('tVentasAnio').getContext('2d');
-        window.myBar = new Chart(barCharttVentasAnio, barChartConfig);
+        window.myBar = new chart(barCharttVentasAnio, barChartConfig);
 
         var doughnutChartprod_ventas = document.getElementById('prod_ventas').getContext('2d');
-        window.myDoughnut = new Chart(doughnutChartprod_ventas, doughnutChartConfig);
+        window.myDoughnut = new chart(doughnutChartprod_ventas, doughnutChartConfig);
 
         var barCharttcomprasanual = document.getElementById('tcomprasanual').getContext('2d');
-        window.myBar = new Chart(barCharttcomprasanual, barChartConfig);
+        window.myBar = new chart(barCharttcomprasanual, barChartConfig);
 
         var barCharttopVentas = document.getElementById('topVentas').getContext('2d');
-        window.myBar = new Chart(barCharttopVentas, barChartConfig);
+        window.myBar = new chart(barCharttopVentas, barChartConfig);
 
         var lineChart = document.getElementById('ventas_semana').getContext('2d');
-        window.myLine = new Chart(lineChart, lineChartConfig);
+        window.myLine = new chart(lineChart, lineChartConfig);
 
 
         var lineChart = document.getElementById('graficoLinea').getContext('2d');
-        window.myLine = new Chart(lineChart, lineChartConfig);
+        window.myLine = new chart(lineChart, lineChartConfig);
 
 
         var pieChart = document.getElementById('chart-pie').getContext('2d');
-	      window.myPie = new Chart(pieChart, pieChartConfig);
+	      window.myPie = new chart(pieChart, pieChartConfig);
 	
         var doughnutChart = document.getElementById('chart-doughnut').getContext('2d');
-        window.myDoughnut = new Chart(doughnutChart, doughnutChartConfig);
+        window.myDoughnut = new chart(doughnutChart, doughnutChartConfig);
 
       });	
 </script>
