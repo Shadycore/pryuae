@@ -188,8 +188,8 @@ def oProduccionView(request):
 
     obj =  Produccion.objects.filter(fecha__year=ianio) \
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
-                            .values('mes', 'anio', 'cultivo__nombre', 'descripcionlote__area', 'descripcionlote__etapa') \
-                            .annotate(total_cosecha=Sum('cantidadCosecha'),total_venta_cosecha=Sum('cantidadVentaCosecha')) \
+                            .values('mes', 'anio', 'cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha') / Count('cantidadVentaCosecha'),IntegerField()) , total_venta_cosecha =Sum('cantidadVentaCosecha'),total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
                             .order_by('anio', 'mes')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
