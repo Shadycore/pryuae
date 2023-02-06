@@ -118,7 +118,7 @@ imprimir { display: block;}
                                 <th>Area</th>
                                 <!--<th>Etapa</th> -->
                                 <th>Total Cosecha</th>
-                                <th>Total Vendido</th>
+                                <!--<th>Total Vendido</th> -->
                                 </tr>
                           </thead>
                           <tfoot>
@@ -134,7 +134,7 @@ imprimir { display: block;}
                                     <td width="240px">{{ item.total_descripcionlote_area }}</td>
                                     <!--<td width="240px">{{ item.descripcionlote__etapa  }}</td> -->
                                     <td width="240px">{{ item.total_cosecha  }}</td>
-                                    <td width="240px">{{ item.total_venta_cosecha  }}</td>
+                                    <!--<td width="240px">{{ item.total_venta_cosecha  }}</td> -->
                                     </tr>
                                 {% endfor %}
                           </tbody>
@@ -182,12 +182,12 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: [{% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
+            labels: [{% for data in obj %} '{{ data.cultivo__nombre }}', {% endfor %}],
             datasets: [{
               label: {{ ianio }},
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %}  ],
+              data: [ {% for data in obj %} {{ data.total_cosecha }}, {% endfor %}  ],
             },
             ]},
             options: {

@@ -97,32 +97,6 @@ imprimir { display: block;}
                             <div class="col-12 col-lg-6">
                             <div class="app-card app-card-chart h-100 shadow-sm">
                                 <div class="app-card-header p-3 border-0">
-                                <h4 class="app-card-title">Cultivos cosechados</h4>
-                                </div><!--//app-card-header-->
-                                <div class="app-card-body p-4">					   
-                                <div class="chart-container">
-                                        <canvas id="graficoBarra" ></canvas>
-                                </div>
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                            </div><!--//col-->
-                            <div class="col-12 col-lg-6">		        
-                            <div class="app-card app-card-chart h-100 shadow-sm">
-                                <div class="app-card-header p-3 border-0">
-                                <h4 class="app-card-title">Cultivos Cosechado/Vendido</h4>
-                                </div><!--//app-card-header-->
-                                <div class="app-card-body p-4">					   
-                                <div class="chart-container">
-                                        <canvas id="graficoBarra2" ></canvas>
-                                </div>
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                            </div><!--//col-->
-                        </div>
-                        <div class="row g-4 mb-4">
-                            <div class="col-12 col-lg-6">
-                            <div class="app-card app-card-chart h-100 shadow-sm">
-                                <div class="app-card-header p-3 border-0">
                                 <h4 class="app-card-title">Rendimiento Área Cultivada vs Cosechado</h4>
                                 </div><!--//app-card-header-->
                                 <div class="app-card-body p-4">					   
@@ -141,10 +115,9 @@ imprimir { display: block;}
                                 <th>Año Cosecha</th>
                                 <th>Mes Cosecha</th>
                                 <th>Cultivo</th>
+                                <th>Lote</th>
                                 <th>Area</th>
-                                <!--<th>Etapa</th> -->
                                 <th>Total Cosecha</th>
-                                <th>Total Vendido</th>
                                 </tr>
                           </thead>
                           <tfoot>
@@ -157,10 +130,9 @@ imprimir { display: block;}
                                     <td width="240px">{{ item.anio }}</td>
                                     <td width="240px">{{ item.mes }}</td>
                                     <td width="240px">{{ item.cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.total_descripcionlote_area }}</td>
-                                    <!--<td width="240px">{{ item.descripcionlote__etapa  }}</td> -->
+                                    <td width="240px">{{ item.cultivo__lote  }}</td>
+                                    <td width="240px">{{ item.descripcionlote_area }}</td>
                                     <td width="240px">{{ item.total_cosecha  }}</td>
-                                    <td width="240px">{{ item.total_venta_cosecha  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
@@ -203,146 +175,18 @@ imprimir { display: block;}
 
         var bkprimario = "rgba(117,193,129,0.8)";
         var bksecundario = "rgba(91,153,234,0.8)";
-        var ctx = document.getElementById('graficoBarra2').getContext('2d');
-        var chart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: [ {% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %} ],
-            datasets: [{
-              label: 'Cosechado',
-              backgroundColor: bkprimario,
-              borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %} ],
-            },{
-              label:'Vendido',
-              backgroundColor: bksecundario,
-              borderColor: 'yellow',
-              data: [ {% for data in datoLineal %} {{ data.total_venta_cosecha }}, {% endfor %} ],
-            }		
-            ]},
-            options: {
-              responsive: true,
-              legend: {
-                position: 'bottom',
-                align: 'end',
-              },
-
-              tooltips: {
-                mode: 'index',
-                intersect: false,
-                titleMarginBottom: 10,
-                bodySpacing: 10,
-                xPadding: 16,
-                yPadding: 16,
-                borderColor: window.chartColors.border,
-                borderWidth: 1,
-                backgroundColor: '#fff',
-                bodyFontColor: window.chartColors.text,
-                titleFontColor: window.chartColors.text,
-                callbacks: {
-                          label: function(tooltipItem, data) {	                 
-                            return tooltipItem.value + '';   
-                          }
-                      },
-              },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  gridLines: {
-                    drawBorder: false,
-                    color: window.chartColors.border,
-                  },
-                }],
-                yAxes: [{
-                  display: true,
-                  gridLines: {
-                    drawBorder: false,
-                    color: window.chartColors.borders,
-                  },
-                  ticks: {
-                          beginAtZero: true,
-                          userCallback: function(value, index, values) {
-                              return value + '';  
-                          }
-                      },
-                }]
-              }
-              
-            }
-        });
-        var ctx1 = document.getElementById('graficoBarra').getContext('2d');
-        var chart = new Chart(ctx1, {
-          type: 'bar',
-          data: {
-            labels: [{% for data in datoLineal %} '{{ data.cultivo__nombre }}', {% endfor %}],
-            datasets: [{
-              label: {{ ianio }},
-              backgroundColor: bkprimario,
-              borderColor: 'gray',
-              data: [ {% for data in datoLineal %} {{ data.total_cosecha }}, {% endfor %}  ],
-            },
-            ]},
-            options: {
-              responsive: true,
-              legend: {
-                position: 'bottom',
-                align: 'end',
-              },
-
-              tooltips: {
-                mode: 'index',
-                intersect: false,
-                titleMarginBottom: 10,
-                bodySpacing: 10,
-                xPadding: 16,
-                yPadding: 16,
-                borderColor: window.chartColors.border,
-                borderWidth: 1,
-                backgroundColor: '#fff',
-                bodyFontColor: window.chartColors.text,
-                titleFontColor: window.chartColors.text,
-                callbacks: {
-                          label: function(tooltipItem, data) {	                 
-                            return tooltipItem.value + '';   
-                          }
-                      },
-              },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  gridLines: {
-                    drawBorder: false,
-                    color: window.chartColors.border,
-                  },
-                }],
-                yAxes: [{
-                  display: true,
-                  gridLines: {
-                    drawBorder: false,
-                    color: window.chartColors.borders,
-                  },
-                  ticks: {
-                          beginAtZero: true,
-                          userCallback: function(value, index, values) {
-                              return value + '';  
-                          }
-                      },
-                }]
-              }
-              
-            }
-        });    
+   
 
         var ctx1 = document.getElementById('graficoBarra3').getContext('2d');
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: [ {% for data in obj %} '{{ data.cultivo__nombre }}', {% endfor %} ],
+            labels: [ {% for data in obj %} '{{ data.cultivo__lote }} : ' + ' {{ data.cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: 'Área',
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in obj %} {{ data.total_descripcionlote_area }}, {% endfor %} ],
+              data: [ {% for data in obj %} {{ data.descripcionlote_area }}, {% endfor %} ],
             },{
               label:'Cosechado',
               backgroundColor: bksecundario,
@@ -411,16 +255,8 @@ imprimir { display: block;}
 <script>
       // Generate charts on load
       window.addEventListener('load', function(){
-        
-        var barChart = document.getElementById('graficoBarra').getContext('2d');
-        window.myBar = new Chart(barChart, barChartConfig);
-        
-        var barChart = document.getElementById('graficoBarra2').getContext('2d');
-        window.myBar = new Chart(barChart, barChartConfig);
-
         var barChart = document.getElementById('graficoBarra3').getContext('2d');
         window.myBar = new Chart(barChart, barChartConfig);
-
       });	
 </script>
 

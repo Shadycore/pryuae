@@ -292,8 +292,8 @@ def rendimientoView(request):
     obj =  Produccion.objects.filter(fecha__year=ianio) \
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
                             .values('mes', 'anio', 'cultivo__nombre') \
-                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha') / Count('cantidadVentaCosecha'),IntegerField()) , \
-                                    cultivo_cosecha =(Cast(((Sum('cantidadCosecha') / Count('cantidadVentaCosecha')) / Sum('descripcionlote__area')), FloatField())), \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()) , \
+                                    cultivo_cosecha =(Cast((Sum('cantidadCosecha') / Sum('descripcionlote__area')), FloatField())), \
                                     total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
                             .order_by('anio', 'mes')
 
@@ -340,15 +340,16 @@ def cantidadesView(request):
     obj =  Produccion.objects.filter(fecha__year=ianio) \
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
                             .values('mes', 'anio', 'cultivo__nombre') \
-                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha') / Count('cantidadVentaCosecha'),IntegerField()) , total_venta_cosecha =Sum('cantidadVentaCosecha'),total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()), 
+                                      total_venta_cosecha =Sum('cantidadVentaCosecha'),
+                                      total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
                             .order_by('anio', 'mes')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
 
     datoLineal = Produccion.objects.filter(fecha__year=ianio) \
                             .values('cultivo__nombre') \
-                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
-                                        total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
                             .order_by('cultivo__nombre')
 
     datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
@@ -559,15 +560,16 @@ def lotescultivadosView(request):
 
     obj =  Produccion.objects.filter(fecha__year=ianio) \
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
-                            .values('mes', 'anio', 'cultivo__nombre') \
-                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha') / Count('cantidadVentaCosecha'),IntegerField()) , total_venta_cosecha =Sum('cantidadVentaCosecha'),total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
-                            .order_by('anio', 'mes')
+                            .values('mes', 'anio', 'cultivo__nombre','cultivo__lote',descripcionlote_area=Cast('descripcionlote__area',IntegerField())) \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()) , 
+                                        total_venta_cosecha =Sum('cantidadVentaCosecha')) \
+                            .order_by('anio', 'mes',  'cultivo__nombre','cultivo__lote')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
 
     datoLineal = Produccion.objects.filter(fecha__year=ianio) \
                             .values('cultivo__nombre') \
-                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),
                                         total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
                             .order_by('cultivo__nombre')
 
