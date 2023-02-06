@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ titulo }}</title>
+	  <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'assets/css/reportes.css' %}">
     <style type="text/css">
         @page {
@@ -14,14 +16,12 @@
             margin: 10mm;
             }
         img {
-            width: 25px;
-            height: 25px;
+            width: 50px;
+            height: 50px;
             }
     </style>
     <!-- FontAwesome JS-->
     <script defer src="{% static 'assets/plugins/fontawesome/js/all.min.js' %}"></script>
-    <!-- App CSS -->  
-    <link id="theme-style" rel="stylesheet" href="{% static 'assets/css/portal.css' %}">
 </head>
 
 <!--<body onload="window.print();window.close()" class="receipt">-->
@@ -101,6 +101,7 @@
         <small class="pie">
             <br><br>
             <center>
+                ______________________________________________
                 <br>
                 <i>&copy; &reg; <b></b><br> </i> 
             </center>
