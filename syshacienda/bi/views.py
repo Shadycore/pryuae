@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField, Prefetch, Case, When
+from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField, Prefetch, Case, When, Avg, Min, Max
 from datetime import datetime, timezone, timedelta, date
 from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast, Coalesce
 from django.db.models.query import Q
@@ -397,10 +397,11 @@ def costoproduccionView(request):
                         .filter(fechaCompra__year=ianio) \
                         .annotate(anio=F('fechaCompra__year'),
                                     month=F('fechaCompra__month'),
-                                    insumo_name=F('insumo__nombre')) \
-                        .values('anio','month', 'insumo_name') \
+                                    insumo_name=F('insumo__nombre'),
+                                    nombre_cultivo=F('cultivo__nombre')) \
+                        .values('anio','month', 'insumo_name','nombre_cultivo') \
                         .annotate(total_compras=Sum('precio')) \
-                        .order_by('anio','month')
+                        .order_by('anio','month','insumo_name')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
 
@@ -420,11 +421,11 @@ def costoproduccionView(request):
                                 .order_by('month')
 
     datoComprativo = RegistroInsumo.objects \
-                                .filter(fechaCompra__year=ianio_anterior) \
-                                .annotate(month=ExtractMonth('fechaCompra'), year=ExtractYear('fechaCompra')) \
-                                .values('month', 'year') \
-                                .annotate(total=Cast(Sum('precio'), IntegerField())) \
-                                .order_by('month')
+                        .filter(fechaCompra__year=ianio) \
+                        .annotate(nombre_cultivo=F('cultivo__nombre')) \
+                        .values('nombre_cultivo') \
+                        .annotate(total_compras=Cast(Sum('precio'),IntegerField())) \
+                        .order_by('-total_compras')
 
     for item in datoLineal:
         if item.get('month') == 1:
@@ -452,7 +453,6 @@ def costoproduccionView(request):
         if item.get('month') == 12:
             dato1['12'] = item.get('total')
 
-    for item in datoComprativo:
         if item.get('month') == 1:
             dato2['01'] = item.get('total')
         if item.get('month') == 2:
@@ -479,10 +479,10 @@ def costoproduccionView(request):
             dato2['12'] = item.get('total')
 
     salida1 = [dato1[key] for key in dato1]
-    salida2 = [dato2[key] for key in dato2]
+
 
     context = {'obj': obj, 'datoLineal':  salida1,
-            'datoComparativo': salida2, 'dFecha': dFecha,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
             'ianio': ianio, 'ianio_anterior':ianio_anterior,
             'anios': oanios}
 
@@ -490,3 +490,98 @@ def costoproduccionView(request):
                     template_name,
                     context)
 
+@login_required(login_url='/login/')
+def precioventaView(request):
+    template_name="precioventa.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    ventas = Venta.objects.filter(fechaVenta__year=ianio)
+    obj =  ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
+                .annotate(cantidad=Count('detalleventa__cultivo'), 
+                          det_total=Cast(Sum('detalleventa__total'),IntegerField()), 
+                          det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField()),
+                          min_precio = Min('detalleventa__precio'),
+                          max_precio = Max('detalleventa__precio'),
+                          prom_precio =round(Avg('detalleventa__precio'),2)) \
+                .order_by('-cantidad')
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = ventas.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Cast(Sum('detalleventa__total'),IntegerField()), det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField())) \
+                .filter(Q(det_total__isnull=False) & Q(det_cantidad__isnull=False)) \
+                .order_by('-cantidad')
+
+    cultivos = [item['detalleventa__cultivo__nombre'] for item in datoLineal ]
+    ventas_com = Venta.objects.filter(fechaVenta__year=ianio_anterior)
+    datoComprativo = ventas_com.values('fechaVenta__year', 'detalleventa__cultivo__nombre') \
+                .annotate(cantidad=Count('detalleventa__cultivo'), det_total=Cast(Sum('detalleventa__total'),IntegerField()), det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField())) \
+                .order_by('-cantidad')
+
+    context = {'obj': obj, 'datoLineal':  datoLineal,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+
+@login_required(login_url='/login/')
+def lotescultivadosView(request):
+    template_name="lotescultivados.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Produccion.objects.filter(fecha__year=ianio) \
+                            .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
+                            .values('mes', 'anio', 'cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha') / Count('cantidadVentaCosecha'),IntegerField()) , total_venta_cosecha =Sum('cantidadVentaCosecha'),total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
+                            .order_by('anio', 'mes')
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
+                                        total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+    datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+
+    context = {'obj': obj, 'datoLineal':  datoLineal,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)

@@ -58,12 +58,25 @@
         </div><!--//app-card-body-->
       </div><!--//app-card-->
     </div><!--//col-->
+      <div class="col-12 col-lg-6">		        
+      <div class="app-card app-card-chart h-100 shadow-sm">
+        <div class="app-card-header p-3 border-0">
+          <h4 class="app-card-title">Compras por Cultivo</h4>
+        </div><!--//app-card-header-->
+        <div class="app-card-body p-4">					   
+          <div class="chart-container">
+                  <canvas id="graficoBarra" ></canvas>
+          </div>
+        </div><!--//app-card-body-->
+      </div><!--//app-card-->
+      </div><!--//col-->
 </div>
 {% endblock fechas %}
 {% block header_list %}
   <tr>
   <th>Año</th>
   <th>Mes Compra</th>
+  <th>Cultivo </th>
   <th>Insumo</th>
   <th>Total</th>
   </tr>
@@ -77,6 +90,7 @@
     <tr>
       <td width="240px">{{ item.anio }}</td>
       <td width="240px">{{ item.month }}</td>
+      <td width="240px">{{ item.nombre_cultivo }}</td>
       <td width="240px">{{ item.insumo_name  }}</td>
       <td width="240px">{{ item.total_compras }}</td>
     </tr>
@@ -177,7 +191,69 @@
               }
             }
         });
-        
+        var ctx = document.getElementById('graficoBarra').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: [{% for data in datoComparativo %} '{{ data.nombre_cultivo }}',  {% endfor %}],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: bkprimario,
+              borderColor: 'gray',
+              data: [ {% for data in datoComparativo %} {{ data.total_compras }},  {% endfor %} ],
+            }	
+            ]},
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+                align: 'end',
+              },
+
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                titleMarginBottom: 10,
+                bodySpacing: 10,
+                xPadding: 16,
+                yPadding: 16,
+                borderColor: window.chartColors.border,
+                borderWidth: 1,
+                backgroundColor: '#fff',
+                bodyFontColor: window.chartColors.text,
+                titleFontColor: window.chartColors.text,
+                callbacks: {
+                          label: function(tooltipItem, data) {	                 
+                            return tooltipItem.value + '';   
+                          }
+                      },
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.border,
+                  },
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.borders,
+                  },
+                  ticks: {
+                          beginAtZero: true,
+                          userCallback: function(value, index, values) {
+                              return value + '';  
+                          }
+                      },
+                }]
+              }
+              
+            }
+        });
+
      $("#id_anios").val("{{ ianio }}");
    });
 	</script>
