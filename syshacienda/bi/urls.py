@@ -1,6 +1,7 @@
 from django.urls import path, include
 from bi.views import analiticaView, superficieView, rendimientoView, cantidadesView, \
-                    costoproduccionView, precioventaView, lotescultivadosView
+                    costoproduccionView, precioventaView, lotescultivadosView, \
+                    masproducidosView
 
 urlpatterns = [
     path('analitica', analiticaView, name="analiticaView"),
@@ -10,6 +11,8 @@ urlpatterns = [
     path('costoproduccion', costoproduccionView, name="costoproduccionView"),    
     path('precioventa', precioventaView, name="precioventaView"),    
     path('lotescultivados', lotescultivadosView, name="lotescultivadosView"),    
+    path('masproducidos', masproducidosView, name="masproducidosView"),    
 
+    
     
 ]

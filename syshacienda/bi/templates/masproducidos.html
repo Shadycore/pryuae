@@ -97,7 +97,7 @@ imprimir { display: block;}
                             <div class="col-12 col-lg-6">
                             <div class="app-card app-card-chart h-100 shadow-sm">
                                 <div class="app-card-header p-3 border-0">
-                                <h4 class="app-card-title">Rendimiento Área Cultivada vs Cosechado</h4>
+                                <h4 class="app-card-title">Producción de Cultivos</h4>
                                 </div><!--//app-card-header-->
                                 <div class="app-card-body p-4">					   
                                 <div class="chart-container">
@@ -115,8 +115,6 @@ imprimir { display: block;}
                                 <th>Año Cosecha</th>
                                 <th>Mes Cosecha</th>
                                 <th>Cultivo</th>
-                                <th>Lote</th>
-                                <th>Area</th>
                                 <th>Total Cosecha</th>
                                 </tr>
                           </thead>
@@ -130,8 +128,6 @@ imprimir { display: block;}
                                     <td width="240px">{{ item.anio }}</td>
                                     <td width="240px">{{ item.mes }}</td>
                                     <td width="240px">{{ item.cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.cultivo__lote  }}</td>
-                                    <td width="240px">{{ item.descripcionlote_area }}</td>
                                     <td width="240px">{{ item.total_cosecha  }}</td>
                                     </tr>
                                 {% endfor %}
@@ -181,18 +177,13 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: [ {% for data in obj %} '{{ data.cultivo__lote }} : ' + ' {{ data.cultivo__nombre }}', {% endfor %} ],
+            labels: [ {% for data in obj %} '{{ data.cultivo__nombre }}', {% endfor %} ],
             datasets: [{
               label: 'Área',
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in obj %} {{ data.descripcionlote_area }}, {% endfor %} ],
-            },{
-              label:'Cosechado',
-              backgroundColor: bksecundario,
-              borderColor: 'yellow',
               data: [ {% for data in obj %} {{ data.total_cosecha }}, {% endfor %} ],
-            }		
+            }	
             ]},
             options: {
               responsive: true,
