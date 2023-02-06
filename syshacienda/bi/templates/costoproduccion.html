@@ -1,0 +1,211 @@
+{% extends 'rpts/baserpts.html' %}
+{% load static %}
+<!--<style media="print">
+  #imprimir { display: block;}   
+</style> -->
+<style media="print">
+.seccion {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+</style>
+{% block mensaje %}
+<h2 class="h3 mb-2 text-success">Costo de realizar la producción</h2>
+{% endblock %}
+{% block btnnuevo %}
+{% endblock %}
+{% block fechas %}
+      <div class="imprimir row">
+          <div class="col-lg-1">Año</div>
+          <div class="col-md-2">
+              <select name="id_anios" id="id_anios" class="form-control">
+                  {% for i  in anios %} 
+                      <option value="{{i}}">{{i}} </option>
+                  {% endfor %}
+              </select>
+          </div>
+
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-info" id="btnConsultar" title="Buscar"> 
+                <i class="far fa-chart-bar"></i> 
+            </button>
+          </div>
+          <!--<div class="col-md-2">
+            <a href="{% url 'rpts:imprimircompras' ianio  %}" 
+                  class="btn btn-primary btn-icon-split">
+                <span class="text">Imprimir</span>
+            </a>
+          </div>
+            <input type="button" value="Imprimir" onclick="window.print()"> -->
+      </div>
+      <br /> <br />
+<h2 class="h3 mb-2 text-bg-dark ">Fecha reporte : {{ ianio }}</h2>
+<br />
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-lg-6">
+    <div class="app-card app-card-chart h-100 shadow-sm">
+        <div class="app-card-header p-3 border-0">
+          <h4 class="app-card-title">Compras mensuales</h4>
+        </div><!--//app-card-header-->
+        <div class="app-card-body p-4">					   
+          <div class="chart-container">
+                  <canvas id="graficoLinea" ></canvas>
+          </div>
+        </div><!--//app-card-body-->
+      </div><!--//app-card-->
+    </div><!--//col-->
+</div>
+{% endblock fechas %}
+{% block header_list %}
+  <tr>
+  <th>Año</th>
+  <th>Mes Compra</th>
+  <th>Insumo</th>
+  <th>Total</th>
+  </tr>
+{% endblock %}
+
+{% block footer_list %}
+{% endblock footer_list %}
+
+{% block body_list %}
+  {% for item in obj %}
+    <tr>
+      <td width="240px">{{ item.anio }}</td>
+      <td width="240px">{{ item.month }}</td>
+      <td width="240px">{{ item.insumo_name  }}</td>
+      <td width="240px">{{ item.total_compras }}</td>
+    </tr>
+  {% endfor %}
+{% endblock %}
+
+
+
+{% block js_graficos %}
+	<script>
+   $(function () {    
+    //console.log( {{ datoComprativo }});
+    //console.log({{ datoLineal }} );
+        window.chartColors = {
+          green: '#75c181', // rgba(117,193,129, 1)
+          blue: '#5b99ea', // rgba(91,153,234, 1)
+          gray: '#a9b5c9',
+          text: '#252930',
+          border: '#e7e9ed'
+        };
+
+        var bkprimario = "rgba(117,193,129,0.8)";
+        var bksecundario = "rgba(91,153,234,0.8)";
+
+        var ctx1 = document.getElementById('graficoLinea').getContext('2d');
+        var chart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            datasets: [{
+              label: {{ ianio }},
+              backgroundColor: bkprimario,
+              borderColor: 'gray',
+              data: [{% for data in datoLineal %} {{ data }}, {% endfor %}  ],
+            }		
+            ]},
+            options: {
+              responsive: true,		
+              
+              legend: {
+                display: true,
+                position: 'bottom',
+                align: 'end',
+              },
+
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                titleMarginBottom: 10,
+                bodySpacing: 10,
+                xPadding: 16,
+                yPadding: 16,
+                borderColor: window.chartColors.border,
+                borderWidth: 1,
+                backgroundColor: '#fff',
+                bodyFontColor: window.chartColors.text,
+                titleFontColor: window.chartColors.text,
+                      callbacks: {
+                          label: function(tooltipItem, data) {	                 
+                            return tooltipItem.value + '';   
+                          }
+                      },
+                      
+
+              },
+              hover: {
+                mode: 'nearest',
+                intersect: true
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.border,
+                  },
+                  scaleLabel: {
+                    display: false,
+                  
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {
+                    drawBorder: false,
+                    color: window.chartColors.border,
+                  },
+                  scaleLabel: {
+                    display: false,
+                  },
+                  ticks: {
+                          beginAtZero: true,
+                          userCallback: function(value, index, values) {
+                              return value.toLocaleString() + '';  
+                          }
+                      },
+                }]
+              }
+            }
+        });
+        
+     $("#id_anios").val("{{ ianio }}");
+   });
+	</script>
+{% endblock js_graficos%}
+<script>
+  // Generate charts on load
+  window.addEventListener('load', function(){
+    
+    var lineChart = document.getElementById('graficoLinea').getContext('2d');
+    window.myLine = new Chart(lineChart, lineChartConfig);
+    
+    var barChart = document.getElementById('graficoBarra').getContext('2d');
+    window.myBar = new Chart(barChart, barChartConfig);    
+
+  });	
+</script>
+
+{% block js_page %}
+<script>
+  var jq = jQuery.noConflict(true);
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+<!-- Charts JS -->
+<script src="{% static 'assets/js/chart.js'%}"></script>
+<script src="{% static 'assets/js/chart.min.js'%}"></script>  
+<!--<script src="{% static 'assets/js/index-charts.js'%}"></script> --> 
+{% endblock %}
+
