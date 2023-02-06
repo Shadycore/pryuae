@@ -17,8 +17,8 @@
             margin: 10mm;
             }
         img {
-            width: 25px;
-            height: 25px;
+            width: 50px;
+            height: 50px;
             }
     </style>
 </head>
@@ -74,7 +74,38 @@
                   {% endfor %}
             </tbody>
         </table>
-
+       <div class="col-xs-1"></div>
+        <div class="col-xs-11">
+            <div class="pull-right">
+            <!--<table class="table-responsive dt-responsive nowrap">
+                <thead>
+                    <th colspan=2>Totales</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sub Total:</td> <td align='right'>{{venta.subTotal}}</td>
+                    </tr>
+                    <tr>
+                        <td>Iva {{venta.porcIva}} : </td> <td align='right'>{{venta.totalIva}}</td>
+                    </tr>
+                    <tr>
+                        <td>Total:</td> <td align='right'><b>{{venta.totalVenta}}</b></td>
+                    </tr>
+                </tbody>
+            </table>-->
+            </div>
+        </div>
+        <div class="row">
+        <small class="pie">
+            <br><br>
+            <center>
+                ______________________________________________
+                <br>
+                <i>Firma del Responsable</i> 
+            </center>
+        </small>
+        </div>
+    </div>
     <script src="{% static 'assets/plugins/popper.min.js'%}"></script>
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js'%}"></script>  
 
