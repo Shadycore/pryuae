@@ -540,7 +540,6 @@ def precioventaView(request):
                     template_name,
                     context)
 
-
 @login_required(login_url='/login/')
 def lotescultivadosView(request):
     template_name="lotescultivados.html"
@@ -636,3 +635,149 @@ def masproducidosView(request):
                     template_name,
                     context)
 
+@login_required(login_url='/login/')
+def valorminimoView(request):
+    template_name="valorminimo.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Produccion.objects.filter(fecha__year=ianio) \
+                            .annotate(anio=ExtractYear('fecha')) \
+                            .values('anio', 'cultivo__nombre') \
+                            .annotate(min_cosecha=Cast(Min('cantidadCosecha'),IntegerField()) , 
+                                    min_precio =Cast(Min('precio'), IntegerField()), 
+                                    min_descripcionlote_area =Cast(Min('descripcionlote__area'),IntegerField()),
+                                    min_ganancia = Cast((Min('cantidadCosecha') * Min('cantidadCosecha')), IntegerField())) \
+                            .order_by('anio', 'cultivo__nombre')
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
+                                        total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+    datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+
+    context = {'obj': obj, 'datoLineal':  datoLineal,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+@login_required(login_url='/login/')
+def valormaximoView(request):
+    template_name="valorminimo.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Produccion.objects.filter(fecha__year=ianio) \
+                            .annotate(anio=ExtractYear('fecha')) \
+                            .values('anio', 'cultivo__nombre') \
+                            .annotate(max_cosecha=Cast(Max('cantidadCosecha'),IntegerField()) , 
+                                    max_precio =Cast(Max('precio'), IntegerField()), 
+                                    max_descripcionlote_area =Cast(Max('descripcionlote__area'),IntegerField()),
+                                    max_ganancia = Cast((Max('cantidadCosecha') * Max('cantidadCosecha')), IntegerField())) \
+                            .order_by('anio', 'cultivo__nombre')
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
+                                        total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+    datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+
+    context = {'obj': obj, 'datoLineal':  datoLineal,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+@login_required(login_url='/login/')
+def valorpromedioView(request):
+    template_name="valorminimo.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Produccion.objects.filter(fecha__year=ianio) \
+                            .annotate(anio=ExtractYear('fecha')) \
+                            .values('anio', 'cultivo__nombre') \
+                            .annotate(prom_cosecha=Cast(Avg('cantidadCosecha'),IntegerField()) , 
+                                    prom_precio =Cast(Avg('precio'), IntegerField()), 
+                                    prom_descripcionlote_area =Cast(Avg('descripcionlote__area'),IntegerField()),
+                                    prom_ganancia = Cast((Avg('cantidadCosecha') * Avg('cantidadCosecha')), IntegerField())) \
+                            .order_by('anio', 'cultivo__nombre')
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),\
+                                        total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+    datoComprativo = Produccion.objects.filter(fecha__year=ianio) \
+                            .values('cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                            .order_by('cultivo__nombre')
+
+
+    context = {'obj': obj, 'datoLineal':  datoLineal,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
