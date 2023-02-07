@@ -658,7 +658,7 @@ def valorminimoView(request):
                             .annotate(min_cosecha=Cast(Min('cantidadCosecha'),IntegerField()) , 
                                     min_precio =Cast(Min('precio'), IntegerField()), 
                                     min_descripcionlote_area =Cast(Min('descripcionlote__area'),IntegerField()),
-                                    min_ganancia = Cast((Min('cantidadCosecha') * Min('cantidadCosecha')), IntegerField())) \
+                                    min_ganancia = Cast((Min('cantidadCosecha') * Min('precio')), IntegerField())) \
                             .order_by('anio', 'cultivo__nombre')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
@@ -686,7 +686,7 @@ def valorminimoView(request):
 
 @login_required(login_url='/login/')
 def valormaximoView(request):
-    template_name="valorminimo.html"
+    template_name="valormaximo.html"
     anioactual = datetime.now().year
     dFecha = datetime.now().year
 
@@ -707,7 +707,7 @@ def valormaximoView(request):
                             .annotate(max_cosecha=Cast(Max('cantidadCosecha'),IntegerField()) , 
                                     max_precio =Cast(Max('precio'), IntegerField()), 
                                     max_descripcionlote_area =Cast(Max('descripcionlote__area'),IntegerField()),
-                                    max_ganancia = Cast((Max('cantidadCosecha') * Max('cantidadCosecha')), IntegerField())) \
+                                    max_ganancia = Cast((Max('cantidadCosecha') * Max('precio')), IntegerField())) \
                             .order_by('anio', 'cultivo__nombre')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
@@ -735,7 +735,7 @@ def valormaximoView(request):
 
 @login_required(login_url='/login/')
 def valorpromedioView(request):
-    template_name="valorminimo.html"
+    template_name="valorpromedio.html"
     anioactual = datetime.now().year
     dFecha = datetime.now().year
 
@@ -756,7 +756,7 @@ def valorpromedioView(request):
                             .annotate(prom_cosecha=Cast(Avg('cantidadCosecha'),IntegerField()) , 
                                     prom_precio =Cast(Avg('precio'), IntegerField()), 
                                     prom_descripcionlote_area =Cast(Avg('descripcionlote__area'),IntegerField()),
-                                    prom_ganancia = Cast((Avg('cantidadCosecha') * Avg('cantidadCosecha')), IntegerField())) \
+                                    prom_ganancia = Cast((Avg('cantidadCosecha') * Avg('precio')), IntegerField())) \
                             .order_by('anio', 'cultivo__nombre')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
