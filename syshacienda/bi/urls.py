@@ -1,7 +1,8 @@
 from django.urls import path, include
 from bi.views import analiticaView, superficieView, rendimientoView, cantidadesView, \
                     costoproduccionView, precioventaView, lotescultivadosView, \
-                    masproducidosView, valorminimoView, valormaximoView, valorpromedioView
+                    masproducidosView, valorminimoView, valormaximoView, valorpromedioView, \
+                    masproduciraView, proximafechaView
 
 urlpatterns = [
     path('analitica', analiticaView, name="analiticaView"),
@@ -15,6 +16,6 @@ urlpatterns = [
     path('valorminimo', valorminimoView, name="valorminimoView"),
     path('valormaximo', valormaximoView, name="valormaximoView"),
     path('valorpromedio', valorpromedioView, name="valorpromedioView"),
-    
-    
+    path('masproducira', masproduciraView, name="masproduciraView"),
+    path('proximafecha', proximafechaView, name="proximafechaView"),
 ]

@@ -33,6 +33,7 @@ from rpts.views import iProveedoresView, iClientesView, \
                         
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
@@ -771,6 +772,174 @@ def valorpromedioView(request):
                             .values('cultivo__nombre') \
                             .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
                             .order_by('cultivo__nombre')
+
+
+    context = {'obj': obj, 'datoLineal':  datoLineal,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+@login_required(login_url='/login/')
+def masproduciraView(request):
+    template_name="masproducira.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    tiempobi = int(Parametro.objects.filter(nombreParametro="TIEMPOBI") \
+                                .values_list('valorParametro', flat=True) \
+                                .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                                .get())
+    if tiempobi is None or not tiempobi:
+        tiempobi = 180
+    
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    #obj =  #Produccion.objects.filter(fecha__year=ianio) \
+           #                 .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
+           #                 .values('mes', 'anio', 'cultivo__nombre') \
+           #                 .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()), 
+           #                           total_venta_cosecha =Sum('cantidadVentaCosecha'),
+           #                           total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
+           #                 .order_by('-total_cosecha')
+
+    #Obtener los datos de los últimos 180 días de Producción
+    obj = Produccion.objects.filter(fecha__gte=datetime.now()-timedelta(days=tiempobi)) \
+                            .values('cultivo__nombre', 'cantidadCosecha')
+
+    #Crear un DataFrame con los datos
+    df = pd.DataFrame(list(obj))
+
+    #Codificar los nombres de cultivo a números con LabelEncoder
+    encoder = LabelEncoder()
+    encoder.fit(df['cultivo__nombre'])
+    df['cultivo__nombre'] = encoder.transform(df['cultivo__nombre'])
+
+    #Crear un modelo de regresión lineal
+    model = LinearRegression()
+
+    #Entrenar el modelo
+    model.fit(df[['cultivo__nombre']], df[['cantidadCosecha']])
+
+    #Predecir cantidad de cosecha para los próximos 180 días
+    predicciones = model.predict(df[['cultivo__nombre']])
+
+    #Crear un diccionario con los resultados
+    resultados = {'cultivo': encoder.inverse_transform(df['cultivo__nombre']), 'cantidadCosecha': df['cantidadCosecha'], 'prediccion': predicciones} 
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = None #Produccion.objects.filter(fecha__year=ianio) \
+                 #           .values('cultivo__nombre') \
+                 #           .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),
+                 #                       total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                 #          .order_by('cultivo__nombre')
+
+    datoComprativo = None #Produccion.objects.filter(fecha__year=ianio) \
+                     #       .values('cultivo__nombre') \
+                     #       .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                     #       .order_by('cultivo__nombre')
+
+
+    context = {'obj': obj, 'datoLineal':  resultados,
+            'datoComparativo': datoComprativo, 'dFecha': dFecha,
+            'ianio': ianio, 'ianio_anterior':ianio_anterior,
+            'anios': oanios}
+
+    return render(request,
+                    template_name,
+                    context)
+
+@login_required(login_url='/login/')
+def proximafechaView(request):
+    template_name="proximafecha.html"
+    anioactual = datetime.now().year
+    dFecha = datetime.now().year
+
+    if request.method == 'POST':
+        dFecha = int(request.POST.get("id_anios"))
+
+    tiempobi = int(Parametro.objects.filter(nombreParametro="TIEMPOBI") \
+                                .values_list('valorParametro', flat=True) \
+                                .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                                .get())
+    if tiempobi is None or not tiempobi:
+        tiempobi = 180
+    
+    anios = int(Parametro.objects.filter(nombreParametro="ANIOS") \
+                            .values_list('valorParametro', flat=True) \
+                            .annotate(valor_parametro=Cast('valorParametro', IntegerField())) \
+                            .get())
+
+    ianio = dFecha
+    ianio_anterior = ianio-1
+
+    obj =  Produccion.objects.filter(fecha__year=ianio) \
+                            .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
+                            .values('mes', 'anio', 'cultivo__nombre') \
+                            .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()), 
+                                      total_venta_cosecha =Sum('cantidadVentaCosecha'),
+                                      total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
+                            .order_by('-total_cosecha')
+
+    # Obtener los datos de la clase Producción
+    producciones = Produccion.objects.filter(fecha__gte=datetime.now() - timedelta(days=(tiempobi)))
+    # Filtrar los datos para obtener los últimos 180 días
+    #df = df[df['fecha'] > (datetime.now() - timedelta(days=180))]
+
+    # Crear un DataFrame con los datos
+    df = pd.DataFrame(producciones)
+
+
+    # Seleccionar las columnas de interés
+    df = df[['cultivo', 'fecha', 'cantidadCosecha']]
+
+    # Separar los datos en conjuntos de entrenamiento y prueba
+    X = df[['cultivo', 'fecha']]
+    y = df['cantidadCosecha']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+    # Entrenar el modelo de regresión lineal
+    regressor = LinearRegression()
+    regressor.fit(X_train, y_train)
+
+    # Predecir la cantidad de cosecha futura para cada cultivo
+    y_pred = regressor.predict(X_test)
+
+    
+    #print('Cantidad de cosecha futura para cada cultivo:')
+    #for i in range(len(y_pred)):
+    #    print('Cultivo: {}, Cantidad de cosecha futura: {}'.format(X_test.iloc[i]['cultivo'], y_pred[i]))
+    obj = {}
+    # Agregar los resultados al diccionario
+    for i in range(len(y_pred)):
+        obj[X_test.iloc[i]['cultivo']] = int(y_pred[i])
+
+
+    oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
+
+    datoLineal = None #Produccion.objects.filter(fecha__year=ianio) \
+                 #           .values('cultivo__nombre') \
+                 #           .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()),
+                 #                       total_venta_cosecha=Cast(Sum('cantidadVentaCosecha'),IntegerField())) \
+                 #          .order_by('cultivo__nombre')
+
+    datoComprativo = None #Produccion.objects.filter(fecha__year=ianio) \
+                     #       .values('cultivo__nombre') \
+                     #       .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField())) \
+                     #       .order_by('cultivo__nombre')
 
 
     context = {'obj': obj, 'datoLineal':  datoLineal,
