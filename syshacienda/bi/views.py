@@ -897,38 +897,33 @@ def proximafechaView(request):
                                       total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
                             .order_by('-total_cosecha')
 
-    # Obtener los datos de la clase Producción
-    producciones = Produccion.objects.filter(fecha__gte=datetime.now() - timedelta(days=(tiempobi)))
-    # Filtrar los datos para obtener los últimos 180 días
-    #df = df[df['fecha'] > (datetime.now() - timedelta(days=180))]
+    hoy = datetime.now()
+    fecha_limite = hoy - timedelta(days=tiempobi)
 
-    # Crear un DataFrame con los datos
-    df = pd.DataFrame(producciones)
+    #Obtener la lista de cultivos y sus fechas de cosecha
+    cultivos = Produccion.objects.filter(fecha__gte=fecha_limite).values('cultivo__nombre','fecha')
 
+    #Formatear las fechas a YYYYMMDD
+    fechas =  [fecha.strftime('%Y%m%d') for fecha in cultivos.fecha]
 
-    # Seleccionar las columnas de interés
-    df = df[['cultivo', 'fecha', 'cantidadCosecha']]
+    #Codificar los nombres de los cultivos
+    encoder = LabelEncoder()
+    cultivos_encoded = encoder.fit_transform(cultivos.cultivo__nombre)
 
-    # Separar los datos en conjuntos de entrenamiento y prueba
-    X = df[['cultivo', 'fecha']]
-    y = df['cantidadCosecha']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    #Entrenar el modelo
+    model = LinearRegression()
+    model.fit(cultivos_encoded, fechas)
 
-    # Entrenar el modelo de regresión lineal
-    regressor = LinearRegression()
-    regressor.fit(X_train, y_train)
+    #Predecir la fecha de los cultivos
+    predicciones = model.predict(cultivos_encoded)
 
-    # Predecir la cantidad de cosecha futura para cada cultivo
-    y_pred = regressor.predict(X_test)
-
-    
-    #print('Cantidad de cosecha futura para cada cultivo:')
-    #for i in range(len(y_pred)):
-    #    print('Cultivo: {}, Cantidad de cosecha futura: {}'.format(X_test.iloc[i]['cultivo'], y_pred[i]))
-    obj = {}
-    # Agregar los resultados al diccionario
-    for i in range(len(y_pred)):
-        obj[X_test.iloc[i]['cultivo']] = int(y_pred[i])
+    #Devolver los resultados
+    resultados = []
+    for i in range(len(cultivos)):
+        resultados.append({
+            'nombre': cultivos[i]['cultivo__nombre'],
+            'fecha_prediccion': predicciones[i]
+        })
 
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
@@ -945,7 +940,7 @@ def proximafechaView(request):
                      #       .order_by('cultivo__nombre')
 
 
-    context = {'obj': obj, 'datoLineal':  datoLineal,
+    context = {'obj': obj, 'datoLineal':  resultados,
             'datoComparativo': datoComprativo, 'dFecha': dFecha,
             'ianio': ianio, 'ianio_anterior':ianio_anterior,
             'anios': oanios}
