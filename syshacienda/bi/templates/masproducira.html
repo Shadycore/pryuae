@@ -97,7 +97,7 @@ imprimir { display: block;}
                             <div class="col-12 col-lg-6">
                             <div class="app-card app-card-chart h-100 shadow-sm">
                                 <div class="app-card-header p-3 border-0">
-                                <h4 class="app-card-title">Proyección Cosecha de Cultivos</h4>
+                                <h4 class="app-card-title">Proyección Cosecha de Cultivos Año {{ ianio }}</h4>
                                 </div><!--//app-card-header-->
                                 <div class="app-card-body p-4">					   
                                 <div class="chart-container">
@@ -113,7 +113,8 @@ imprimir { display: block;}
                           <thead>
                                 <tr>
                                 <th>Cultivo</th>
-                                <th>Total Cosecha</th>
+                                <!--<th>Total Cosecha</th> -->
+                                <th>Predicciones</th>
                                 </tr>
                           </thead>
                           <tfoot>
@@ -121,10 +122,11 @@ imprimir { display: block;}
                                 {% endblock %}
                           </tfoot>
                           <tbody>
-                                {% for item in obj %}
+                                {% for item in datoLineal %}
                                     <tr>
-                                    <td width="240px">{{ item.cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.total_cosecha  }}</td>
+                                    <td width="240px">{{ item.0  }}</td>
+                                    <!-- <td width="240px">{{ item.1  }}</td> -->
+                                    <td width="240px">{{ item.2  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
@@ -173,12 +175,12 @@ imprimir { display: block;}
         var chart = new Chart(ctx1, {
           type: 'bar',
           data: {
-            labels: [ {% for data in o_bj %} '{{ data.cultivo__nombre }}', {% endfor %} ],
+            labels: [ {% for data in datoLineal %} '{{ data.0 }}', {% endfor %} ],
             datasets: [{
-              label: 'Área',
-              backgroundColor: bkprimario,
-              borderColor: 'gray',
-              data: [ {% for data in obj %} {{ data.total_cosecha }}, {% endfor %} ],
+              label: {{ ianio }},
+              backgroundColor: window.chartColors.gray,
+              borderColor: 'red',
+              data: [ {% for data in datoLineal %} {{ data.2 }}, {% endfor %} ],
             }	
             ]},
             options: {

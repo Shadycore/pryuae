@@ -837,7 +837,10 @@ def masproduciraView(request):
     predicciones = model.predict(df[['cultivo__nombre']])
 
     #Crear un diccionario con los resultados
-    resultados = {'cultivo': encoder.inverse_transform(df['cultivo__nombre']), 'cantidadCosecha': df['cantidadCosecha'], 'prediccion': predicciones} 
+    #resultados = {'cultivo': encoder.inverse_transform(df['cultivo__nombre']), 'cantidadCosecha': df['cantidadCosecha'], 'prediccion': predicciones} 
+    resultados = []
+    for i in range(len(df)):
+        resultados.append([encoder.inverse_transform(df['cultivo__nombre'])[i], int(df['cantidadCosecha'][i]), int(predicciones[i])])
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
 

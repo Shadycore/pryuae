@@ -21,3 +21,4 @@ syshacienda/syshacienda/settings.py
 syshacienda/static/admin/*
 syshacienda/static/rest_framework/*
 syshacienda/syshacienda/settings.py
+syshacienda/bi/templates/masproducira copy.html
