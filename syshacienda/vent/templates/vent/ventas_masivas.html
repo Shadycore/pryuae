@@ -1,0 +1,92 @@
+{% extends 'base/home.html' %}
+{% load static %}
+
+{% block csstables %}
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <link href="{% static 'assets/vendor/css/bootstrap-datetimepicker.min.css'%}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'assets/vendor/css/sb-admin-2.min.css'%}" rel="stylesheet">
+
+  
+   <!-- Custom styles for this page -->
+   <link href="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+     <!-- jQuery Confirm -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/jquery_confirm/jquery-confirm.min.css' %}">
+
+  <!-- XDSoft DateTimePicker
+  <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/4.17.47/jquery.datetimepicker.min.css" 
+            integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />-->  
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+    <style type ="text/css" media="screen">
+        {input:valid,
+        textarea:valid {
+            background: green;
+        }
+        input:invalid,
+        textarea:invalid {
+            background: red;
+        }}
+    </style>
+
+{% endblock csstables %}
+
+{% block page_content %}
+<form action="{% url 'guardar_ventas' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="col-xl-6 col-md-6 mb-6">
+        <div class="card border-left-warning shadow h-100 py-2">
+
+            <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <input type="file" name="archivo_csv" />
+                    <div class="dropdown-divider"></div>
+                      <br/>
+                    <!-- {{ form.as_p }} -->
+                    <div class="dropdown-divider"></div>
+                    <br/>
+                    <div class="row"><div class="col"></div></div>
+
+                    <div class="row">
+                        <div class="col">
+                         </div>
+                         <div class="col"> 
+                            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Procesar archivo</button>
+                        </div>
+  
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block js_page %}
+$(document).ready(function(){ 
+    $('#archivo_csv').change(function(){ 
+        var fileName = $(this).val(); 
+        if (fileName.substring(3,11) == 'fakepath') { 
+            alert("Por favor seleccione un archivo válido"); 
+        } else { 
+            var extension = fileName.substring(fileName.lastIndexOf('.')+1); 
+            if (extension == "csv") { 
+                alert("Archivo CSV válido");
+            } else { 
+                alert("Por favor seleccione un archivo CSV válido");  
+            }  
+
+        }  
+
+    });  
+});  
+{% endblock %}
