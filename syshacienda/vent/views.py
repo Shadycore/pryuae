@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-
-
+import csv
+import io
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages
@@ -160,3 +160,55 @@ def borrar_detalle_factura(request, id):
             return HttpResponse("ok")
     
     return render(request,template_name,context)
+
+@login_required(login_url='/login/')
+def ventas_masivasView(request):
+    template_name = "vent/ventas_masivas.html"
+    context = {}    
+
+    if request.method == 'POST':
+        csv_file = request.FILES['archivo_csv']
+        cargar_venta_csv(csv_file)
+    
+    return render(request,template_name,context)
+        
+def cargar_venta_csv(csv_file):
+    # Abrir el archivo CSV
+    with open(csv_file, 'r') as csv_file:
+        reader = csv.reader(csv_file)        
+        # Saltar la cabecera
+        next(reader)
+        # Recorrer cada registro
+        for line in reader:
+            # Obtener los datos de la venta
+            cliente = line[0]
+            subTotal = line[1]
+            totalVenta = line[2]
+            porcIva = line[3]
+            totalIva = line[4]
+            
+            # Crear una nueva venta
+            venta = Venta.objects.create(
+                cliente=cliente,
+                subTotal=subTotal,
+                totalVenta=totalVenta,
+                porcIva=porcIva,
+                totalIva=totalIva
+            )
+            
+            # Obtener los datos del detalle de venta
+            cultivo = line[5]
+            produccion = line[6]
+            cantidad = line[7]
+            precio = line[8]
+            total = line[9]
+            
+            # Crear un nuevo detalle de venta
+            detalle_venta = DetalleVenta.objects.create(
+                venta=venta,
+                cultivo=cultivo,
+                produccion=produccion,
+                cantidad=cantidad,
+                precio=precio,
+                total=total
+            )

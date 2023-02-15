@@ -7,7 +7,7 @@ from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField, Prefetch, Case, When, Avg, Min, Max
 from datetime import datetime, timezone, timedelta, date
-from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast, Coalesce
+from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast, Coalesce, Extract
 from django.db.models.query import Q
 import json
 from django.http import HttpResponse
@@ -901,30 +901,29 @@ def proximafechaView(request):
     fecha_limite = hoy - timedelta(days=tiempobi)
 
     #Obtener la lista de cultivos y sus fechas de cosecha
-    cultivos = Produccion.objects.filter(fecha__gte=fecha_limite).values('cultivo__nombre','fecha')
+    cultivos =Produccion.objects.values("cultivo__nombre") \
+                                .annotate(nombrecultivo=F("cultivo__nombre"), fechacultivo=F("fecha"),CantidadCosecha=F("cantidadCosecha"))
+    #Genera un Dataframe con los resultados de la consulta
+    producciones = pd.DataFrame(cultivos)
 
-    #Formatear las fechas a YYYYMMDD
-    fechas =  [fecha.strftime('%Y%m%d') for fecha in cultivos.fecha]
-
-    #Codificar los nombres de los cultivos
-    encoder = LabelEncoder()
-    cultivos_encoded = encoder.fit_transform(cultivos.cultivo__nombre)
-
-    #Entrenar el modelo
-    model = LinearRegression()
-    model.fit(cultivos_encoded, fechas)
-
-    #Predecir la fecha de los cultivos
-    predicciones = model.predict(cultivos_encoded)
-
-    #Devolver los resultados
+    # Separa los datos por cultivo
+    grupos_cultivos = producciones.groupby('nombrecultivo')
     resultados = []
-    for i in range(len(cultivos)):
-        resultados.append({
-            'nombre': cultivos[i]['cultivo__nombre'],
-            'fecha_prediccion': predicciones[i]
-        })
 
+    # Para cada grupo de cultivo genera un modelo lineal
+    for nombre, grupo in grupos_cultivos:
+        # Transforma la fecha a YYYYMMDD
+        #grupo["fechacultivo"] = grupo["fechacultivo"].strftime("%Y%m%d")
+        X = grupo[["fechacultivo"]].values
+        y = grupo[["cantidadCosecha"]].values
+        regresion_lineal = LinearRegression().fit(X, y)
+        # Calcula la fecha de cosecha próxima
+        fecha_proxima_cosecha = regresion_lineal.predict([[grupo["fechacultivo"].max() + 1]])
+        #print(f"El cultivo {nombre} tendrá su próxima cosecha el día {fecha_proxima_cosecha[0][0]}")
+        resultados.append({
+            'nombre': nombre,
+            'fecha_prediccion': fecha_proxima_cosecha
+            })
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
 

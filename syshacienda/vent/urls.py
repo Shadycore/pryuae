@@ -1,5 +1,5 @@
 from django.urls import path, include
-from vent.views import VentaView, ventasView, ProduccionView, borrar_detalle_factura
+from vent.views import VentaView, ventasView, ProduccionView, borrar_detalle_factura, ventas_masivasView
 from vent.reportes import imprimir_venta_list, imprimir_venta_recibo
 urlpatterns = [
     #Ventas
