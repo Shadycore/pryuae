@@ -13,12 +13,23 @@
             size: auto;   
             margin: 0mm;
             }
+        img {
+            width: 25px;
+            height: 25px;
+            }
+    
     </style>
 </head>
 <!--<body onload="window.print();window.close()" class="receipt">-->
 <body onload="window.print()" class="receipt">
     <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
         <center>
+            <small>
+		        <div class="app-branding">
+						<img class="logo-icon me-2" src="{% static 'assets/images/logohacienda.png' %}" alt="logo">
+						<span class="logo-text"></span></a>
+		        </div><!--//app-branding-->  
+            </small>
             <b class="text-center">SISTEMA DE ADMINISTRACION DE HACIENDAS</b><br> 
             <small></small><br>
             <small>FACTURA No. {{venta.id}}</small><br>

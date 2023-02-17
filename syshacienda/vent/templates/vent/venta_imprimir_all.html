@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -48,12 +49,22 @@
         list-style: none;
         font-size: 1.1em;
     }
+    img {
+        width: 25px;
+        height: 25px;
+    }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <div class="card-header">
+                <small>
+                    <div class="app-branding">
+                            <img class="logo-icon me-2" src="{% static 'assets/images/logohacienda.png' %}" alt="logo">
+                            <span class="logo-text"></span></a>
+                    </div><!--//app-branding-->  
+                </small>
                 <center>
                     <h4>SISTEMA DE ADMINISTRACION DE HACIENDAS</h4>
                     <h3>Reporte de Facturas<br><small>Período: {{f1 | date:"d/m/Y"}} - {{f2 | date:"d/m/Y"}}</small></h3>
