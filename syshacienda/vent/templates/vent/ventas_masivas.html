@@ -48,9 +48,9 @@
             </div>
             <div class="card-body">
             <div class="row no-gutters align-items-center">
+                <div class="dropdown-divider"></div>
                 <div class="col mr-2">
                     <input type="file" name="archivo_csv" />
-                    <div class="dropdown-divider"></div>
                       <br/>
                     <!-- {{ form.as_p }} -->
                     <div class="dropdown-divider"></div>
@@ -61,7 +61,9 @@
                         <div class="col">
                          </div>
                          <div class="col"> 
-                            <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Procesar archivo</button>
+                            <button type="submit" class="btn btn-danger" name="btn_procesar">
+                                    <span class="fa fa-save"></span> Procesar archivo
+                            </button>
                         </div>
   
                     </div>
@@ -74,7 +76,7 @@
 {% endblock %}
 
 {% block js_page %}
-<script>
+	<script>
     $(document).ready(function(){ 
         $('#archivo_csv').change(function(){ 
             var fileName = $(this).val(); 
@@ -87,10 +89,13 @@
                 } else { 
                     alert("Por favor seleccione un archivo CSV válido");  
                 }  
-
             }  
-
         });  
-    });  
-</script>
+    });
+	</script>
+    <script>
+        $('#btn_procesar').click(function(){ 
+            alert("Archivo procesado"); 
+        });
+    </script>
 {% endblock %}

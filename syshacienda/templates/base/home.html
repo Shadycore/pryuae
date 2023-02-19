@@ -385,7 +385,11 @@
 	<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
 	rel="stylesheet" crossorigin="anonymous">
   
-
+<script>
+	$('#btn_procesar').click(function(){ 
+		alert("Archivo procesado"); 
+	});
+</script>
 	<script>
 		$(document).ready(function () {
 		  jQuery.datetimepicker.setLocale('es');
@@ -491,7 +495,6 @@
 
 	{% block js_graficos %}
 	{% endblock js_graficos%}
-
 </body>
 </html> 
 

@@ -7,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 import csv
 import io
 import os
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages
@@ -170,19 +171,20 @@ def ventas_masivasView(request):
     context = {}    
 
     if request.method == 'POST':
-        file_path = settings.MEDIA_URL  + request.FILES['archivo_csv'].name
-        shutil.copyfileobj(request.FILES['archivo_csv'], open(file_path, 'wb+'))
-
-        csv_file = file_path
-        cargar_venta_csv(csv_file)
-        os.remove(csv_file)
+        #file_path = settings.MEDIA_URL  + request.FILES['archivo_csv'].name
+        #file = request.FILES['archivo_csv']
+        #shutil.copyfileobj(file, open(file_path, 'wb+'))
+        csv_file = request.FILES['archivo_csv']#file_path
+        cargar_venta_csv(csv_file,request.user)
+        #os.remove(csv_file)
 
     return render(request,template_name,context)
         
-def cargar_venta_csv(csv_file):
+def cargar_venta_csv(csv_file,user):
     # Abrir el archivo CSV
-    with open(csv_file, 'r') as csv_file:
-        reader = csv.reader(csv_file)        
+    file_name = csv_file.name
+    with open(file_name, 'r') as file_name:
+        reader = csv.reader(file_name)        
         # Saltar la cabecera
         next(reader)
         # Recorrer cada registro
@@ -193,32 +195,37 @@ def cargar_venta_csv(csv_file):
             totalVenta = line[2]
             porcIva = line[3]
             totalIva = line[4]
-            
+            id = None
             # Crear una nueva venta
-            venta = Venta.objects.create(
-                cliente=cliente,
+            venta = Venta(
+                cliente_id=cliente,
                 subTotal=subTotal,
                 totalVenta=totalVenta,
                 porcIva=porcIva,
-                totalIva=totalIva
+                totalIva=totalIva,
+                usuarioCreacion= user
             )
-            
+            venta.save()
+            id = venta.id
             # Obtener los datos del detalle de venta
             cultivo = line[5]
             produccion = line[6]
             cantidad = line[7]
             precio = line[8]
             total = line[9]
-            
+
             # Crear un nuevo detalle de venta
-            detalle_venta = DetalleVenta.objects.create(
+            detalle_venta = DetalleVenta(
                 venta=venta,
-                cultivo=cultivo,
-                produccion=produccion,
+                cultivo_id=cultivo,
+                produccion_id=produccion,
                 cantidad=cantidad,
                 precio=precio,
-                total=total
+                total=total,
+                usuarioCreacion= user
             )
+            detalle_venta.save()
+            #detalle_venta.save(commit=True)
             # Actualizar el campo fechaVenta
             venta.fechaVenta = line[10]
             venta.save()
