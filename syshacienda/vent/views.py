@@ -6,10 +6,13 @@ from django.views import generic
 from django.urls import reverse, reverse_lazy
 import csv
 import io
+import os
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import authenticate
+import shutil
+from django.conf import settings
 
 from vent.models import Venta, DetalleVenta
 from vent.forms import VentaForm,DetalleVentaForm
@@ -167,9 +170,13 @@ def ventas_masivasView(request):
     context = {}    
 
     if request.method == 'POST':
-        csv_file = request.FILES['archivo_csv']
+        file_path = settings.MEDIA_URL  + request.FILES['archivo_csv'].name
+        shutil.copyfileobj(request.FILES['archivo_csv'], open(file_path, 'wb+'))
+
+        csv_file = file_path
         cargar_venta_csv(csv_file)
-    
+        os.remove(csv_file)
+
     return render(request,template_name,context)
         
 def cargar_venta_csv(csv_file):
@@ -212,3 +219,7 @@ def cargar_venta_csv(csv_file):
                 precio=precio,
                 total=total
             )
+            # Actualizar el campo fechaVenta
+            venta.fechaVenta = line[10]
+            venta.save()
+        
