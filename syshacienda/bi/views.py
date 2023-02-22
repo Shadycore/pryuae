@@ -911,14 +911,17 @@ def proximafechaView(request):
     #                                      CantidadCosecha=F('cantidadCosecha'))
     
     cultivos = Produccion.objects.annotate(
-                                    nombre_cultivo=F('cultivo__nombre'),
-                                    fecha_f=Concat(
+                                    nombre_cultivo = F('cultivo__nombre'),
+                                    fecha_f = Concat(
                                                     Cast(F('fecha'), output_field=models.CharField()),
                                                     Value(''),
                                                     output_field=models.CharField()
                                                     ),
-                                    CantidadCosecha=Cast(F('cantidadCosecha'), IntegerField())
-                                    ).values('nombre_cultivo', 'fecha_f','CantidadCosecha')
+                                    anio = Extract('fecha', 'year'),
+                                    mes = Cast(Extract('fecha', 'month'), output_field=models.CharField(max_length=2)),
+                                    dia = Cast(Extract('fecha', 'day'), output_field=models.CharField(max_length=2)),
+                                    CantidadCosecha = Cast(F('cantidadCosecha'), IntegerField())
+                                    ).values('nombre_cultivo', 'fecha_f','CantidadCosecha', 'anio', 'mes','dia')
 
 
     #Genera un Dataframe con los resultados de la consulta
@@ -932,7 +935,7 @@ def proximafechaView(request):
     # Para cada grupo de cultivo genera un modelo lineal
     for nombre, grupo in grupos_cultivos:
         # Transforma la fecha a YYYYMMDD
-        fecha_b = date.year(grupo["fecha_f"]) + date.month (grupo["fecha_f"]) + date.day(grupo["fecha_f"])
+        fecha_b = date.year(grupo["anio"]) + date.month (grupo["mes"]) + date.day(grupo["dia"])
         #fecha_b = fecha_b.replace('-','')
         grupo["fecha_f"] = fecha_b
         X = grupo[["fecha_f"]].values
