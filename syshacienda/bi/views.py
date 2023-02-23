@@ -910,45 +910,41 @@ def proximafechaView(request):
     #                                      fechacultivo=('fecha'),
     #                                      CantidadCosecha=F('cantidadCosecha'))
     
-    cultivos = Produccion.objects.annotate(
-                                    nombre_cultivo = F('cultivo__nombre'),
-                                    fecha_f = Concat(
-                                                    Cast(F('fecha'), output_field=models.CharField()),
-                                                    Value(''),
-                                                    output_field=models.CharField()
-                                                    ),
-                                    anio = Extract('fecha', 'year'),
-                                    mes = Cast(Extract('fecha', 'month'), output_field=models.CharField(max_length=2)),
-                                    dia = Cast(Extract('fecha', 'day'), output_field=models.CharField(max_length=2)),
-                                    CantidadCosecha = Cast(F('cantidadCosecha'), IntegerField())
-                                    ).values('nombre_cultivo', 'fecha_f','CantidadCosecha', 'anio', 'mes','dia')
+    # Obtener todas las producciones
+    producciones = Produccion.objects.all()
 
+    # Crear un diccionario para almacenar las predicciones
+    predicciones = {}
 
-    #Genera un Dataframe con los resultados de la consulta
-    producciones = pd.DataFrame(list(cultivos))
-    #producciones['fecha_formato'] = producciones['fechacultivo'].strftime('%Y%m%d') 
+    # Iterar por cada cultivo
+    for cultivo in producciones.values_list('cultivo__nombre', flat=True).distinct():
+        # Filtrar las producciones del cultivo actual
+        producciones_cultivo = producciones.filter(cultivo__nombre=cultivo)
 
-    # Separa los datos por cultivo
-    grupos_cultivos = producciones.groupby('nombre_cultivo')
-    resultados = []
+        # Preparar los datos
+        df = pd.DataFrame(producciones_cultivo.values('fecha'))
+        df['fecha'] = pd.to_datetime(df['fecha'])
+        df = df.groupby(pd.Grouper(key='fecha', freq='M')).size().reset_index(name='count')
+        df = df.set_index('fecha')
 
-    # Para cada grupo de cultivo genera un modelo lineal
-    for nombre, grupo in grupos_cultivos:
-        # Transforma la fecha a YYYYMMDD
-        fecha_b = date.year(grupo["anio"]) + date.month (grupo["mes"]) + date.day(grupo["dia"])
-        #fecha_b = fecha_b.replace('-','')
-        grupo["fecha_f"] = fecha_b
-        X = grupo[["fecha_f"]].values
-        y = grupo[["CantidadCosecha"]].values
-        regresion_lineal = LinearRegression().fit(X, y)
-        # Calcula la fecha de cosecha próxima
-        #fecha_proxima_cosecha = regresion_lineal.predict([[grupo["fechacultivo"].max() + 1]
-        fecha_proxima_cosecha = regresion_lineal.predict(np.array([[grupo["fecha_f"].max() + 1]]))
-        #print(f"El cultivo {nombre} tendrá su próxima cosecha el día {fecha_proxima_cosecha[0][0]}")
-        resultados.append({
-            'nombre': nombre,
-            'fecha_prediccion': fecha_proxima_cosecha
-            })
+        # Entrenar el modelo
+        X = df.index.astype(int)[:, None]
+        y = df['count'].values
+        model = LinearRegression()
+        model.fit(X, y)
+
+        # Hacer una predicción de fecha para el próximo mes
+        fecha_actual = df.index[-1]
+        fecha_futura = fecha_actual + pd.DateOffset(months=1)
+        fecha_futura_num = np.array(fecha_futura.timestamp() * 1000).reshape(-1, 1)
+        prediccion = model.predict(fecha_futura_num)[0]
+
+        # Almacenar la predicción en el diccionario
+        predicciones[cultivo] = {'fecha': fecha_futura, 'prediccion': prediccion}
+
+    # Crear una lista de tuplas con las predicciones
+    tabla_predicciones = [(cultivo, prediccion['fecha'], prediccion['prediccion']) for cultivo, prediccion in predicciones.items()]
+
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
 
@@ -964,36 +960,12 @@ def proximafechaView(request):
                      #       .order_by('cultivo__nombre')
 
 
-    context = {'obj': obj, 'datoLineal':  resultados,
+    context = {'obj': obj, 'datoLineal':  tabla_predicciones,
             'datoComparativo': datoComprativo, 'dFecha': dFecha,
             'ianio': ianio, 'ianio_anterior':ianio_anterior,
             'anios': oanios}
-
+    # Renderizar la tabla de predicciones utilizando un template
     return render(request,
                     template_name,
                     context)
 
-
-def nuevo():
-    producciones = Produccion.objects.values('cultivo__nombre', 'fecha')
-
-    df = pd.DataFrame(producciones)
-    df['fecha'] = pd.to_datetime(df['fecha'])
-    df = df.groupby(['cultivo__nombre', pd.Grouper(key='fecha', freq='M')]).size().reset_index(name='count')
-    df = df.pivot(index='fecha', columns='cultivo__nombre', values='count')
-
-    from sklearn.linear_model import LinearRegression
-
-    X = df.index.astype(int)[:, None]
-    y = df['Nombre del cultivo'].values
-    model = LinearRegression()
-    model.fit(X, y)
-
-    import numpy as np
-
-    cultivo = 'Nombre del cultivo'
-    fecha_actual = df.index[-1]
-    fecha_futura = fecha_actual + pd.DateOffset(months=1)
-    fecha_futura_num = np.array(fecha_futura.timestamp() * 1000).reshape(-1, 1)
-    prediccion = model.predict(fecha_futura_num)[0]
-    print(f"Se espera que el cultivo de {cultivo} tenga {prediccion} producciones en {fecha_futura}")

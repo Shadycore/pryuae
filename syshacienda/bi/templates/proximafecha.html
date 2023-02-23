@@ -93,27 +93,13 @@ imprimir { display: block;}
                             <br /> <br />
                             <h2 class="h3 mb-2 text-bg-dark ">Fecha reporte : {{ ianio }}</h2>
                             <br />
-                        <div class="row g-4 mb-4">
-                            <div class="col-12 col-lg-6">
-                            <div class="app-card app-card-chart h-100 shadow-sm">
-                                <div class="app-card-header p-3 border-0">
-                                <h4 class="app-card-title">Proyección Cosecha de Cultivos</h4>
-                                </div><!--//app-card-header-->
-                                <div class="app-card-body p-4">					   
-                                <div class="chart-container">
-                                        <canvas id="graficoBarra3" ></canvas>
-                                </div>
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                            </div><!--//col-->
-                        </div>
                         {% endblock fechas %}                        
                         <table class="table table-responsive table-bordered" 
                                id="dataTable" width="100%" cellspacing="0">
                           <thead>
                                 <tr>
                                 <th>Cultivo</th>
-                                <th>Total Cosecha</th>
+                                <th>Predicción</th>
                                 </tr>
                           </thead>
                           <tfoot>
@@ -123,8 +109,8 @@ imprimir { display: block;}
                           <tbody>
                                 {% for item in obj %}
                                     <tr>
-                                    <td width="240px">{{ item.cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.total_cosecha  }}</td>
+                                    <td width="240px">{{ datoLineal.cultivo  }}</td>
+                                    <td width="240px">{{ datoLineal.['fecha']  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
