@@ -35,7 +35,46 @@
             background: red;
         }}
     </style>
-
+    <script type="text/javascript">
+        function validarArchivo(){
+          var archivo = document.getElementById("archivo_csv").value;
+          if(archivo.substring(archivo.length-3, archivo.length) != "csv"){
+            alert("El archivo debe tener la extensión .csv");
+            return false;
+          } else {
+            return true;
+          } 
+        }
+  
+        function validarEstructura(archivo) {
+            let estructuraCorrecta = true;
+          
+            // Verificar que el archivo tenga 10 columnas
+            if (archivo[0].length !== 10) {
+              estructuraCorrecta = false;
+            }
+          
+            // Verificar que las columnas sean las esperadas
+            const columnasEsperadas = ["cliente", "subtotal", "totalventa", "porcIva", "totaliva", "cultivo", "produccion", "cantidad", "precio", "total"];
+          
+            for (let i = 0; i < columnasEsperadas.length; i++) {
+              if (archivo[0][i] !== columnasEsperadas[i]) {
+                estructuraCorrecta = false;
+              }
+            }
+          
+            // Verificar que la última columna sea una fecha válida en formato YYYY-MM-DD
+            const ultimaColumna = archivo[1][9];          
+            const fechaValidaRegex = /^\d{4}-\d{2}-\d{2}$/;
+          
+            if (!fechaValidaRegex.test(ultimaColumna)) {
+               alert("Verificar el archivo no cumple con el formato establecido");
+              estructuraCorrecta = false;
+            }
+            return estructuraCorrecta;  
+          }
+  
+      </script> 
 {% endblock csstables %}
 
 {% block page_content %}
