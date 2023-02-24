@@ -17,6 +17,7 @@
       <th>Identificacion</th>
       <th>Fecha de Nacimiento</th>
       <th>Celular</th>
+      <th>Email</th>
       <th>Ciudad, Dirección</th>
       <th>Estado</th>
       <th class="all">Acciones</th>
@@ -25,14 +26,14 @@
     {% block footer_list %}
         <!--<tfoot>
           <tr>
-            <th>id</th>
-            <th>Nombre y apellido</th>
-            <th>Identificacion</th>
-            <th>Fecha de Nacimiento</th>
-            <th>Celular</th>
-            <th>Ciudad, Dirección</th>
-            <th>Estado</th>
-            <th>Estado</th>
+          <th>id</th>
+          <th>Nombre y Apellido</th>
+          <th>Identificacion</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Celular</th>
+          <th>Email</th>
+          <th>Ciudad, Dirección</th>
+          <th>Estado</th>
             <th class="all">Acciones</th>
           </tr> -->
       {% endblock %}
@@ -43,7 +44,7 @@
               <td width="240px"> {{ item.nombre }}  {{ item.apellido }}    </td>
               <!-- <td>{{ item.apellido }}</td> -->
               <td width="240px">{{ item.identificacion }}</td>
-              <!--<td>{{ item.telefono }}</td>-->
+              <td>{{ item.fchNacimiento }}</td>
               <td width="240px">{{ item.celular }}</td>
               <td width="240px">{{ item.email }}</td>
               <td width="240px">{{ item.ciudad }}, {{ item.direccion }}</td>
