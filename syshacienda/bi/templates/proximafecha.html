@@ -110,7 +110,7 @@ imprimir { display: block;}
                                 {% for item in datoLineal %}
                                     <tr>
                                     <td width="240px">{{ item.0  }}</td>
-                                    <td width="240px">{{ item.1  }}</td>
+                                    <td width="240px">{{ item.1 | date:"d/m/Y"  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
