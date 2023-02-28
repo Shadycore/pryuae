@@ -107,10 +107,10 @@ imprimir { display: block;}
                                 {% endblock %}
                           </tfoot>
                           <tbody>
-                                {% for item in obj %}
+                                {% for item in datoLineal %}
                                     <tr>
-                                    <td width="240px">{{ datoLineal.0  }}</td>
-                                    <td width="240px">{{ datoLineal.1  }}</td>
+                                    <td width="240px">{{ item.0  }}</td>
+                                    <td width="240px">{{ item.1  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
