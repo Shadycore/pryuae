@@ -518,9 +518,9 @@ def precioventaView(request):
                 .annotate(cantidad=Count('detalleventa__cultivo'), 
                           det_total=Cast(Sum('detalleventa__total'),IntegerField()), 
                           det_cantidad=Cast(Sum('detalleventa__cantidad'),IntegerField()),
-                          min_precio = Cast(Min('detalleventa__precio'),IntegerField()),
-                          max_precio = Cast(Max('detalleventa__precio'),IntegerField()),
-                          prom_precio =Cast(Avg('detalleventa__precio'),IntegerField())) \
+                          min_precio = Min('detalleventa__precio'),
+                          max_precio = Max('detalleventa__precio'),
+                          prom_precio =Avg('detalleventa__precio')) \
                 .order_by('-cantidad')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
