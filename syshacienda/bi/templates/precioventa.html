@@ -119,7 +119,7 @@ imprimir { display: block;}
                                 <th>Total Vendido</th>
                                 <th>Precio Mínimo</th>
                                 <th>Precio Máximo</th>
-                                <th>Promedio Precio</th>
+                                <th>Precio Promedio</th>
                                 </tr>
                           </thead>
                           <tfoot>
@@ -136,7 +136,7 @@ imprimir { display: block;}
                                     <td width="240px">{{ item.det_total  }}</td>
                                     <td width="240px">{{ item.min_precio  }}</td>
                                     <td width="240px">{{ item.max_precio }}</td>
-                                    <td width="240px">{{ item.prom_precio  }}</td>
+                                    <td width="240px">{{ item.prom_precio | floatformat:2 }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
