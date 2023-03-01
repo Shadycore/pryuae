@@ -521,6 +521,7 @@ def precioventaView(request):
                           min_precio = Min('detalleventa__precio'),
                           max_precio = Max('detalleventa__precio'),
                           prom_precio =Avg('detalleventa__precio')) \
+                .filter(Q(det_cantidad__isnull=False) & Q(det_total__isnull=False)) \
                 .order_by('-cantidad')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
