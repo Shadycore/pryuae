@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum, F, DateTimeField, Count, FloatField, IntegerField, Prefetch, Case, When
 from datetime import datetime, timezone, timedelta, date
-from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast, Coalesce, TruncDay
+from django.db.models.functions import TruncMonth, TruncYear, ExtractMinute, ExtractMonth, ExtractYear, Cast, Coalesce, TruncDay, Date
 from django.utils.dateparse import parse_date
 import json
 from django.http import HttpResponse
@@ -117,17 +117,18 @@ def Home(request):
     #                            .order_by('fechaVenta')[:8]
                                 
     dato_ventas = Venta.objects.filter(fechaVenta__gte=(fecha_inicio- timedelta(days=1)) ) \
-                                .values('fechaVenta__date') \
-                                .annotate(total=Sum('totalVenta')) \
-                                .order_by('fechaVenta__date')
+                                .annotate(fecha=Cast('fechaVenta', Date())) \
+                                .values('fecha') \
+                                .annotate(total=Cast(Sum('totalVenta'), IntegerField())) \
+                                .order_by('fecha')
     
     if not dato_ventas:
         dato_ventas = ventas_semana
     else: #cruzar la información entre la variable semana y ventas_semana, y actualizar el total_ventas por día.
         for dato_venta in dato_ventas:
             for venta_semana in ventas_semana:
-                if venta_semana['fecha_venta'] == dato_venta['fechaVenta__date'].strftime('%Y-%m-%d'):
-                    venta_semana['total_venta'] = dato_venta['total']
+                if venta_semana['fecha_venta'] == dato_venta['fecha'].strftime('%Y-%m-%d'):
+                    venta_semana['total_venta'] = venta_semana['total_venta'] + dato_venta['total']
                     break
 
         
