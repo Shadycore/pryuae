@@ -139,7 +139,12 @@ imprimir { display: block;}
                                     </td>
                                     <!--<td width="240px">{{ item.descripcionlote__etapa  }}</td> -->
                                     <td width="240px">{{ item.total_cosecha  }}</td>
-                                    <td width="240px">{{ item.cultivo_cosecha |floatformat:2  }}</td>
+                                    <td width="240px">{% if item.total_descripcionlote_area %}
+                                                          {{ item.cultivo_cosecha |floatformat:2  }}
+                                                        {% else %}
+                                                            0
+                                                        {% endif %}
+                                    </td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
