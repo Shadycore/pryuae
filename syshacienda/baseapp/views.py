@@ -100,7 +100,7 @@ def Home(request):
                 .exclude(det_cantidad=None) \
                 .order_by('-det_cantidad')[:10]
 
-
+    #obtener fecha actual en formato: YYYY-MM-DD
     fecha_actual = datetime.now()
     fecha_inicio = fecha_actual - timedelta(days=7)
 
@@ -109,7 +109,7 @@ def Home(request):
     ventas_semana = []
     for i in range(8):
         fecha_venta = fecha_inicio + timedelta(days=i)
-        fecha_venta = fecha_venta.strftime('%Y-%m-%d')
+        #fecha_venta = fecha_venta.strftime('%Y-%m-%d')
         ventas_semana.append({'fecha_venta': fecha_venta, 'total_venta': 0})
     #obtener ventas de la semana agrupadas por día
     #ventas_semana = Venta.objects.filter(fechaVenta__range=[fecha_inicio, fecha_actual]) \
