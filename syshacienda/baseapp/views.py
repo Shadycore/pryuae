@@ -128,7 +128,6 @@ def Home(request):
         for dato_venta in dato_ventas:
             a = dato_venta['fecha'].strftime('%Y-%m-%d')
             for venta_semana in ventas_semana:
-                b = venta_semana['fecha_venta'].strftime('%Y-%m-%d')
                 if venta_semana['fecha_venta'] == dato_venta['fecha'].strftime('%Y-%m-%d'):
                     venta_semana['total_venta'] = venta_semana['total_venta'] + dato_venta['total']
                     break
