@@ -109,7 +109,7 @@ def Home(request):
     ventas_semana = []
     for i in range(8):
         fecha_venta = fecha_inicio + timedelta(days=i)
-        #fecha_venta = fecha_venta.strftime('%Y-%m-%d')
+        fecha_venta = fecha_venta.strftime('%Y-%m-%d')
         ventas_semana.append({'fecha_venta': fecha_venta, 'total_venta': 0})
     #obtener ventas de la semana agrupadas por día
     #ventas_semana = Venta.objects.filter(fechaVenta__range=[fecha_inicio, fecha_actual]) \
@@ -129,7 +129,7 @@ def Home(request):
             a = dato_venta['fecha'].strftime('%Y-%m-%d')
             for venta_semana in ventas_semana:
                 b = venta_semana['fecha_venta'].strftime('%Y-%m-%d')
-                if venta_semana['fecha_venta'] == dato_venta['fecha']:
+                if venta_semana['fecha_venta'] == dato_venta['fecha'].strftime('%Y-%m-%d'):
                     venta_semana['total_venta'] = venta_semana['total_venta'] + dato_venta['total']
                     break
 
