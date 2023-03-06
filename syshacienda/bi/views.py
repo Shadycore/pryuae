@@ -72,39 +72,39 @@ def analiticaView(request):
     listaProduccion = Produccion.objects.filter(Q(estado=True)).order_by('id')
 
     ## Ano actual [ ianio ]
-    tactividades = Asignacion.objects.filter(fecha__year=anioactual)\
+    tactividades = Asignacion.objects.filter(fecha__year=ianio)\
                                 .aggregate(actividades_realizadas=Count('actividad'))
 
-    tactividades_ant = Asignacion.objects.filter(fecha__year=anioactual)\
+    tactividades_ant = Asignacion.objects.filter(fecha__year=ianio)\
                                 .aggregate(actividades_realizadas=Count('actividad'))
     #actividades = Asignacion.objects.filter(fecha__year=ianio, cultivo=idcultivo).annotate(actividades_realizadas=Count('actividad'))
 
-    tventasanio = Venta.objects.filter(fechaVenta__year=anioactual)\
+    tventasanio = Venta.objects.filter(fechaVenta__year=ianio)\
                                 .aggregate(sum_total=Cast(Sum('totalVenta'),IntegerField()))
 
     tventasanioanterior = Venta.objects.filter(fechaVenta__year=anioanterior)\
                                 .aggregate(sum_total=Cast(Sum('totalVenta'),IntegerField()))
 
-    prod = Produccion.objects.filter(fecha__year=anioactual) \
+    prod = Produccion.objects.filter(fecha__year=ianio) \
                             .aggregate(sum_Cosecha=Cast(Sum('cantidadCosecha'),IntegerField()))
 
     prod_ant = Produccion.objects.filter(fecha__year=anioanterior) \
                             .aggregate(sum_Cosecha=Cast(Sum('cantidadCosecha'),IntegerField()))
 
-    vent = Produccion.objects.filter(fecha__year=anioactual) \
+    vent = Produccion.objects.filter(fecha__year=ianio) \
                             .aggregate(sum_Venta=Cast(Sum('cantidadVentaCosecha'),IntegerField()))
 
     vent_ant = Produccion.objects.filter(fecha__year=anioanterior) \
                             .aggregate(sum_Venta=Cast(Sum('cantidadVentaCosecha'),IntegerField()))
 
-    tcompras = RegistroInsumo.objects.filter(fechaCompra__year=anioactual) \
+    tcompras = RegistroInsumo.objects.filter(fechaCompra__year=ianio) \
                                     .aggregate(sum_precio=Cast(Sum('precio'),IntegerField()))
 
     tcompras_ant = RegistroInsumo.objects.filter(fechaCompra__year=anioanterior) \
                                     .aggregate(sum_precio=Cast(Sum('precio'),IntegerField()))
 
-    ventasmesanio = Venta.objects.exclude(totalVenta=None) \
-                                    .filter(fechaVenta__year=anioactual) \
+#    ventasmesanio = Venta.objects.exclude(totalVenta=None) \
+    ventasmesanio = Venta.objects.filter(fechaVenta__year=ianio) \
                                     .annotate(month=F('fechaVenta__month')) \
                                     .values('month') \
                                     .annotate(total_venta=Sum('totalVenta', output_field=IntegerField()))\
@@ -115,33 +115,33 @@ def analiticaView(request):
             '09': 0, '10': 0, '11': 0, '12': 0}
 
     for item in ventasmesanio:
-        if item.get('total') is None:
-             item['total'] = 0
+        if item.get('total_venta') is None:
+             item['total_venta'] = 0
 
         if item.get('month') == 1:
-            datoVentas['01'] = item.get('total')
+            datoVentas['01'] = item.get('total_venta')
         if item.get('month') == 2:
-            datoVentas['02'] = item.get('total')
+            datoVentas['02'] = item.get('total_venta')
         if item.get('month') == 3:
-            datoVentas['03'] = item.get('total')
+            datoVentas['03'] = item.get('total_venta')
         if item.get('month') == 4:
-            datoVentas['04'] = item.get('total')
+            datoVentas['04'] = item.get('total_venta')
         if item.get('month') == 5:
-            datoVentas['05'] = item.get('total')
+            datoVentas['05'] = item.get('total_venta')
         if item.get('month') == 6:
-            datoVentas['06'] = item.get('total')
+            datoVentas['06'] = item.get('total_venta')
         if item.get('month') == 7:
-            datoVentas['07'] = item.get('total')
+            datoVentas['07'] = item.get('total_venta')
         if item.get('month') == 8:
-            datoVentas['08'] = item.get('total')
+            datoVentas['08'] = item.get('total_venta')
         if item.get('month') == 9:
-            datoVentas['09'] = item.get('total')
+            datoVentas['09'] = item.get('total_venta')
         if item.get('month') == 10:
-            datoVentas['10'] = item.get('total')
+            datoVentas['10'] = item.get('total_venta')
         if item.get('month') == 11:
-            datoVentas['11'] = item.get('total')
+            datoVentas['11'] = item.get('total_venta')
         if item.get('month') == 12:
-            datoVentas['12'] = item.get('total')
+            datoVentas['12'] = item.get('total_venta')
 
     salidaventasanio = [datoVentas[key] for key in datoVentas]
     #salida2 = [dato2[key] for key in dato2]
