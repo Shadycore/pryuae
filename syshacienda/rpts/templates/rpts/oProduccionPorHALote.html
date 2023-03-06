@@ -342,7 +342,14 @@ imprimir { display: block;}
               label: 'Área',
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in obj %} {{ data.total_descripcionlote_area }}, {% endfor %} ],
+              data: [ {% for data in obj %}  
+                        {{if data.total_descripcionlote_area }}
+                          {{ data.total_descripcionlote_area }},
+                        {{else}}
+                          0,
+                        {{endif}
+                      {% endfor %} 
+                    ],
             },{
               label:'Cosechado',
               backgroundColor: bksecundario,
