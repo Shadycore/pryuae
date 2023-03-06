@@ -134,7 +134,7 @@ imprimir { display: block;}
                                     <td width="240px">{{ item.total_descripcionlote_area }}</td>
                                     <!--<td width="240px">{{ item.descripcionlote__etapa  }}</td> -->
                                     <td width="240px">{{ item.total_cosecha  }}</td>
-                                    <td width="240px">{{ item.cultivo_cosecha  }}</td>
+                                    <td width="240px">{{ item.cultivo_cosecha |floatformat:2  }}</td>
                                     </tr>
                                 {% endfor %}
                           </tbody>
@@ -187,12 +187,12 @@ imprimir { display: block;}
               label: 'Área',
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in obj %} {{ data.total_descripcionlote_area }}, {% endfor %} ],
+              data: [ {% for data in obj %} {{ data.total_descripcionlote_area |floatformat:0 }}, {% endfor %} ],
             },{
               label:'Cosechado',
               backgroundColor: bksecundario,
               borderColor: 'yellow',
-              data: [ {% for data in obj %} {{ data.total_cosecha }}, {% endfor %} ],
+              data: [ {% for data in obj %} {{ data.total_cosecha |floatformat:0 }}, {% endfor %} ],
             }		
             ]},
             options: {

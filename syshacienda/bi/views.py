@@ -300,6 +300,7 @@ def rendimientoView(request):
                             .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()) , \
                                     cultivo_cosecha =(Cast((Sum('cantidadCosecha') / Sum('descripcionlote__area')), FloatField())), \
                                     total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
+                            .exclude(descripcionlote__area=None) \
                             .order_by('anio', 'mes')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]

@@ -488,6 +488,7 @@ def impProduccionView(request, f1=None):
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
                             .values('mes', 'anio', 'cultivo__nombre', 'descripcionlote__area', 'descripcionlote__etapa') \
                             .annotate(total_cosecha=Sum('cantidadCosecha'),total_venta_cosecha=Sum('cantidadVentaCosecha')) \
+                            .exclude(descripcionlote__area=None) \
                             .order_by('anio', 'mes')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]

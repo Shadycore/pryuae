@@ -186,7 +186,7 @@ imprimir { display: block;}
               label: 'Área',
               backgroundColor: bkprimario,
               borderColor: 'gray',
-              data: [ {% for data in obj %} {{ data.descripcionlote_area }}, {% endfor %} ],
+              data: [ {% for data in obj %} {{ data.descripcionlote__area }}, {% endfor %} ],
             },{
               label:'Cosechado',
               backgroundColor: bksecundario,
