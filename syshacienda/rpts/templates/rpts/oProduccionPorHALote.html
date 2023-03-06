@@ -157,7 +157,12 @@ imprimir { display: block;}
                                     <td width="240px">{{ item.anio }}</td>
                                     <td width="240px">{{ item.mes }}</td>
                                     <td width="240px">{{ item.cultivo__nombre  }}</td>
-                                    <td width="240px">{{ item.total_descripcionlote_area }}</td>
+                                    <td width="240px">{% if item.total_descripcionlote_area %}
+                                                        {{ item.total_descripcionlote_area }}
+                                                      {% else %}
+                                                        0
+                                                    {% endif %}
+                                    </td>
                                     <!--<td width="240px">{{ item.descripcionlote__etapa  }}</td> -->
                                     <td width="240px">{{ item.total_cosecha  }}</td>
                                     <td width="240px">{{ item.total_venta_cosecha  }}</td>
