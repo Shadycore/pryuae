@@ -127,7 +127,7 @@ def Home(request):
     else: #cruzar la información entre la variable semana y ventas_semana, y actualizar el total_ventas por día.
         for dato_venta in dato_ventas:
             for venta_semana in ventas_semana:
-                if venta_semana['fecha_venta'] == dato_venta['fecha']:
+                if venta_semana['fecha_venta'].strftime('%Y-%m-%d') == dato_venta['fecha'].strftime('%Y-%m-%d'):
                     venta_semana['total_venta'] = venta_semana['total_venta'] + dato_venta['total']
                     break
 
