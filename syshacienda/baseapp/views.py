@@ -117,7 +117,7 @@ def Home(request):
     #                            .order_by('fechaVenta')[:8]
                                 
     dato_ventas = Venta.objects.filter(fechaVenta__gte=(fecha_inicio- timedelta(days=1)) ) \
-                                .annotate(fecha=Cast('fechaVenta', Date())) \
+                                .annotate(fecha=Cast('fechaVenta', DateTimeField())) \
                                 .values('fecha') \
                                 .annotate(total=Cast(Sum('totalVenta'), IntegerField())) \
                                 .order_by('fecha')
@@ -127,7 +127,7 @@ def Home(request):
     else: #cruzar la información entre la variable semana y ventas_semana, y actualizar el total_ventas por día.
         for dato_venta in dato_ventas:
             for venta_semana in ventas_semana:
-                if venta_semana['fecha_venta'] == dato_venta['fecha'].strftime('%Y-%m-%d'):
+                if date(venta_semana['fecha_venta']) == date(dato_venta['fecha'].strftime('%Y-%m-%d')):
                     venta_semana['total_venta'] = venta_semana['total_venta'] + dato_venta['total']
                     break
 
