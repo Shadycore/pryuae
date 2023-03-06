@@ -567,6 +567,7 @@ def lotescultivadosView(request):
     obj =  Produccion.objects.filter(fecha__year=ianio) \
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
                             .values('mes', 'anio', 'cultivo__nombre','cultivo__lote',descripcionlote_area=Cast('descripcionlote__area',IntegerField())) \
+                            .exclude(descripcionlote_area=None) \
                             .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()) , 
                                         total_venta_cosecha =Sum('cantidadVentaCosecha')) \
                             .order_by('anio', 'mes',  'cultivo__nombre','cultivo__lote')
