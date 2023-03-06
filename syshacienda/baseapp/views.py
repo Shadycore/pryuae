@@ -102,20 +102,36 @@ def Home(request):
 
 
     fecha_actual = datetime.now()
-    fecha_inicio = fecha_actual - timedelta(days=8)
-    #Obtengo los últimos 8 días de ventas de la base.
-    ventas_semana = Venta.objects.filter(fechaVenta__month=date.today().month, fechaVenta__year=date.today().year) \
-                                .annotate(total_venta=Sum('totalVenta'), fecha_venta=TruncDay('fechaVenta')) \
-                                .order_by('fechaVenta')[:8]
-    
-    if not ventas_semana:
-        ventas_semana = []
-        dia_ini = date.today()  - timedelta(days=8)
-        for i in range(8):
-            fecha_venta = dia_ini + timedelta(days=i)
-            fecha_venta = fecha_venta.strftime('%Y-%m-%d')
-            ventas_semana.append({'fecha_venta': fecha_venta, 'total_venta': 0})
+    fecha_inicio = fecha_actual - timedelta(days=7)
 
+    #crear objeto con rango de días entre fecha_actual y fecha_inicio, formato: YYYY-MM-DD
+    #semana = [pd.date_range(start=fecha_inicio, end=fecha_actual, freq='D').strftime('%Y-%m-%d')]
+    ventas_semana = []
+    for i in range(8):
+        fecha_venta = fecha_inicio + timedelta(days=i)
+        fecha_venta = fecha_venta.strftime('%Y-%m-%d')
+        ventas_semana.append({'fecha_venta': fecha_venta, 'total_venta': 0})
+    #obtener ventas de la semana agrupadas por día
+    #ventas_semana = Venta.objects.filter(fechaVenta__range=[fecha_inicio, fecha_actual]) \
+    #                            .annotate(total_venta=Sum('totalVenta'), fecha_venta=TruncDay('fechaVenta')) \
+    #                            .order_by('fechaVenta')[:8]
+                                
+    dato_ventas = Venta.objects.filter(fechaVenta__gte=(fecha_inicio- timedelta(days=1)) ) \
+                                .values('fechaVenta__date') \
+                                .annotate(total=Sum('totalVenta')) \
+                                .order_by('fechaVenta__date')
+    
+    if not dato_ventas:
+        dato_ventas = ventas_semana
+    else: #cruzar la información entre la variable semana y ventas_semana, y actualizar el total_ventas por día.
+        for dato_venta in dato_ventas:
+            for venta_semana in ventas_semana:
+                if venta_semana['fecha_venta'].strftime('%Y-%m-%d') == dato_venta['fecha_venta'].strftime('%Y-%m-%d'):
+                    venta_semana['total_venta'] = dato_venta['total']
+                    break
+
+        
+        
     ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
     if ventas:
         #realizamos la proyección basado en el parametro tiempobi: 180 días
