@@ -343,11 +343,11 @@ imprimir { display: block;}
               backgroundColor: bkprimario,
               borderColor: 'gray',
               data: [ {% for data in obj %}  
-                        {{if data.total_descripcionlote_area }}
+                        {% if data.total_descripcionlote_area %}
                           {{ data.total_descripcionlote_area }},
-                        {{else}}
+                        {% else %}
                           0,
-                        {{endif}
+                        {% endif %}
                       {% endfor %} 
                     ],
             },{
