@@ -204,17 +204,17 @@ def analiticaView(request):
                 .exclude(det_cantidad=None) \
                 .order_by('-det_cantidad')[:10]
 
-    ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi+8))).values('fechaVenta', 'totalVenta')
+    ventas = Venta.objects.filter(fechaVenta__gte=datetime.now() - timedelta(days=(tiempobi))).values('fechaVenta', 'totalVenta')
 
     #realizamos la proyección basado en el parametro tiempobi: 180 días
     df = pd.DataFrame(ventas)
     df['fechaVenta'] = pd.to_datetime(df['fechaVenta']) # Convertimos la columna fechaVenta a tipo datetime
-    df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'D') # Creamos una columna con el número de días desde el primer registro de venta
+    df['dias'] = (df['fechaVenta'] - df['fechaVenta'].min())  / np.timedelta64(1,'M') # Creamos una columna con el número de días desde el primer registro de venta
     X = df[['dias']] # Definimos X como la columna dias del DataFrame
     y = df[['totalVenta']] # Definimos y como la columna totalVenta del DataFrame
     model = LinearRegression() # Creamos un modelo de regresión lineal
     model.fit(X, y) # Entrenamos el modelo con los datos obtenidos
-    predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para los siguientes 8 días
+    predicciones = model.predict([[181], [182], [183], [184], [185], [186], [187], [188], [189], [190], [191], [192]]) # Realizamos predicciones para el año en curso
     pred_formateada = np.round(predicciones, decimals=0).tolist() # Redondeamos las predicciones a 0 decimales
     pred_formateada =  [int(numero[0]) for numero in pred_formateada] # formateamos la lsta
 
@@ -297,10 +297,10 @@ def rendimientoView(request):
     obj =  Produccion.objects.filter(fecha__year=ianio) \
                             .annotate(mes=ExtractMonth('fecha'), anio=ExtractYear('fecha')) \
                             .values('mes', 'anio', 'cultivo__nombre') \
+                            .exclude(descripcionlote__area=None) \
                             .annotate(total_cosecha=Cast(Sum('cantidadCosecha'),IntegerField()) , \
                                     cultivo_cosecha =(Cast((Sum('cantidadCosecha') / Sum('descripcionlote__area')), FloatField())), \
                                     total_descripcionlote_area =Cast(Sum('descripcionlote__area'),IntegerField())) \
-                            .exclude(descripcionlote__area=None) \
                             .order_by('anio', 'mes')
 
     oanios = [i for i in range(anioactual,(anioactual - anios),-1)]
