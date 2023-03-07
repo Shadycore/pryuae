@@ -264,6 +264,22 @@
 
 {% block js_page %}
 <script>
+    //Función para que el objeto btnGuardar valide el formulario al dar click
+    $(document).ready(function(){
+        $("#btnGuardar").click(function(){
+            //valida que id_produccion_detalle, id_cliente_detalle tenga valor distinto a cero
+            if ($("#id_cliente_detalle").val()==="0" || $("#id_cliente_detalle").val()===null){
+                mensaje("Cliente No Seleccionado",'red');
+                return false;
+            }
+            var id_produccion = $("#id_produccion_detalle").val();
+            if(id_produccion==="" || id_produccion=="0"){
+                mensaje("Producto No Seleccionado",'red');
+                return false;
+            }
+        });
+    });
+
     function calcular_detalle()
     {
         var cant,prec,desc,stotal,total;
