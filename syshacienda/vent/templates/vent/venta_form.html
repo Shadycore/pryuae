@@ -277,6 +277,11 @@
                 mensaje("Producto No Seleccionado",'red');
                 return false;
             }
+            var cantidad = $("#id_cantidad").val();
+            if(cantidad==="" || cantidad=="0"){
+                mensaje("Cantidad No Puede Ser Cero",'red');
+                return false;
+            }
         });
     });
 
